@@ -207,6 +207,18 @@
 
   /* rules */
   .rules-card{padding:16px; margin:18px 0 6px; background:#fff9ee;}
+  .pix-card{padding:16px; margin:14px 0 20px; background:#eafff2;}
+  .pix-title{font-family:'Archivo Black', sans-serif; font-size:0.9rem; text-transform:uppercase; margin-bottom:10px;}
+  .pix-row{display:flex; justify-content:space-between; align-items:baseline; gap:10px; padding:6px 0; font-size:0.85rem; border-bottom:1px dashed rgba(20,20,26,0.12);}
+  .pix-row span{color:var(--muted); font-weight:600;}
+  .pix-row b{font-family:'Space Grotesk', sans-serif;}
+  .pix-copy-btn{
+    width:100%; margin-top:12px; background:var(--green); color:#fff;
+    border:2.5px solid var(--ink); border-radius:11px; padding:11px;
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:0.85rem;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .pix-note{margin-top:12px; font-size:0.8rem; font-weight:600; color:#1a5c37; line-height:1.5;}
   .rules-summary{font-size:0.82rem; font-weight:600; line-height:1.5;}
   .rules-toggle{
     background:none; border:none; color:var(--violet-d); font-family:'Space Grotesk', sans-serif;
@@ -661,6 +673,28 @@
           </div>
 
           <div class="field">
+            <label>Como você vai pagar a confirmação (R$20)?</label>
+            <div class="choice-row" data-field="formaPagamento">
+              <div class="choice-opt hard-sm" data-value="pix">Pix</div>
+              <div class="choice-opt hard-sm" data-value="lider">Pagar com a líder Franciele</div>
+            </div>
+          </div>
+
+          <div class="pix-card hard-sm" id="pixBox" style="display:none;">
+            <div class="pix-title">📎 Dados do Pix</div>
+            <div class="pix-row"><span>Nome</span><b>Franciele Bariviera</b></div>
+            <div class="pix-row"><span>Chave (telefone)</span><b id="pixChaveTxt">(48) 98836-2228</b></div>
+            <div class="pix-row"><span>Instituição</span><b>CC Litorânea</b></div>
+            <button type="button" class="pix-copy-btn press" id="pixCopyBtn">Copiar chave Pix</button>
+            <div class="pix-note">📸 Depois de pagar, envie o comprovante pra <b>líder Franciele</b> pelo WhatsApp.</div>
+          </div>
+
+          <div class="pix-card hard-sm" id="liderBox" style="display:none;">
+            <div class="pix-title">🙋 Pagamento com o líder</div>
+            <div class="pix-note">Fale diretamente com a <b>líder Franciele</b> pra combinar o pagamento da confirmação.</div>
+          </div>
+
+          <div class="field">
             <label>Autorização de uso de imagem</label>
             <div class="choice-row" data-field="autorizacaoImagem">
               <div class="choice-opt hard-sm" data-value="autorizo">Autorizo</div>
@@ -975,7 +1009,22 @@
     document.getElementById('qualAlergiaBox').style.display = (choiceValues.alergiaAlimentar === 'sim') ? 'block' : 'none';
     document.getElementById('qualRestricaoBox').style.display = (choiceValues.restricaoAlimentar === 'sim') ? 'block' : 'none';
     document.getElementById('medicamentoBox').style.display = (choiceValues.medicamentoContinuo === 'sim') ? 'block' : 'none';
+
+    document.getElementById('pixBox').style.display = (choiceValues.formaPagamento === 'pix') ? 'block' : 'none';
+    document.getElementById('liderBox').style.display = (choiceValues.formaPagamento === 'lider') ? 'block' : 'none';
   }
+
+  // ---------- copiar chave pix ----------
+  document.getElementById('pixCopyBtn').addEventListener('click', () => {
+    const chave = document.getElementById('pixChaveTxt').textContent.trim();
+    const btn = document.getElementById('pixCopyBtn');
+    navigator.clipboard.writeText(chave).then(() => {
+      btn.textContent = 'Copiado! ✓';
+      setTimeout(() => { btn.textContent = 'Copiar chave Pix'; }, 2000);
+    }).catch(() => {
+      btn.textContent = 'Não copiou, copie manualmente';
+    });
+  });
 
   // ---------- rules toggle ----------
   document.getElementById('rulesToggle').addEventListener('click', () => {
@@ -1086,7 +1135,7 @@
       const nomeResponsavelAutoriza = document.getElementById('nomeResponsavelAutoriza').value.trim();
       const aceiteRegras = document.getElementById('aceiteRegras').checked;
       const autorizacaoParticipacao = document.getElementById('autorizacaoParticipacao').checked;
-      if(!selectedLote || !choiceValues.autorizacaoImagem || !aceiteRegras || !nomeResponsavelAutoriza || !autorizacaoParticipacao) return false;
+      if(!selectedLote || !choiceValues.formaPagamento || !choiceValues.autorizacaoImagem || !aceiteRegras || !nomeResponsavelAutoriza || !autorizacaoParticipacao) return false;
     }
     return true;
   }
@@ -1145,6 +1194,7 @@
       medicamentoDetalhe: document.getElementById('medicamentoDetalhe').value.trim(),
       infoImportante: document.getElementById('infoImportante').value.trim(),
       lote: selectedLote,
+      formaPagamento: choiceValues.formaPagamento,
       autorizacaoImagem: choiceValues.autorizacaoImagem,
       aceiteRegras: document.getElementById('aceiteRegras').checked,
       nomeResponsavelAutoriza: document.getElementById('nomeResponsavelAutoriza').value.trim(),
@@ -1308,7 +1358,7 @@
           ${r.telAdolescente ? '<b>WhatsApp adolescente:</b> ' + escapeHtml(r.telAdolescente) + '<br>' : ''}
           <b>Emergência:</b> ${escapeHtml(r.emergenciaNome||'')} · ${escapeHtml(r.emergenciaTel||'')}<br>
           <b>Igreja:</b> ${escapeHtml(r.igrejaAtual||'')}${r.igrejaEhCasaFarol === 'nao' ? ' (outra igreja — carta: ' + escapeHtml(r.cartaRecomendacao||'-') + ')' : ' (Casa Farol)'}<br>
-          <b>Lote:</b> ${loteLabel} · <b>Imagem:</b> ${r.autorizacaoImagem === 'autorizo' ? 'autorizada' : 'NÃO autorizada'}<br>
+          <b>Lote:</b> ${loteLabel} · <b>Pagamento:</b> ${r.formaPagamento === 'pix' ? 'Pix' : (r.formaPagamento === 'lider' ? 'Líder Franciele' : '-')} · <b>Imagem:</b> ${r.autorizacaoImagem === 'autorizo' ? 'autorizada' : 'NÃO autorizada'}<br>
           <b>Ticket:</b> ${escapeHtml(r.ticket)} · ${new Date(r.criadoEm).toLocaleDateString('pt-BR')}
         </div>
         ${alertas.length ? `<div class="restr">⚠ ${escapeHtml(alertas.join(' · '))}</div>` : ''}
@@ -1372,7 +1422,7 @@
       'Batizado águas','Batizado Espírito Santo','Igreja atual','É Casa Farol','Nome pastor','Carta recomendação',
       'Responsável','Parentesco','Tel Responsável','Emergência Nome','Emergência Tel',
       'Alergia','Qual alergia','Restrição','Qual restrição','Medicamento contínuo','Detalhe medicamento','Info importante',
-      'Lote','Autorização imagem','Nome quem autoriza','Ticket','Data inscrição'
+      'Lote','Forma pagamento','Autorização imagem','Nome quem autoriza','Ticket','Data inscrição'
     ];
     const rows = allRegs.map(r => [
       r.nome, r.dataNascimento, r.idade, r.telAdolescente,
@@ -1380,7 +1430,7 @@
       r.batizadoAguas, r.batizadoEspirito, r.igrejaAtual, r.igrejaEhCasaFarol, r.nomePastor, r.cartaRecomendacao,
       r.responsavel, r.parentesco, r.telResponsavel, r.emergenciaNome, r.emergenciaTel,
       r.alergiaAlimentar, r.qualAlergia, r.restricaoAlimentar, r.qualRestricao, r.medicamentoContinuo, r.medicamentoDetalhe, r.infoImportante,
-      r.lote, r.autorizacaoImagem, r.nomeResponsavelAutoriza, r.ticket, r.criadoEm
+      r.lote, r.formaPagamento, r.autorizacaoImagem, r.nomeResponsavelAutoriza, r.ticket, r.criadoEm
     ]);
     const csv = [headers, ...rows].map(row =>
       row.map(cell => `"${String(cell||'').replace(/"/g,'""')}"`).join(',')
