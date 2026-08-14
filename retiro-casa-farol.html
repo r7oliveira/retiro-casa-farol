@@ -365,6 +365,14 @@
     margin-top:9px; background:none; border:none; color:var(--muted); font-size:0.74rem;
     text-decoration:underline; cursor:pointer; padding:0; font-weight:600;
   }
+  .reg-card .ver-mais-btn{
+    margin-top:10px; background:#f4efe0; border:none; color:var(--violet-d); font-size:0.78rem;
+    font-family:'Space Grotesk', sans-serif; font-weight:700; cursor:pointer;
+    padding:7px 12px; border-radius:100px;
+  }
+  .reg-card .extra-details{
+    margin-top:10px; padding-top:10px; border-top:1.5px dashed rgba(20,20,26,0.15);
+  }
   .empty-state, .loading-state{text-align:center; padding:50px 20px; color:var(--muted); font-weight:600;}
 
   @media(max-width:400px){
@@ -1209,6 +1217,7 @@
       if(r.restricaoAlimentar === 'sim' && r.qualRestricao) alertas.push('Restrição: ' + r.qualRestricao);
       if(r.medicamentoContinuo === 'sim' && r.medicamentoDetalhe) alertas.push('Medicamento: ' + r.medicamentoDetalhe);
       const loteLabel = r.lote === '2' ? '2º Lote (R$130)' : '1º Lote (R$100)';
+      const simNao = v => v === 'sim' ? 'Sim' : (v === 'nao' ? 'Não' : '-');
       return `
       <div class="reg-card" data-id="${r.id}">
         <div class="top">
@@ -1225,11 +1234,33 @@
         </div>
         ${alertas.length ? `<div class="restr">⚠ ${escapeHtml(alertas.join(' · '))}</div>` : ''}
         ${r.infoImportante ? `<div class="restr" style="background:#e8e0ff; color:#4a2f8f;">ℹ ${escapeHtml(r.infoImportante)}</div>` : ''}
+
+        <button class="ver-mais-btn" data-toggle="${r.id}">Ver mais ▾</button>
+        <div class="meta extra-details" id="extra-${r.id}" style="display:none;">
+          <b>Nascimento:</b> ${r.dataNascimento ? new Date(r.dataNascimento + 'T00:00:00').toLocaleDateString('pt-BR') : '-'}<br>
+          <b>Congrega na Casa Farol:</b> ${simNao(r.congregaCasaFarol)} · <b>2+ encontros:</b> ${simNao(r.participou2Encontros)}<br>
+          <b>Batizado águas:</b> ${simNao(r.batizadoAguas)} · <b>Batizado Espírito Santo:</b> ${simNao(r.batizadoEspirito)}<br>
+          ${r.igrejaEhCasaFarol === 'nao' ? '<b>Pastor responsável:</b> ' + escapeHtml(r.nomePastor||'-') + '<br>' : ''}
+          <b>Alergia alimentar:</b> ${simNao(r.alergiaAlimentar)}${r.qualAlergia ? ' — ' + escapeHtml(r.qualAlergia) : ''}<br>
+          <b>Restrição alimentar:</b> ${simNao(r.restricaoAlimentar)}${r.qualRestricao ? ' — ' + escapeHtml(r.qualRestricao) : ''}<br>
+          <b>Medicamento contínuo:</b> ${simNao(r.medicamentoContinuo)}${r.medicamentoDetalhe ? ' — ' + escapeHtml(r.medicamentoDetalhe) : ''}<br>
+          <b>Regras aceitas:</b> ${r.aceiteRegras ? 'Sim' : 'Não'} · <b>Participação autorizada:</b> ${r.autorizacaoParticipacao ? 'Sim' : 'Não'}<br>
+          <b>Autorizado por:</b> ${escapeHtml(r.nomeResponsavelAutoriza||'-')}
+        </div>
+
         <button class="del" data-del="${r.id}">Remover inscrição</button>
       </div>
     `; }).join('');
 
-    container.querySelectorAll('[data-del]').forEach(btn => {
+    container.querySelectorAll('[data-toggle]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-toggle');
+        const box = document.getElementById('extra-' + id);
+        const open = box.style.display === 'block';
+        box.style.display = open ? 'none' : 'block';
+        btn.textContent = open ? 'Ver mais ▾' : 'Ver menos ▴';
+      });
+    });
       btn.addEventListener('click', async () => {
         if(!confirm('Remover esta inscrição?')) return;
         const id = btn.getAttribute('data-del');
