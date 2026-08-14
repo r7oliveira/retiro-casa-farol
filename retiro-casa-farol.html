@@ -647,12 +647,12 @@
           <div class="field">
             <label>Lote de inscrição</label>
             <div class="lote-pick">
-              <div class="lote-opt hard-sm" data-value="1" data-closes="2026-09-30">
+              <div class="lote-opt hard-sm" data-value="1" data-opens="2026-09-01" data-closes="2026-09-30">
                 <div class="lote-nm">1º Lote</div>
                 <div class="lote-price">R$ 100</div>
                 <div class="lote-sub">01/09 a 30/09 · R$20 na confirmação + R$80 até 18/10</div>
               </div>
-              <div class="lote-opt hard-sm" data-value="2" data-closes="2026-10-10">
+              <div class="lote-opt hard-sm" data-value="2" data-opens="2026-10-01" data-closes="2026-10-10">
                 <div class="lote-nm">2º Lote</div>
                 <div class="lote-price">R$ 130</div>
                 <div class="lote-sub">01/10 a 10/10 · R$20 na confirmação + R$110 até 18/10</div>
@@ -940,17 +940,19 @@
   const today = new Date();
   today.setHours(0,0,0,0);
   document.querySelectorAll('.lote-opt').forEach(opt => {
+    const opensAttr = opt.getAttribute('data-opens');
     const closesAttr = opt.getAttribute('data-closes');
-    if(closesAttr){
-      const closeDate = new Date(closesAttr + 'T23:59:59');
-      if(today > closeDate){
-        opt.classList.add('disabled');
-        const tag = document.createElement('div');
-        tag.className = 'lote-closed-tag';
-        tag.textContent = 'Encerrado';
-        opt.appendChild(tag);
-        return;
-      }
+    const openDate = opensAttr ? new Date(opensAttr + 'T00:00:00') : null;
+    const closeDate = closesAttr ? new Date(closesAttr + 'T23:59:59') : null;
+    const aindaNaoAbriu = openDate && today < openDate;
+    const jaFechou = closeDate && today > closeDate;
+    if(aindaNaoAbriu || jaFechou){
+      opt.classList.add('disabled');
+      const tag = document.createElement('div');
+      tag.className = 'lote-closed-tag';
+      tag.textContent = jaFechou ? 'Encerrado' : 'Em breve';
+      opt.appendChild(tag);
+      return;
     }
     opt.addEventListener('click', () => {
       document.querySelectorAll('.lote-opt').forEach(o => o.classList.remove('selected'));
