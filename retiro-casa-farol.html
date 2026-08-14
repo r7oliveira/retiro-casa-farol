@@ -1261,6 +1261,8 @@
         btn.textContent = open ? 'Ver mais ▾' : 'Ver menos ▴';
       });
     });
+
+    container.querySelectorAll('[data-del]').forEach(btn => {
       btn.addEventListener('click', async () => {
         if(!confirm('Remover esta inscrição?')) return;
         const id = btn.getAttribute('data-del');
