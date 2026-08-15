@@ -906,7 +906,6 @@
 
       <div class="toolbar">
         <input type="text" id="searchBox" placeholder="Buscar por nome...">
-        <button id="exportBtn">Exportar CSV</button>
         <button id="exportPdfBtn">Exportar PDF</button>
         <button id="refreshBtn">Atualizar</button>
       </div>
@@ -1675,36 +1674,6 @@
     renderList(allRegs.filter(r => r.nome.toLowerCase().includes(q)));
   });
   document.getElementById('refreshBtn').addEventListener('click', renderDashboard);
-
-  document.getElementById('exportBtn').addEventListener('click', () => {
-    if(allRegs.length === 0) return;
-    const headers = [
-      'Nome','Data Nascimento','Idade','Tel Adolescente',
-      'Congrega Casa Farol','Participou 2 encontros',
-      'Batizado águas','Batizado Espírito Santo','Igreja atual','É Casa Farol','Nome pastor','Carta recomendação',
-      'Responsável','Parentesco','Tel Responsável','Emergência Nome','Emergência Tel',
-      'Alergia','Qual alergia','Restrição','Qual restrição','Medicamento contínuo','Detalhe medicamento','Info importante',
-      'Lote','Forma pagamento','Status pagamento','Autorização imagem','Nome quem autoriza','Autorizado via link','Ticket','Data inscrição'
-    ];
-    const rows = allRegs.map(r => [
-      r.nome, r.dataNascimento, r.idade, r.telAdolescente,
-      r.congregaCasaFarol, r.participou2Encontros,
-      r.batizadoAguas, r.batizadoEspirito, r.igrejaAtual, r.igrejaEhCasaFarol, r.nomePastor, r.cartaRecomendacao,
-      r.responsavel, r.parentesco, r.telResponsavel, r.emergenciaNome, r.emergenciaTel,
-      r.alergiaAlimentar, r.qualAlergia, r.restricaoAlimentar, r.qualRestricao, r.medicamentoContinuo, r.medicamentoDetalhe, r.infoImportante,
-      r.lote, r.formaPagamento, (r.statusPagamento || 'pendente'), r.autorizacaoImagem, r.nomeResponsavelAutoriza, (r.autorizacaoRemota ? 'Sim' : 'Não'), r.ticket, r.criadoEm
-    ]);
-    const csv = [headers, ...rows].map(row =>
-      row.map(cell => `"${String(cell||'').replace(/"/g,'""')}"`).join(',')
-    ).join('\n');
-    const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8;'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'inscricoes-retiro-casa-farol.csv';
-    a.click();
-    URL.revokeObjectURL(url);
-  });
 
   document.getElementById('exportPdfBtn').addEventListener('click', () => {
     if(allRegs.length === 0) return;
