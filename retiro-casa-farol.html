@@ -907,6 +907,7 @@
       <div class="toolbar">
         <input type="text" id="searchBox" placeholder="Buscar por nome...">
         <button id="exportBtn">Exportar CSV</button>
+        <button id="exportPdfBtn">Exportar PDF</button>
         <button id="refreshBtn">Atualizar</button>
       </div>
       <div class="reg-list" id="regList">
@@ -1703,6 +1704,70 @@
     a.download = 'inscricoes-retiro-casa-farol.csv';
     a.click();
     URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('exportPdfBtn').addEventListener('click', () => {
+    if(allRegs.length === 0) return;
+    const simNaoPdf = v => v === 'sim' ? 'Sim' : (v === 'nao' ? 'Não' : '-');
+    const sorted = [...allRegs].sort((a,b) => new Date(b.criadoEm) - new Date(a.criadoEm));
+    const linhas = sorted.map(r => {
+      const loteLabel = r.lote === '2' ? '2º Lote (R$130)' : '1º Lote (R$100)';
+      const statusPag = r.statusPagamento || 'pendente';
+      const statusPagLabel = statusPag === 'confirmacao_paga' ? 'Confirmação paga' : (statusPag === 'total_pago' ? 'Retiro pago' : 'Pendente');
+      const alertas = [];
+      if(r.alergiaAlimentar === 'sim' && r.qualAlergia) alertas.push('Alergia: ' + r.qualAlergia);
+      if(r.restricaoAlimentar === 'sim' && r.qualRestricao) alertas.push('Restrição: ' + r.qualRestricao);
+      if(r.medicamentoContinuo === 'sim' && r.medicamentoDetalhe) alertas.push('Medicamento: ' + r.medicamentoDetalhe);
+      return `
+        <div class="pdf-card">
+          <div class="pdf-nome">${escapeHtml(r.nome)} <span class="pdf-idade">(${escapeHtml(r.idade)} anos)</span></div>
+          <table class="pdf-table">
+            <tr><td>Ticket</td><td>${escapeHtml(r.ticket)}</td><td>Data inscrição</td><td>${new Date(r.criadoEm).toLocaleDateString('pt-BR')}</td></tr>
+            <tr><td>Responsável</td><td>${escapeHtml(r.responsavel)} (${escapeHtml(r.parentesco||'')})</td><td>Tel. responsável</td><td>${escapeHtml(r.telResponsavel)}</td></tr>
+            <tr><td>Emergência</td><td>${escapeHtml(r.emergenciaNome||'')}</td><td>Tel. emergência</td><td>${escapeHtml(r.emergenciaTel||'')}</td></tr>
+            <tr><td>Igreja</td><td colspan="3">${escapeHtml(r.igrejaAtual||'')}${r.igrejaEhCasaFarol === 'nao' ? ' (outra igreja — carta: ' + escapeHtml(r.cartaRecomendacao||'-') + ')' : ' (Casa Farol)'}</td></tr>
+            <tr><td>Lote</td><td>${loteLabel}</td><td>Pagamento</td><td>${r.formaPagamento === 'pix' ? 'Pix' : '-'}</td></tr>
+            <tr><td>Status pagamento</td><td>${statusPagLabel}</td><td>Imagem</td><td>${r.autorizacaoImagem === 'autorizo' ? 'Autorizada' : 'Não autorizada'}</td></tr>
+            <tr><td>Autorização responsável</td><td colspan="3">${r.autorizacaoRemota ? 'Confirmada em ' + new Date(r.autorizacaoRemotaEm).toLocaleString('pt-BR') : 'Ainda não confirmada'}</td></tr>
+          </table>
+          ${alertas.length ? '<div class="pdf-alerta">⚠ ' + escapeHtml(alertas.join(' · ')) + '</div>' : ''}
+        </div>
+      `;
+    }).join('');
+
+    const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+      <title>Inscrições - Retiro Casa Farol</title>
+      <style>
+        body{font-family:Arial, sans-serif; color:#14141a; margin:24px;}
+        h1{font-size:20px; margin-bottom:4px;}
+        .pdf-sub{color:#565661; font-size:12px; margin-bottom:20px;}
+        .pdf-card{border:1.5px solid #14141a; border-radius:8px; padding:12px 14px; margin-bottom:14px; page-break-inside:avoid;}
+        .pdf-nome{font-size:15px; font-weight:bold; margin-bottom:8px;}
+        .pdf-idade{font-weight:normal; color:#565661;}
+        .pdf-table{border-collapse:collapse; width:100%; font-size:11px;}
+        .pdf-table td{padding:3px 6px; vertical-align:top;}
+        .pdf-table td:nth-child(odd){color:#565661; white-space:nowrap; width:1%;}
+        .pdf-alerta{margin-top:8px; font-size:11px; font-weight:bold; background:#ffe1c9; color:#a13d00; padding:6px 8px; border-radius:6px;}
+        @media print{ body{margin:10mm;} }
+      </style>
+      </head><body>
+      <h1>Inscrições — Retiro Casa Farol</h1>
+      <div class="pdf-sub">Gerado em ${new Date().toLocaleString('pt-BR')} · ${sorted.length} inscrição(ões)</div>
+      ${linhas}
+      </body></html>`;
+
+    const printWin = window.open('', '_blank');
+    if(!printWin){
+      alert('O navegador bloqueou a abertura da janela de impressão. Permita pop-ups pra esse site e tente de novo.');
+      return;
+    }
+    printWin.document.open();
+    printWin.document.write(html);
+    printWin.document.close();
+    printWin.onload = () => {
+      printWin.focus();
+      printWin.print();
+    };
   });
 </script>
 </body>
