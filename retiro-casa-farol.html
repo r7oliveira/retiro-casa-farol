@@ -409,6 +409,10 @@
   .pay-status-badge.pay-confirmacao_paga{background:#e0edff; color:#1d4f9e;}
   .pay-status-badge.pay-total_pago{background:#dcf7e3; color:#0a6b2f;}
   .pay-status-btns{display:flex; gap:6px; flex-wrap:wrap;}
+  .pay-status-note{
+    margin-top:9px; font-size:0.7rem; font-weight:600; font-style:italic;
+    color:var(--muted); opacity:0.85;
+  }
   .pay-btn{
     background:#fff; border:1.5px solid rgba(20,20,26,0.2); color:var(--ink);
     font-family:'Space Grotesk', sans-serif; font-size:0.7rem; font-weight:700;
@@ -1588,6 +1592,7 @@
             <button class="pay-btn" data-payid="${r.id}" data-paystatus="confirmacao_paga">Confirmação paga</button>
             <button class="pay-btn" data-payid="${r.id}" data-paystatus="total_pago">Retiro pago</button>
           </div>
+          <div class="pay-status-note">Função para organização da líder Franciele</div>
         </div>
 
         <button class="ver-mais-btn" data-toggle="${r.id}">Ver mais ▾</button>
