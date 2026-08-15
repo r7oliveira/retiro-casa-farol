@@ -694,14 +694,10 @@
             <div class="pix-note">Fale diretamente com a <b>líder Franciele</b> pra combinar o pagamento da confirmação.</div>
           </div>
 
-          <div class="field">
-            <label>Autorização de uso de imagem</label>
-            <div class="choice-row" data-field="autorizacaoImagem">
-              <div class="choice-opt hard-sm" data-value="autorizo">Autorizo</div>
-              <div class="choice-opt hard-sm" data-value="nao_autorizo">Não autorizo</div>
-            </div>
-            <div class="hint">Podem rolar fotos e vídeos das atividades pra comunicação da Casa Farol.</div>
-          </div>
+          <label class="checkline">
+            <input type="checkbox" id="autorizacaoImagemCheck">
+            <span>Autorizo o uso de imagem do adolescente em fotos e vídeos das atividades, para comunicação da Casa Farol.</span>
+          </label>
 
           <div class="rules-card hard-sm">
             <div class="rules-summary">
@@ -753,7 +749,7 @@
       <h2>Você tá dentro!</h2>
       <p>Guarda essas informações — e fica de olho no WhatsApp pra confirmação e detalhes.</p>
       <div class="ticket-badge" id="nextTicketId">Nº ---</div>
-      <button class="wa-share-btn press" id="sendWhatsappBtn">📲 Enviar essas informações pro meu WhatsApp</button>
+      <button class="wa-share-btn press" id="sendWhatsappBtn">📲 Enviar pro WhatsApp do responsável</button>
     </div>
 
     <div class="next-body">
@@ -801,6 +797,53 @@
       </div>
 
       <button class="submit-btn press" id="closeNextBtn" style="margin-top:6px;">Fechar</button>
+    </div>
+  </div>
+
+  <!-- AUTORIZAÇÃO REMOTA DO RESPONSÁVEL -->
+  <div class="next-overlay" id="autOverlay">
+    <div class="next-hero">
+      <div class="mark">📝</div>
+      <h2>Autorização do responsável</h2>
+      <p id="autSubtitle">Carregando os dados da inscrição...</p>
+    </div>
+    <div class="next-body">
+
+      <div class="next-card hard-sm" id="autLoadingBox">
+        <p style="text-align:center; font-weight:700; color:var(--muted);">Só um instante...</p>
+      </div>
+
+      <div class="next-card hard-sm" id="autErrorBox" style="display:none;">
+        <p style="text-align:center; font-weight:700; color:var(--red-d, #c4102c);">Não encontramos essa inscrição. O link pode estar errado ou a inscrição foi removida.</p>
+      </div>
+
+      <div class="next-card hard-sm" id="autFormBox" style="display:none;">
+        <div class="next-card-head">
+          <span class="ic">🧒</span>
+          <h3 id="autNomeAdolescente">-</h3>
+        </div>
+        <div class="checklist" id="autResumo" style="margin-bottom:16px;"></div>
+
+        <div class="field">
+          <label>Nome completo do responsável que está autorizando</label>
+          <input type="text" id="autNomeResponsavel" placeholder="Seu nome completo">
+        </div>
+
+        <label class="checkline">
+          <input type="checkbox" id="autCheckbox">
+          <span>Autorizo a participação do adolescente no Retiro de Adolescentes da Casa Farol e confirmo que todas as informações fornecidas são verdadeiras.</span>
+        </label>
+
+        <div class="form-error" id="autFormError" style="display:none;">Preencha seu nome e marque a autorização antes de confirmar.</div>
+        <button type="button" class="submit-btn press" id="autConfirmBtn" style="margin-top:10px;">Confirmar autorização ✅</button>
+      </div>
+
+      <div class="next-card hard-sm" id="autSuccessBox" style="display:none; text-align:center;">
+        <div class="mark" style="font-size:2.6rem;">✅</div>
+        <h3 style="font-size:1.2rem; margin-bottom:6px;">Autorização confirmada!</h3>
+        <p style="color:var(--muted); font-weight:600; font-size:0.9rem;">Obrigado! A liderança já foi avisada. Pode fechar esta página.</p>
+      </div>
+
     </div>
   </div>
 
@@ -858,10 +901,12 @@
         headers: supabaseHeaders({'Prefer': 'return=representation'}),
         body: JSON.stringify({data: record})
       });
-      return res.ok;
+      if(!res.ok) return null;
+      const rows = await res.json();
+      return (rows && rows[0]) ? rows[0].id : null;
     }catch(e){
       console.error('Erro ao salvar no Supabase:', e);
-      return false;
+      return null;
     }
   }
   async function loadFromSupabase(){
@@ -875,6 +920,33 @@
     }catch(e){
       console.error('Erro ao carregar do Supabase:', e);
       return null;
+    }
+  }
+  async function loadOneFromSupabase(id){
+    try{
+      const res = await fetch(SUPABASE_TABLE + '?id=eq.' + encodeURIComponent(id) + '&select=*', {
+        headers: supabaseHeaders()
+      });
+      if(!res.ok) return null;
+      const rows = await res.json();
+      if(!rows || !rows[0]) return null;
+      return Object.assign({}, rows[0].data, {id: rows[0].id, criadoEm: rows[0].created_at});
+    }catch(e){
+      console.error('Erro ao carregar inscrição do Supabase:', e);
+      return null;
+    }
+  }
+  async function updateSupabaseData(id, newData){
+    try{
+      const res = await fetch(SUPABASE_TABLE + '?id=eq.' + encodeURIComponent(id), {
+        method: 'PATCH',
+        headers: supabaseHeaders(),
+        body: JSON.stringify({data: newData})
+      });
+      return res.ok;
+    }catch(e){
+      console.error('Erro ao atualizar no Supabase:', e);
+      return false;
     }
   }
   async function deleteFromSupabase(id){
@@ -1135,7 +1207,7 @@
       const nomeResponsavelAutoriza = document.getElementById('nomeResponsavelAutoriza').value.trim();
       const aceiteRegras = document.getElementById('aceiteRegras').checked;
       const autorizacaoParticipacao = document.getElementById('autorizacaoParticipacao').checked;
-      if(!selectedLote || !choiceValues.formaPagamento || !choiceValues.autorizacaoImagem || !aceiteRegras || !nomeResponsavelAutoriza || !autorizacaoParticipacao) return false;
+      if(!selectedLote || !choiceValues.formaPagamento || !aceiteRegras || !nomeResponsavelAutoriza || !autorizacaoParticipacao) return false;
     }
     return true;
   }
@@ -1195,7 +1267,7 @@
       infoImportante: document.getElementById('infoImportante').value.trim(),
       lote: selectedLote,
       formaPagamento: choiceValues.formaPagamento,
-      autorizacaoImagem: choiceValues.autorizacaoImagem,
+      autorizacaoImagem: document.getElementById('autorizacaoImagemCheck').checked ? 'autorizo' : 'nao_autorizo',
       aceiteRegras: document.getElementById('aceiteRegras').checked,
       nomeResponsavelAutoriza: document.getElementById('nomeResponsavelAutoriza').value.trim(),
       autorizacaoParticipacao: document.getElementById('autorizacaoParticipacao').checked,
@@ -1203,7 +1275,7 @@
     };
 
     try{
-      const supabaseOk = await saveToSupabase(record);
+      const supabaseId = await saveToSupabase(record);
       const formspreeOk = await sendToFormspree(record);
 
       // reforço opcional: só funciona dentro do ambiente do Claude, não trava o envio se falhar
@@ -1216,7 +1288,7 @@
         console.warn('Armazenamento interno indisponível (normal fora do Claude):', storageErr);
       }
 
-      if(!supabaseOk && !formspreeOk && !storageOk){
+      if(!supabaseId && !formspreeOk && !storageOk){
         throw new Error('Nenhum destino de envio funcionou');
       }
 
@@ -1236,10 +1308,24 @@
       submitBtn.textContent = 'Confirmar inscrição 🎉';
       document.getElementById('nextTicketId').textContent = 'Nº ' + ticketNum;
 
-      const waMessage = [
+      const autorizacaoUrl = supabaseId
+        ? (window.location.origin + window.location.pathname + '?autorizar=' + encodeURIComponent(supabaseId))
+        : null;
+
+      const waMessageLines = [
         '🏆 *Retiro Casa Farol*',
-        'Inscrição confirmada: *Nº ' + ticketNum + '*',
-        '',
+        'Inscrição de *' + record.nome + '* recebida: *Nº ' + ticketNum + '*',
+        ''
+      ];
+      if(autorizacaoUrl){
+        waMessageLines.push(
+          '📝 *Falta só confirmar a autorização!*',
+          'Toque no link abaixo pra autorizar a participação:',
+          autorizacaoUrl,
+          ''
+        );
+      }
+      waMessageLines.push(
         '🎧 *Playlist do retiro:*',
         'https://open.spotify.com/playlist/7gmJlOvxphKIe3s0tzdX9y?si=wAV1uEUfSFy9fS0dZRk3_Q&utm_source=copy-link&pi=E8cNBWUZQMq_o',
         '',
@@ -1260,8 +1346,9 @@
         '• Chegue no horário combinado pro embarque',
         '• Traga a autorização assinada impressa, se for pedida',
         '• Chama um amigo pra ir junto com você'
-      ].join('\n');
-      const waPhoneRaw = (record.telAdolescente || record.telResponsavel || '').replace(/\D/g, '');
+      );
+      const waMessage = waMessageLines.join('\n');
+      const waPhoneRaw = (record.telResponsavel || record.telAdolescente || '').replace(/\D/g, '');
       const waPhone = waPhoneRaw ? ('55' + waPhoneRaw.replace(/^55/, '')) : '';
       const waUrl = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(waMessage);
       document.getElementById('sendWhatsappBtn').onclick = () => window.open(waUrl, '_blank');
@@ -1278,6 +1365,90 @@
   });
 
   showStep(1);
+
+  // ---------- autorização remota do responsável ----------
+  (async function initAutorizacaoRemota(){
+    const params = new URLSearchParams(window.location.search);
+    const autId = params.get('autorizar');
+    if(!autId) return;
+
+    // esconde o site normal, mostra só a tela de autorização
+    document.querySelectorAll('.navbar, .hero, .teams-section, .info-section, .form-section, footer').forEach(el => {
+      if(el) el.style.display = 'none';
+    });
+    const autOverlay = document.getElementById('autOverlay');
+    autOverlay.classList.add('active');
+
+    const loadingBox = document.getElementById('autLoadingBox');
+    const errorBox = document.getElementById('autErrorBox');
+    const formBox = document.getElementById('autFormBox');
+    const successBox = document.getElementById('autSuccessBox');
+    const subtitle = document.getElementById('autSubtitle');
+
+    const inscricao = await loadOneFromSupabase(autId);
+    loadingBox.style.display = 'none';
+
+    if(!inscricao){
+      errorBox.style.display = 'block';
+      subtitle.textContent = 'Não foi possível carregar esta inscrição.';
+      return;
+    }
+
+    if(inscricao.autorizacaoRemota){
+      subtitle.textContent = 'Essa inscrição já foi autorizada anteriormente.';
+      successBox.style.display = 'block';
+      document.getElementById('autNomeAdolescente').textContent = inscricao.nome || '-';
+      return;
+    }
+
+    subtitle.textContent = 'Confira os dados e confirme a autorização abaixo.';
+    document.getElementById('autNomeAdolescente').textContent = inscricao.nome || '-';
+    const loteLabelAut = inscricao.lote === '2' ? '2º Lote (R$130)' : '1º Lote (R$100)';
+    document.getElementById('autResumo').innerHTML = [
+      '<li>Ticket: ' + escapeHtml(inscricao.ticket || '-') + '</li>',
+      '<li>Idade: ' + escapeHtml(inscricao.idade || '-') + ' anos</li>',
+      '<li>Lote: ' + loteLabelAut + '</li>'
+    ].join('');
+    if(inscricao.nomeResponsavelAutoriza){
+      document.getElementById('autNomeResponsavel').value = inscricao.nomeResponsavelAutoriza;
+    }
+    formBox.style.display = 'block';
+
+    document.getElementById('autConfirmBtn').addEventListener('click', async () => {
+      const nomeResp = document.getElementById('autNomeResponsavel').value.trim();
+      const checado = document.getElementById('autCheckbox').checked;
+      const errBox = document.getElementById('autFormError');
+      if(!nomeResp || !checado){
+        errBox.style.display = 'block';
+        return;
+      }
+      errBox.style.display = 'none';
+      const btn = document.getElementById('autConfirmBtn');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      const dadosAtualizados = Object.assign({}, inscricao, {
+        autorizacaoParticipacao: true,
+        nomeResponsavelAutoriza: nomeResp,
+        autorizacaoRemota: true,
+        autorizacaoRemotaEm: new Date().toISOString()
+      });
+      delete dadosAtualizados.id;
+      delete dadosAtualizados.criadoEm;
+
+      const ok = await updateSupabaseData(autId, dadosAtualizados);
+      if(ok){
+        formBox.style.display = 'none';
+        successBox.style.display = 'block';
+        subtitle.textContent = 'Autorização registrada com sucesso.';
+      }else{
+        errBox.textContent = 'Não foi possível salvar agora. Tenta de novo em instantes.';
+        errBox.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Confirmar autorização ✅';
+      }
+    });
+  })();
 
   // ---------- admin ----------
   const adminOverlay = document.getElementById('adminOverlay');
@@ -1353,6 +1524,9 @@
           <div class="nm">${escapeHtml(r.nome)}</div>
           <div class="age">${escapeHtml(r.idade)} anos</div>
         </div>
+        ${r.autorizacaoRemota
+          ? '<div class="restr" style="background:#dcf7e3; color:#0a6b2f;">✅ Autorizado pelo responsável (link) em ' + new Date(r.autorizacaoRemotaEm).toLocaleDateString('pt-BR') + '</div>'
+          : '<div class="restr" style="background:#fff0d6; color:#8a5600;">⏳ Aguardando autorização do responsável pelo link</div>'}
         <div class="meta">
           <b>Responsável:</b> ${escapeHtml(r.responsavel)} (${escapeHtml(r.parentesco||'')}) · ${escapeHtml(r.telResponsavel)}<br>
           ${r.telAdolescente ? '<b>WhatsApp adolescente:</b> ' + escapeHtml(r.telAdolescente) + '<br>' : ''}
@@ -1374,7 +1548,8 @@
           <b>Restrição alimentar:</b> ${simNao(r.restricaoAlimentar)}${r.qualRestricao ? ' — ' + escapeHtml(r.qualRestricao) : ''}<br>
           <b>Medicamento contínuo:</b> ${simNao(r.medicamentoContinuo)}${r.medicamentoDetalhe ? ' — ' + escapeHtml(r.medicamentoDetalhe) : ''}<br>
           <b>Regras aceitas:</b> ${r.aceiteRegras ? 'Sim' : 'Não'} · <b>Participação autorizada:</b> ${r.autorizacaoParticipacao ? 'Sim' : 'Não'}<br>
-          <b>Autorizado por:</b> ${escapeHtml(r.nomeResponsavelAutoriza||'-')}
+          <b>Autorizado por:</b> ${escapeHtml(r.nomeResponsavelAutoriza||'-')}<br>
+          <b>Autorização via link:</b> ${r.autorizacaoRemota ? 'Sim, em ' + new Date(r.autorizacaoRemotaEm).toLocaleString('pt-BR') : 'Ainda não'}
         </div>
 
         <button class="del" data-del="${r.id}">Remover inscrição</button>
@@ -1422,7 +1597,7 @@
       'Batizado águas','Batizado Espírito Santo','Igreja atual','É Casa Farol','Nome pastor','Carta recomendação',
       'Responsável','Parentesco','Tel Responsável','Emergência Nome','Emergência Tel',
       'Alergia','Qual alergia','Restrição','Qual restrição','Medicamento contínuo','Detalhe medicamento','Info importante',
-      'Lote','Forma pagamento','Autorização imagem','Nome quem autoriza','Ticket','Data inscrição'
+      'Lote','Forma pagamento','Autorização imagem','Nome quem autoriza','Autorizado via link','Ticket','Data inscrição'
     ];
     const rows = allRegs.map(r => [
       r.nome, r.dataNascimento, r.idade, r.telAdolescente,
@@ -1430,7 +1605,7 @@
       r.batizadoAguas, r.batizadoEspirito, r.igrejaAtual, r.igrejaEhCasaFarol, r.nomePastor, r.cartaRecomendacao,
       r.responsavel, r.parentesco, r.telResponsavel, r.emergenciaNome, r.emergenciaTel,
       r.alergiaAlimentar, r.qualAlergia, r.restricaoAlimentar, r.qualRestricao, r.medicamentoContinuo, r.medicamentoDetalhe, r.infoImportante,
-      r.lote, r.formaPagamento, r.autorizacaoImagem, r.nomeResponsavelAutoriza, r.ticket, r.criadoEm
+      r.lote, r.formaPagamento, r.autorizacaoImagem, r.nomeResponsavelAutoriza, (r.autorizacaoRemota ? 'Sim' : 'Não'), r.ticket, r.criadoEm
     ]);
     const csv = [headers, ...rows].map(row =>
       row.map(cell => `"${String(cell||'').replace(/"/g,'""')}"`).join(',')
