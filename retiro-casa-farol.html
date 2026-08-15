@@ -392,6 +392,27 @@
   .reg-card .extra-details{
     margin-top:10px; padding-top:10px; border-top:1.5px dashed rgba(20,20,26,0.15);
   }
+  .pay-status-box{
+    margin-top:10px; padding:12px; background:#f7f4ea; border-radius:10px;
+  }
+  .pay-status-label{
+    font-family:'Space Grotesk', sans-serif; font-size:0.7rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); margin-bottom:6px;
+  }
+  .pay-status-badge{
+    display:inline-block; font-size:0.8rem; font-weight:700; padding:5px 10px;
+    border-radius:8px; margin-bottom:9px;
+  }
+  .pay-status-badge.pay-pendente{background:#fff0d6; color:#8a5600;}
+  .pay-status-badge.pay-confirmacao_paga{background:#e0edff; color:#1d4f9e;}
+  .pay-status-badge.pay-total_pago{background:#dcf7e3; color:#0a6b2f;}
+  .pay-status-btns{display:flex; gap:6px; flex-wrap:wrap;}
+  .pay-btn{
+    background:#fff; border:1.5px solid rgba(20,20,26,0.2); color:var(--ink);
+    font-family:'Space Grotesk', sans-serif; font-size:0.7rem; font-weight:700;
+    padding:6px 10px; border-radius:100px; cursor:pointer;
+  }
+  .pay-btn:hover{border-color:var(--violet);}
   .empty-state, .loading-state{text-align:center; padding:50px 20px; color:var(--muted); font-weight:600;}
 
   @media(max-width:400px){
@@ -673,25 +694,16 @@
           </div>
 
           <div class="field">
-            <label>Como você vai pagar a confirmação (R$20)?</label>
-            <div class="choice-row" data-field="formaPagamento">
-              <div class="choice-opt hard-sm" data-value="pix">Pix</div>
-              <div class="choice-opt hard-sm" data-value="lider">Pagar com a líder Franciele</div>
-            </div>
+            <label>Como pagar a confirmação (R$20)</label>
           </div>
 
-          <div class="pix-card hard-sm" id="pixBox" style="display:none;">
+          <div class="pix-card hard-sm">
             <div class="pix-title">📎 Dados do Pix</div>
             <div class="pix-row"><span>Nome</span><b>Franciele Bariviera</b></div>
             <div class="pix-row"><span>Chave (telefone)</span><b id="pixChaveTxt">(48) 98836-2228</b></div>
             <div class="pix-row"><span>Instituição</span><b>CC Litorânea</b></div>
             <button type="button" class="pix-copy-btn press" id="pixCopyBtn">Copiar chave Pix</button>
             <div class="pix-note">📸 Depois de pagar, envie o comprovante pra <b>líder Franciele</b> pelo WhatsApp.</div>
-          </div>
-
-          <div class="pix-card hard-sm" id="liderBox" style="display:none;">
-            <div class="pix-title">🙋 Pagamento com o líder</div>
-            <div class="pix-note">Fale diretamente com a <b>líder Franciele</b> pra combinar o pagamento da confirmação.</div>
           </div>
 
           <label class="checkline">
@@ -714,15 +726,9 @@
             <span>Li, estou ciente e concordo com as regras de convivência, valores, prazos e critérios de participação do retiro.</span>
           </label>
 
-          <div class="field" style="margin-top:16px;">
-            <label>Nome completo do responsável que está concedendo a autorização</label>
-            <input type="text" id="nomeResponsavelAutoriza" required placeholder="Nome do responsável">
+          <div class="hint" style="margin-top:14px; text-align:center;">
+            A autorização final do responsável é feita pelo link que ele recebe no WhatsApp depois do envio.
           </div>
-
-          <label class="checkline">
-            <input type="checkbox" id="autorizacaoParticipacao" required>
-            <span>Autorizo a participação do adolescente no Retiro de Adolescentes da Casa Farol e confirmo que todas as informações fornecidas são verdadeiras.</span>
-          </label>
         </div>
 
         <div class="form-error" id="formError">Preencha os campos obrigatórios antes de continuar.</div>
@@ -1105,9 +1111,6 @@
     document.getElementById('qualAlergiaBox').style.display = (choiceValues.alergiaAlimentar === 'sim') ? 'block' : 'none';
     document.getElementById('qualRestricaoBox').style.display = (choiceValues.restricaoAlimentar === 'sim') ? 'block' : 'none';
     document.getElementById('medicamentoBox').style.display = (choiceValues.medicamentoContinuo === 'sim') ? 'block' : 'none';
-
-    document.getElementById('pixBox').style.display = (choiceValues.formaPagamento === 'pix') ? 'block' : 'none';
-    document.getElementById('liderBox').style.display = (choiceValues.formaPagamento === 'lider') ? 'block' : 'none';
   }
 
   // ---------- copiar chave pix ----------
@@ -1175,15 +1178,6 @@
     }
   });
 
-  // ---------- auto-preencher nome do responsável na autorização ----------
-  document.getElementById('responsavel').addEventListener('input', (e) => {
-    const auto = document.getElementById('nomeResponsavelAutoriza');
-    if(!auto.dataset.touched) auto.value = e.target.value;
-  });
-  document.getElementById('nomeResponsavelAutoriza').addEventListener('input', (e) => {
-    e.target.dataset.touched = '1';
-  });
-
   function updateProgress(){
     document.querySelectorAll('.pdot').forEach(dot => {
       const s = parseInt(dot.getAttribute('data-step'), 10);
@@ -1228,10 +1222,8 @@
       if(!choiceValues.alergiaAlimentar || !choiceValues.restricaoAlimentar || !choiceValues.medicamentoContinuo) return false;
     }
     if(step === 4){
-      const nomeResponsavelAutoriza = document.getElementById('nomeResponsavelAutoriza').value.trim();
       const aceiteRegras = document.getElementById('aceiteRegras').checked;
-      const autorizacaoParticipacao = document.getElementById('autorizacaoParticipacao').checked;
-      if(!selectedLote || !choiceValues.formaPagamento || !aceiteRegras || !nomeResponsavelAutoriza || !autorizacaoParticipacao) return false;
+      if(!selectedLote || !aceiteRegras) return false;
     }
     return true;
   }
@@ -1290,11 +1282,11 @@
       medicamentoDetalhe: document.getElementById('medicamentoDetalhe').value.trim(),
       infoImportante: document.getElementById('infoImportante').value.trim(),
       lote: selectedLote,
-      formaPagamento: choiceValues.formaPagamento,
+      formaPagamento: 'pix',
       autorizacaoImagem: document.getElementById('autorizacaoImagemCheck').checked ? 'autorizo' : 'nao_autorizo',
       aceiteRegras: document.getElementById('aceiteRegras').checked,
-      nomeResponsavelAutoriza: document.getElementById('nomeResponsavelAutoriza').value.trim(),
-      autorizacaoParticipacao: document.getElementById('autorizacaoParticipacao').checked,
+      nomeResponsavelAutoriza: '',
+      autorizacaoParticipacao: false,
       criadoEm: new Date().toISOString()
     };
 
@@ -1568,6 +1560,7 @@
       if(r.medicamentoContinuo === 'sim' && r.medicamentoDetalhe) alertas.push('Medicamento: ' + r.medicamentoDetalhe);
       const loteLabel = r.lote === '2' ? '2º Lote (R$130)' : '1º Lote (R$100)';
       const simNao = v => v === 'sim' ? 'Sim' : (v === 'nao' ? 'Não' : '-');
+      const statusPag = r.statusPagamento || 'pendente';
       return `
       <div class="reg-card" data-id="${r.id}">
         <div class="top">
@@ -1587,6 +1580,20 @@
         </div>
         ${alertas.length ? `<div class="restr">⚠ ${escapeHtml(alertas.join(' · '))}</div>` : ''}
         ${r.infoImportante ? `<div class="restr" style="background:#e8e0ff; color:#4a2f8f;">ℹ ${escapeHtml(r.infoImportante)}</div>` : ''}
+
+        <div class="pay-status-box">
+          <div class="pay-status-label">Situação do pagamento:</div>
+          <div class="pay-status-badge pay-${statusPag}">${
+            statusPag === 'confirmacao_paga' ? '💰 Confirmação (R$20) paga' :
+            statusPag === 'total_pago' ? '✅ Retiro pago por completo' :
+            '⏳ Pendente'
+          }</div>
+          <div class="pay-status-btns">
+            <button class="pay-btn" data-payid="${r.id}" data-paystatus="pendente">Pendente</button>
+            <button class="pay-btn" data-payid="${r.id}" data-paystatus="confirmacao_paga">Confirmação paga</button>
+            <button class="pay-btn" data-payid="${r.id}" data-paystatus="total_pago">Retiro pago</button>
+          </div>
+        </div>
 
         <button class="ver-mais-btn" data-toggle="${r.id}">Ver mais ▾</button>
         <div class="meta extra-details" id="extra-${r.id}" style="display:none;">
@@ -1613,6 +1620,27 @@
         const open = box.style.display === 'block';
         box.style.display = open ? 'none' : 'block';
         btn.textContent = open ? 'Ver mais ▾' : 'Ver menos ▴';
+      });
+    });
+
+    container.querySelectorAll('[data-payid]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-payid');
+        const novoStatus = btn.getAttribute('data-paystatus');
+        const reg = allRegs.find(r => r.id === id);
+        if(!reg) return;
+        btn.disabled = true;
+        const dadosAtualizados = Object.assign({}, reg, {statusPagamento: novoStatus});
+        delete dadosAtualizados.id;
+        delete dadosAtualizados.criadoEm;
+        const ok = await updateSupabaseData(id, dadosAtualizados);
+        btn.disabled = false;
+        if(ok){
+          reg.statusPagamento = novoStatus;
+          renderList(allRegs);
+        }else{
+          alert('Não foi possível salvar agora. Tenta de novo em instantes.');
+        }
       });
     });
 
@@ -1647,7 +1675,7 @@
       'Batizado águas','Batizado Espírito Santo','Igreja atual','É Casa Farol','Nome pastor','Carta recomendação',
       'Responsável','Parentesco','Tel Responsável','Emergência Nome','Emergência Tel',
       'Alergia','Qual alergia','Restrição','Qual restrição','Medicamento contínuo','Detalhe medicamento','Info importante',
-      'Lote','Forma pagamento','Autorização imagem','Nome quem autoriza','Autorizado via link','Ticket','Data inscrição'
+      'Lote','Forma pagamento','Status pagamento','Autorização imagem','Nome quem autoriza','Autorizado via link','Ticket','Data inscrição'
     ];
     const rows = allRegs.map(r => [
       r.nome, r.dataNascimento, r.idade, r.telAdolescente,
@@ -1655,7 +1683,7 @@
       r.batizadoAguas, r.batizadoEspirito, r.igrejaAtual, r.igrejaEhCasaFarol, r.nomePastor, r.cartaRecomendacao,
       r.responsavel, r.parentesco, r.telResponsavel, r.emergenciaNome, r.emergenciaTel,
       r.alergiaAlimentar, r.qualAlergia, r.restricaoAlimentar, r.qualRestricao, r.medicamentoContinuo, r.medicamentoDetalhe, r.infoImportante,
-      r.lote, r.formaPagamento, r.autorizacaoImagem, r.nomeResponsavelAutoriza, (r.autorizacaoRemota ? 'Sim' : 'Não'), r.ticket, r.criadoEm
+      r.lote, r.formaPagamento, (r.statusPagamento || 'pendente'), r.autorizacaoImagem, r.nomeResponsavelAutoriza, (r.autorizacaoRemota ? 'Sim' : 'Não'), r.ticket, r.criadoEm
     ]);
     const csv = [headers, ...rows].map(row =>
       row.map(cell => `"${String(cell||'').replace(/"/g,'""')}"`).join(',')
