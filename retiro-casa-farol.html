@@ -700,11 +700,12 @@
           </div>
 
           <div class="pix-card hard-sm">
-            <div class="pix-title">Dados do Pix</div>
+            <div class="pix-title">Dados do Pix pra confirmação (R$20)</div>
             <div class="pix-row"><span>Nome</span><b>Franciele Bariviera</b></div>
             <div class="pix-row"><span>Chave (telefone)</span><b id="pixChaveTxt">(48) 98836-2228</b></div>
             <div class="pix-row"><span>Instituição</span><b>CC Litorânea</b></div>
             <button type="button" class="pix-copy-btn press" id="pixCopyBtn">Copiar chave Pix</button>
+            <div class="pix-note" id="pixSaldoNote">A confirmação de R$20 é feita agora pelo Pix acima. O restante você paga até <b>18/10</b>.</div>
             <div class="pix-note">Depois de pagar, envie o comprovante pra <b>líder Franciele</b> pelo WhatsApp.</div>
           </div>
 
@@ -848,16 +849,6 @@
           <input type="checkbox" id="autAceiteRegras">
           <span>Li, estou ciente e concordo com as regras de convivência, valores, prazos e critérios de participação do retiro.</span>
         </label>
-
-        <div class="pix-card hard-sm" style="margin-top:20px;">
-          <div class="pix-title">Dados do Pix pra confirmação (R$20)</div>
-          <div class="pix-row"><span>Nome</span><b>Franciele Bariviera</b></div>
-          <div class="pix-row"><span>Chave (telefone)</span><b id="autPixChaveTxt">(48) 98836-2228</b></div>
-          <div class="pix-row"><span>Instituição</span><b>CC Litorânea</b></div>
-          <button type="button" class="pix-copy-btn press" id="autPixCopyBtn">Copiar chave Pix</button>
-          <div class="pix-note" id="autPixSaldoNote">A confirmação de R$20 é feita agora pelo Pix acima. O restante você paga até <b>18/10</b>.</div>
-          <div class="pix-note">Depois de pagar, envie o comprovante pra <b>líder Franciele</b> pelo WhatsApp.</div>
-        </div>
 
         <div class="field" style="margin-top:20px;">
           <label>Nome completo do responsável que está autorizando</label>
@@ -1078,6 +1069,12 @@
 
   // ---------- lote pick ----------
   let selectedLote = null;
+  function atualizarNotaSaldo(lote){
+    const note = document.getElementById('pixSaldoNote');
+    if(!note) return;
+    const saldo = lote === '2' ? 'R$110' : 'R$80';
+    note.innerHTML = 'A confirmação de <b>R$20</b> é feita agora pelo Pix acima. O restante (<b>' + saldo + '</b>) você paga até <b>18/10</b>.';
+  }
   const today = new Date();
   today.setHours(0,0,0,0);
   document.querySelectorAll('.lote-opt').forEach(opt => {
@@ -1099,6 +1096,7 @@
       document.querySelectorAll('.lote-opt').forEach(o => o.classList.remove('selected'));
       opt.classList.add('selected');
       selectedLote = opt.getAttribute('data-value');
+      atualizarNotaSaldo(selectedLote);
     });
   });
   // se só sobrar um lote válido, já deixa pré-selecionado
@@ -1106,6 +1104,7 @@
   if(lotesValidos.length === 1){
     lotesValidos[0].classList.add('selected');
     selectedLote = lotesValidos[0].getAttribute('data-value');
+    atualizarNotaSaldo(selectedLote);
   }
 
   // ---------- conditional fields ----------
@@ -1429,10 +1428,9 @@
     document.getElementById('autResumo').innerHTML = [
       '<li>Ticket: ' + escapeHtml(inscricao.ticket || '-') + '</li>',
       '<li>Idade: ' + escapeHtml(inscricao.idade || '-') + ' anos</li>',
-      '<li>Lote: ' + loteLabelAut + '</li>'
+      '<li>Lote: ' + loteLabelAut + '</li>',
+      '<li>Restante a pagar até 18/10: ' + saldoRestante + '</li>'
     ].join('');
-    document.getElementById('autPixSaldoNote').innerHTML =
-      'A confirmação de <b>R$20</b> é feita agora pelo Pix acima. O restante (<b>' + saldoRestante + '</b>) você paga até <b>18/10</b>.';
     if(inscricao.nomeResponsavelAutoriza){
       document.getElementById('autNomeResponsavel').value = inscricao.nomeResponsavelAutoriza;
     }
@@ -1448,18 +1446,6 @@
       const open = full.style.display === 'block';
       full.style.display = open ? 'none' : 'block';
       btnR.textContent = open ? 'Ler regras completas ▾' : 'Fechar ▴';
-    });
-
-    // ---------- copiar chave pix ----------
-    document.getElementById('autPixCopyBtn').addEventListener('click', () => {
-      const chave = document.getElementById('autPixChaveTxt').textContent.trim();
-      const btnP = document.getElementById('autPixCopyBtn');
-      navigator.clipboard.writeText(chave).then(() => {
-        btnP.textContent = 'Copiado! ✓';
-        setTimeout(() => { btnP.textContent = 'Copiar chave Pix'; }, 2000);
-      }).catch(() => {
-        btnP.textContent = 'Não copiou, copie manualmente';
-      });
     });
 
     document.getElementById('autConfirmBtn').addEventListener('click', async () => {
