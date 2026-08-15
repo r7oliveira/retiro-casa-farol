@@ -1550,7 +1550,7 @@
 
   function updateStats(list){
     document.getElementById('statTotal').textContent = list.length;
-    document.getElementById('statAutorizados').textContent = list.filter(r => r.autorizacaoParticipacao).length;
+    document.getElementById('statAutorizados').textContent = list.filter(r => r.autorizacaoRemota).length;
     document.getElementById('statRestricoes').textContent = list.filter(r => r.alergiaAlimentar === 'sim' || r.restricaoAlimentar === 'sim' || r.medicamentoContinuo === 'sim').length;
   }
 
