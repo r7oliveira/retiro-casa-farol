@@ -1723,6 +1723,12 @@
       printWin.focus();
       printWin.print();
     };
+
+    const waMsg = 'Segue o relatório de inscrições do Retiro Casa Farol em PDF — é só anexar o arquivo que acabou de salvar 📎';
+    const waWin = window.open('https://wa.me/?text=' + encodeURIComponent(waMsg), '_blank');
+    if(!waWin){
+      console.warn('Pop-up do WhatsApp bloqueado pelo navegador.');
+    }
   });
 </script>
 </body>
