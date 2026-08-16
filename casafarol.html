@@ -738,36 +738,36 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 
 
-/* ══ SPOTIFY-STYLE MENSAGENS ══ */
-#p-mensagens{background:#111110;color:#EDE8DF;}
+/* ══ MENSAGENS (estilo claro, igual às outras páginas) ══ */
+#p-mensagens{background:var(--bg);color:var(--ink);}
 .spoti-header{
   display:flex;align-items:center;justify-content:space-between;
   padding:max(48px,env(safe-area-inset-top)) 16px 12px;
-  background:#111110;
+  background:var(--bg);
   position:sticky;top:0;z-index:10;
 }
 .spoti-back{
   width:36px;height:36px;border-radius:50%;
-  background:rgba(255,255,255,.1);
+  background:var(--surface);border:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;cursor:pointer;
 }
-.spoti-back svg{width:18px;height:18px;stroke:#EDE8DF;fill:none;stroke-width:2;}
+.spoti-back svg{width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:2;}
 .spoti-header-title{
   font-family:var(--sans);font-size:16px;font-weight:700;
-  color:#EDE8DF;letter-spacing:.01em;
+  color:var(--ink);letter-spacing:.01em;
 }
 .spoti-identity{
-  background:linear-gradient(180deg,#1C1A17 0%,#111110 100%);
+  background:var(--bg);
   padding:20px 20px 28px;
   display:flex;flex-direction:column;align-items:center;text-align:center;
 }
 .spoti-cover{
   width:160px;height:160px;border-radius:16px;
   background:linear-gradient(145deg,#1C1A17,#111110);
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid var(--border2);
   display:flex;align-items:center;justify-content:center;
   margin-bottom:16px;
-  box-shadow:0 16px 40px rgba(0,0,0,.5);
+  box-shadow:0 16px 40px rgba(17,17,16,.12);
 }
 .spoti-cover svg{
   width:72px;height:72px;stroke:var(--gold);fill:none;
@@ -775,14 +775,14 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .spoti-podcast-name{
   font-family:var(--sans);font-size:22px;font-weight:800;
-  color:#fff;margin-bottom:4px;
+  color:var(--ink);margin-bottom:4px;
 }
 .spoti-podcast-sub{
   font-size:13px;font-weight:500;color:var(--gold);
   margin-bottom:10px;letter-spacing:.02em;
 }
 .spoti-podcast-desc{
-  font-size:13px;color:rgba(237,232,223,.5);
+  font-size:13px;color:var(--ink3);
   line-height:1.6;max-width:320px;margin-bottom:16px;
 }
 .spoti-open-btn{
@@ -790,42 +790,42 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .spoti-config{
   margin:0 16px 4px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.1);
+  background:var(--surface);
+  border:1px solid var(--border);
   border-radius:12px;padding:14px;
 }
 .spoti-config-label{
   font-size:11px;font-weight:700;letter-spacing:.12em;
-  text-transform:uppercase;color:rgba(237,232,223,.4);margin-bottom:8px;
+  text-transform:uppercase;color:var(--ink3);margin-bottom:8px;
 }
 .spoti-link-input{
-  flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  flex:1;background:var(--bg);border:1px solid var(--border2);
   border-radius:8px;padding:9px 12px;font-size:13px;
-  color:#EDE8DF;font-family:var(--sans);outline:none;
+  color:var(--ink);font-family:var(--sans);outline:none;
 }
-.spoti-link-input::placeholder{color:rgba(237,232,223,.3);}
+.spoti-link-input::placeholder{color:var(--ink4);}
 .spoti-link-save{
   background:#1DB954;color:#000;border-radius:8px;
   padding:9px 14px;font-size:12px;font-weight:700;
   white-space:nowrap;flex-shrink:0;
 }
-.spoti-config-hint{font-size:11px;color:rgba(237,232,223,.25);margin-top:6px;}
+.spoti-config-hint{font-size:11px;color:var(--ink4);margin-top:6px;}
 .spoti-follow-btn{
-  background:transparent;border:1.5px solid rgba(237,232,223,.4);
-  color:#EDE8DF;border-radius:40px;
+  background:transparent;border:1.5px solid var(--border2);
+  color:var(--ink);border-radius:40px;
   padding:8px 24px;font-size:13px;font-weight:700;
   letter-spacing:.04em;cursor:pointer;transition:all .15s;
 }
-.spoti-follow-btn:active{background:rgba(255,255,255,.08);}
+.spoti-follow-btn:active{background:var(--surface);}
 .spoti-section-label{
   font-size:10px;font-weight:700;letter-spacing:.2em;
-  color:rgba(237,232,223,.35);
+  color:var(--ink4);
   padding:16px 20px 8px;
 }
 .spoti-featured{
   margin:0 16px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);
+  background:var(--surface);
+  border:1px solid var(--border);
   border-radius:16px;padding:18px;margin-bottom:8px;
 }
 .spoti-ep-date{
@@ -834,15 +834,15 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .spoti-ep-title{
   font-family:var(--serif);font-size:20px;font-weight:500;
-  color:#fff;line-height:1.2;margin-bottom:6px;
+  color:var(--ink);line-height:1.2;margin-bottom:6px;
 }
 .spoti-ep-meta{
-  font-size:12px;color:rgba(237,232,223,.45);margin-bottom:10px;
+  font-size:12px;color:var(--ink3);margin-bottom:10px;
 }
 .spoti-ep-desc{
-  font-size:13px;color:rgba(237,232,223,.55);line-height:1.6;
+  font-size:13px;color:var(--ink2);line-height:1.6;
   margin-bottom:16px;padding-bottom:16px;
-  border-bottom:1px solid rgba(255,255,255,.07);
+  border-bottom:1px solid var(--border);
 }
 .spoti-ep-controls{
   display:flex;align-items:center;gap:16px;
@@ -855,28 +855,28 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .spoti-play-big:active{transform:scale(.92);}
 .spoti-play-big svg{
-  width:22px;height:22px;stroke:none;fill:#111110;margin-left:2px;
+  width:22px;height:22px;stroke:none;fill:#FAFAF8;margin-left:2px;
 }
 .spoti-ep-duration{
-  font-size:13px;color:rgba(237,232,223,.4);flex:1;
+  font-size:13px;color:var(--ink4);flex:1;
 }
 .spoti-share-btn{
   width:36px;height:36px;
   display:flex;align-items:center;justify-content:center;
-  color:rgba(237,232,223,.4);
+  color:var(--ink4);
 }
 .spoti-share-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;}
 .spoti-ep-list{padding:0 16px;}
 .spoti-ep-item{
   display:flex;align-items:center;gap:14px;
   padding:12px 0;
-  border-bottom:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid var(--border);
 }
 .spoti-ep-item:last-child{border-bottom:none;}
 .spoti-ep-item-cover{
   width:52px;height:52px;border-radius:8px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
+  background:var(--gold-bg);
+  border:1px solid var(--gold-border);
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;
 }
@@ -885,21 +885,168 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .spoti-ep-item-body{flex:1;min-width:0;}
 .spoti-ep-item-title{
-  font-size:14px;font-weight:500;color:#EDE8DF;
+  font-size:14px;font-weight:500;color:var(--ink);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   margin-bottom:3px;
 }
-.spoti-ep-item-meta{font-size:12px;color:rgba(237,232,223,.4);}
+.spoti-ep-item-meta{font-size:12px;color:var(--ink3);}
 .spoti-ep-item-play{
   width:36px;height:36px;border-radius:50%;
-  background:rgba(255,255,255,.08);
+  background:var(--gold-bg);border:1px solid var(--gold-border);
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;transition:background .12s;
 }
 .spoti-ep-item-play:active{background:var(--gold);}
 .spoti-ep-item-play svg{
-  width:14px;height:14px;stroke:none;fill:#EDE8DF;margin-left:1px;
+  width:14px;height:14px;stroke:none;fill:var(--gold);margin-left:1px;
 }
+.spoti-ep-item-play:active svg{fill:#FAFAF8;}
+
+
+/* ══ SEJA VOLUNTÁRIO ══ */
+.vol-banner{
+  margin:20px 16px 0;
+  background:var(--ink);
+  border-radius:var(--r);
+  padding:18px 20px;
+  display:flex;align-items:center;gap:16px;
+  cursor:pointer;transition:opacity .15s;
+}
+.vol-banner:active{opacity:.85;}
+.vol-banner-icon{
+  width:44px;height:44px;
+  background:rgba(196,154,60,0.15);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.vol-banner-icon svg{width:22px;height:22px;stroke:var(--gold-lt);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.vol-banner-body{flex:1;}
+.vol-banner-title{font-family:var(--serif);font-size:18px;font-weight:500;color:#FAFAF8;margin-bottom:2px;}
+.vol-banner-sub{font-size:12px;color:rgba(250,250,248,.45);line-height:1.4;}
+.vol-banner-arrow{color:var(--gold);flex-shrink:0;}
+.vol-banner-arrow svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;}
+
+.vol-hero{
+  padding:56px 20px 32px;
+  background:linear-gradient(160deg,#1C1A17 0%,#111110 100%);
+}
+.vol-eye{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,232,223,.45);margin-bottom:8px;}
+.vol-hl{font-family:var(--serif);font-size:40px;font-weight:500;color:#FAFAF8;line-height:.95;}
+.vol-hl em{font-style:italic;color:var(--gold-lt);}
+.vol-sub{font-size:13px;color:rgba(237,232,223,.5);margin-top:10px;line-height:1.55;}
+.vol-body{padding:20px 16px;}
+.vol-section-title{
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink4);margin-bottom:12px;
+}
+.vol-min-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;margin-bottom:8px;
+}
+.vol-min-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:14px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;transition:all .15s;text-align:center;
+}
+.vol-min-card:active{transform:scale(.96);}
+.vol-min-card.selected{
+  background:var(--gold-bg);border-color:var(--gold);
+}
+.vol-min-icon{width:28px;height:28px;color:var(--gold);}
+.vol-min-icon svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.vol-min-name{font-size:11px;font-weight:600;color:var(--ink2);line-height:1.3;letter-spacing:.01em;}
+.vol-min-card.selected .vol-min-name{color:var(--gold);}
+.vol-form{margin-top:4px;}
+
+/* ══ MINISTRY DISCOVER CARD ══ */
+.min-discover-card{
+  margin:0 16px;
+  background:var(--gold-bg);
+  border:1px solid var(--gold-border);
+  border-radius:var(--r);
+  padding:18px 20px;
+  cursor:pointer;transition:opacity .15s;
+  display:flex;align-items:center;gap:16px;
+}
+.min-discover-card:active{opacity:.85;}
+.min-discover-top{display:none;}
+.min-discover-icon{
+  width:44px;height:44px;
+  background:rgba(184,146,74,0.2);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.min-discover-icon svg{width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.min-discover-tag{display:none;}
+.min-discover-body{flex:1;}
+.min-discover-title{
+  font-family:var(--serif);font-size:18px;font-weight:500;
+  color:var(--ink);line-height:1.2;margin-bottom:2px;
+}
+.min-discover-sub{
+  font-size:12px;color:var(--ink3);line-height:1.4;
+}
+.min-discover-arrow{color:var(--gold);flex-shrink:0;}
+.min-discover-arrow svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;}
+.min-discover-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(237,232,223,0.12);
+  color:#FAFAF8;
+  border-radius:8px;padding:11px 20px;
+  font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid rgba(237,232,223,0.15);
+}
+.min-discover-cta svg{width:13px;height:13px;stroke:#FAFAF8;fill:none;stroke-width:2;}
+
+
+/* ══ MINISTRY DETAIL ══ */
+.min-detail-hero{padding:56px 20px 28px;}
+.min-detail-cover-placeholder{
+  width:100%;height:180px;
+  background:rgba(255,255,255,.04);
+  border:1.5px dashed rgba(237,232,223,.2);
+  border-radius:16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;margin-bottom:20px;cursor:pointer;
+}
+.min-detail-cover-placeholder svg{width:36px;height:36px;stroke:rgba(237,232,223,.25);fill:none;stroke-width:1.2;}
+.min-detail-cover-placeholder span{font-size:12px;color:rgba(237,232,223,.25);letter-spacing:.04em;}
+.min-detail-tag{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,232,223,.4);margin-bottom:8px;}
+.min-detail-name{font-family:var(--serif);font-size:36px;font-weight:500;color:#FAFAF8;line-height:.95;margin-bottom:8px;}
+.min-detail-sub{font-size:13px;color:rgba(237,232,223,.45);}
+.min-detail-body{padding:20px 16px;}
+.min-detail-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px;}
+.min-detail-card-title{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--ink);margin-bottom:8px;}
+.min-detail-card-text{font-size:14px;color:var(--ink2);line-height:1.65;}
+.min-detail-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.min-detail-info-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;}
+.min-detail-info-icon{width:20px;height:20px;color:var(--gold);margin-bottom:6px;}
+.min-detail-info-icon svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.5;}
+.min-detail-info-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink4);margin-bottom:3px;}
+.min-detail-info-value{font-size:13px;font-weight:500;color:var(--ink2);}
+.min-detail-vol-btn{
+  width:100%;background:var(--ink);color:var(--bg);
+  border-radius:var(--r-sm);padding:15px;
+  font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  transition:opacity .2s;
+}
+.min-detail-vol-btn:active{opacity:.8;}
+
+/* ══ CULTO LIST (ministerios style) ══ */
+.culto-lc-list{display:flex;flex-direction:column;gap:8px;}
+.culto-lc-row{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:14px 16px;
+  display:flex;align-items:center;gap:14px;
+}
+.culto-lc-icon{
+  width:38px;height:38px;background:var(--gold-bg);border:1px solid var(--gold-border);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.culto-lc-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.culto-lc-body{flex:1;}
+.culto-lc-name{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--ink);}
+.culto-lc-day{font-size:12px;color:var(--ink3);margin-top:2px;}
+.culto-lc-time{font-size:13px;font-weight:600;color:var(--gold);flex-shrink:0;}
 
 /* ── PANELS ── */
 .panel{display:none;padding:16px 16px 4px;}
@@ -908,13 +1055,14 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 /* ── PRÓXIMO CULTO ── */
 .prox-wrap{padding:20px 16px 0;}
 .prox-card{
-  background:var(--ink);
+  background:var(--surface);
+  border:1px solid var(--border);
   border-radius:24px;overflow:hidden;
-  box-shadow:0 8px 40px rgba(17,17,16,0.15);
+  box-shadow:0 8px 30px rgba(17,17,16,0.06);
 }
 .prox-top{
   padding:24px 24px 20px;
-  border-bottom:1px solid rgba(255,255,255,0.06);
+  border-bottom:1px solid var(--border);
   display:flex;align-items:flex-start;justify-content:space-between;
 }
 .prox-eyebrow{
@@ -923,30 +1071,30 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .prox-day-num{
   font-family:var(--serif);font-size:80px;font-weight:700;
-  color:#FAFAF8;line-height:.85;letter-spacing:-.04em;display:block;
+  color:var(--ink);line-height:.85;letter-spacing:-.04em;display:block;
 }
 .prox-day-label{
   font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(250,250,248,0.28);margin-top:8px;
+  color:var(--ink3);margin-top:8px;
 }
 .prox-cal{
   width:52px;height:52px;
-  background:rgba(184,146,74,0.1);border:1px solid rgba(184,146,74,0.18);
+  background:var(--gold-bg);border:1px solid var(--gold-border);
   border-radius:12px;display:flex;flex-direction:column;
   align-items:center;justify-content:center;flex-shrink:0;
 }
 .prox-cal-day{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
-.prox-cal-num{font-family:var(--serif);font-size:22px;font-weight:700;color:#FAFAF8;line-height:1.1;}
+.prox-cal-num{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink);line-height:1.1;}
 .prox-bottom{padding:20px 24px 24px;}
 .prox-name{
   font-family:var(--serif);font-size:30px;font-weight:500;
-  color:#FAFAF8;line-height:1.05;margin-bottom:16px;
+  color:var(--ink);line-height:1.05;margin-bottom:16px;
 }
 .prox-time-pill{
   display:inline-flex;align-items:center;gap:7px;
-  background:rgba(184,146,74,0.1);border:1px solid rgba(184,146,74,0.18);
+  background:var(--gold-bg);border:1px solid var(--gold-border);
   border-radius:40px;padding:8px 18px;
-  font-size:14px;font-weight:600;color:var(--gold-lt);
+  font-size:14px;font-weight:600;color:var(--gold);
 }
 .prox-time-pill svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:2;}
 
@@ -1226,11 +1374,11 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         <div class="ios-label">Cultos</div>
       </div>
 
-      <div class="ios-icon" onclick="openEventos()">
+      <div class="ios-icon" onclick="nav('cursos')">
         <div class="ios-icon-bg" style="background:linear-gradient(145deg,#1C1A17,#111110)">
-          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
         </div>
-        <div class="ios-label">Eventos</div>
+        <div class="ios-label">Cursos</div>
       </div>
 
       <div class="ios-icon" onclick="nav('biblia')">
@@ -1296,40 +1444,8 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 
   </div>
 
-  <!-- CULTOS MODAL -->
-  <div class="modal-overlay" id="modal-cultos" onclick="closeModal('modal-cultos')">
-    <div class="modal-sheet" onclick="event.stopPropagation()">
-      <div class="modal-handle"></div>
-      <div class="modal-title">Cultos</div>
-      <div class="prox-wrap"><div class="prox-card" id="prox-card"></div></div>
-      <div style="padding:16px 16px 0">
-        <div class="semanal-card">
-          <div class="s-row"><div class="s-day">Qua</div><div class="s-sep"></div><div class="s-ev">Culto de Quarta</div><div class="s-time">19h30</div></div>
-          <div class="s-row"><div class="s-day">Dom</div><div class="s-sep"></div><div class="s-ev">Culto de Domingo</div><div class="s-time">19h00</div></div>
-        </div>
-      </div>
-      <div style="height:32px"></div>
-    </div>
-  </div>
 
-  <!-- EVENTOS MODAL -->
-  <div class="modal-overlay" id="modal-eventos" onclick="closeModal('modal-eventos')">
-    <div class="modal-sheet" onclick="event.stopPropagation()">
-      <div class="modal-handle"></div>
-      <div class="modal-title">Eventos de Agosto</div>
-      <div style="padding:0 16px 0">
-        <div class="evt-wrap">
-          <div class="evt-row"><div class="evt-aside"><div class="evt-dn">10</div><div class="evt-dw">SEG</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">Início</div><div class="evt-name">Jejum Coletivo</div></div></div></div>
-          <div class="evt-row"><div class="evt-aside"><div class="evt-dn">12</div><div class="evt-dw">QUA</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">19h30</div><div class="evt-name">Curso de Batismo</div><div class="evt-note">Inscrições no link da bio</div></div></div></div>
-          <div class="evt-row"><div class="evt-aside"><div class="evt-dn">14</div><div class="evt-dw">SEX</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">19h30</div><div class="evt-name">Sala de Oração</div><div class="evt-note">Para mulheres</div></div></div></div>
-          <div class="evt-row"><div class="evt-aside"><div class="evt-dn">15</div><div class="evt-dw">SÁB</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">—</div><div class="evt-name">Encontro de Adolescentes</div></div></div></div>
-          <div class="evt-row"><div class="evt-aside"><div class="evt-dn">16</div><div class="evt-dw">DOM</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">Encerramento</div><div class="evt-name">Jejum Coletivo</div></div></div></div>
-          <div class="evt-row"><div class="evt-aside"><div class="evt-dn">29</div><div class="evt-dw">SÁB</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">—</div><div class="evt-name">Encontro de Adolescentes</div></div></div></div>
-        </div>
-      </div>
-      <div style="height:32px"></div>
-    </div>
-  </div>
+
 
 </div>
 
@@ -1338,12 +1454,427 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
   <div class="pg-back" onclick="nav('inicio')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Início</div>
   <div class="ph rv in"><div class="ph-eye">Áreas de Serviço</div><div class="ph-h"><em>Nossos</em> Ministérios</div></div>
   <div class="lc-wrap">
-    <div class="lc rv" onclick="nav('cadastro')"><div class="lc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="lc-name">Casa Farol Kids</div><div class="lc-desc">Semeando a fé desde a infância</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-    <div class="lc rv" onclick="nav('cadastro')"><div class="lc-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div><div class="lc-name">Casa Farol Teens</div><div class="lc-desc">Identidade e propósito</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-    <div class="lc rv" onclick="nav('cadastro')"><div class="lc-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div><div class="lc-name">Música &amp; Mídia</div><div class="lc-desc">Expressão criativa e adoração</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-    <div class="lc rv" onclick="nav('cadastro')"><div class="lc-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div><div><div class="lc-name">Casa Farol Store</div><div class="lc-desc">Loja oficial da Igreja</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+    <div class="lc rv" onclick="nav('min-kids')"><div class="lc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="lc-name">Kids</div><div class="lc-desc">Semeando a fé desde a infância</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+    <div class="lc rv" onclick="nav('min-teens')"><div class="lc-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div><div class="lc-name">Teens</div><div class="lc-desc">Identidade e propósito</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+    <div class="lc rv" onclick="nav('min-musica')"><div class="lc-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div><div class="lc-name">Música</div><div class="lc-desc">Expressão criativa e adoração</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+    <div class="lc rv" onclick="nav('min-louvor')"><div class="lc-icon"><svg viewBox="0 0 24 24"><path d="M12 22c-4.97 0-9-2.69-9-6s4.03-6 9-6 9 2.69 9 6-4.03 6-9 6z"/><path d="M12 10V2"/><path d="m4.93 10 6.36-6.36"/><path d="M19.07 10 12.71 3.64"/></svg></div><div><div class="lc-name">Louvor</div><div class="lc-desc">Ministério de adoração e pregação</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+    <div class="lc rv" onclick="nav('min-intercessao')"><div class="lc-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div><div><div class="lc-name">Intercessão</div><div class="lc-desc">Oração e intercessão pela cidade</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+    <div class="lc rv" onclick="nav('min-recepcao')"><div class="lc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="lc-name">Recepção</div><div class="lc-desc">Acolhendo cada pessoa com amor</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+    <div class="lc rv" onclick="nav('min-midia')"><div class="lc-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div><div class="lc-name">Mídia &amp; Transmissão</div><div class="lc-desc">Alcançando vidas através da mídia</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+    <div class="lc rv" onclick="nav('min-missoes')"><div class="lc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div><div class="lc-name">Missões</div><div class="lc-desc">Levando o evangelho às nações</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+    <div class="lc rv" onclick="nav('min-store')"><div class="lc-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div><div><div class="lc-name">Store</div><div class="lc-desc">Loja oficial da Igreja</div></div><div class="lc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+  </div>
+
+  <!-- Seja Voluntário Banner -->
+  <div class="vol-banner" onclick="nav('voluntario')">
+    <div class="vol-banner-icon">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </div>
+    <div class="vol-banner-body">
+      <div class="vol-banner-title">Seja Voluntário</div>
+      <div class="vol-banner-sub">Faça parte de um ministério e sirva com propósito</div>
+    </div>
+    <div class="vol-banner-arrow">
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ VOLUNTÁRIO ═══ -->
+<div class="page" id="p-voluntario">
+  <div class="vol-hero">
+    <div class="pg-back" onclick="nav('ministerios')" style="color:rgba(237,232,223,.7);margin-bottom:16px">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Ministérios
+    </div>
+    <div class="vol-eye">Servindo com Propósito</div>
+    <div class="vol-hl">Seja um<br><em>Voluntário</em></div>
+    <div class="vol-sub">Escolha onde seu coração quer servir e preencha o formulário. Entraremos em contato.</div>
+  </div>
+  <div class="vol-body">
+
+    <!-- Selecione o ministério -->
+    <div class="vol-section-title">Onde deseja servir?</div>
+    <div class="vol-min-grid" id="vol-min-grid">
+      <div class="vol-min-card" data-min="Kids" onclick="volSelectMin(this)">
+        <div class="vol-min-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+        <div class="vol-min-name">Kids</div>
+      </div>
+      <div class="vol-min-card" data-min="Teens" onclick="volSelectMin(this)">
+        <div class="vol-min-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="vol-min-name">Teens</div>
+      </div>
+      <div class="vol-min-card" data-min="Música & Mídia" onclick="volSelectMin(this)">
+        <div class="vol-min-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+        <div class="vol-min-name">Música & Mídia</div>
+      </div>
+      <div class="vol-min-card" data-min="Louvor" onclick="volSelectMin(this)">
+        <div class="vol-min-icon"><svg viewBox="0 0 24 24"><path d="M12 22c-4.97 0-9-2.69-9-6s4.03-6 9-6 9 2.69 9 6-4.03 6-9 6z"/><path d="M12 10V2"/></svg></div>
+        <div class="vol-min-name">Louvor</div>
+      </div>
+      <div class="vol-min-card" data-min="Intercessão" onclick="volSelectMin(this)">
+        <div class="vol-min-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg></div>
+        <div class="vol-min-name">Intercessão</div>
+      </div>
+      <div class="vol-min-card" data-min="Recepção" onclick="volSelectMin(this)">
+        <div class="vol-min-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="vol-min-name">Recepção</div>
+      </div>
+      <div class="vol-min-card" data-min="Mídia & Transmissão" onclick="volSelectMin(this)">
+        <div class="vol-min-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+        <div class="vol-min-name">Mídia & Transmissão</div>
+      </div>
+      <div class="vol-min-card" data-min="Missões" onclick="volSelectMin(this)">
+        <div class="vol-min-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="vol-min-name">Missões</div>
+      </div>
+      <div class="vol-min-card" data-min="Store" onclick="volSelectMin(this)">
+        <div class="vol-min-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+        <div class="vol-min-name">Store</div>
+      </div>
+    </div>
+
+    <!-- Formulário -->
+    <div class="vol-form" id="vol-form">
+      <div class="vol-section-title" style="margin-top:24px">Seus dados</div>
+      <div class="field rv" style="margin-bottom:12px">
+        <div class="fl">Nome completo</div>
+        <input class="fi" id="vol-nome" type="text" placeholder="Seu nome">
+      </div>
+      <div class="field rv" style="margin-bottom:12px">
+        <div class="fl">WhatsApp</div>
+        <input class="fi" id="vol-whatsapp" type="tel" placeholder="(00) 00000-0000">
+      </div>
+      <div class="field rv" style="margin-bottom:12px">
+        <div class="fl">Cidade</div>
+        <input class="fi" id="vol-cidade" type="text" placeholder="Sua cidade">
+      </div>
+      <div class="field rv" style="margin-bottom:12px">
+        <div class="fl">Ministério escolhido</div>
+        <input class="fi" id="vol-ministerio-display" type="text" placeholder="Selecione acima" readonly style="background:var(--bg2);cursor:default">
+      </div>
+      <div class="field rv" style="margin-bottom:20px">
+        <div class="fl">Por que quer servir?</div>
+        <textarea class="fi" id="vol-motivo" placeholder="Compartilhe um pouco sobre sua motivação..." style="min-height:90px;resize:none;line-height:1.5"></textarea>
+      </div>
+      <button class="submit" onclick="volSubmit()">Enviar Inscrição</button>
+    </div>
+
+    <!-- Sucesso -->
+    <div class="ora-success" id="vol-success" style="display:none;margin-top:16px">
+      <div class="ora-success-icon">🙌</div>
+      <div class="ora-success-title">Inscrição enviada!</div>
+      <div class="ora-success-text">Recebemos sua inscrição. Em breve entraremos em contato pelo WhatsApp. Obrigado por querer servir!</div>
+      <button class="ora-success-btn" onclick="volReset()">Nova inscrição</button>
+    </div>
+
   </div>
 </div>
+
+<!-- ═══ MINISTÉRIO DETAIL PAGES ═══ -->
+
+<!-- Kids -->
+<div class="page" id="p-min-kids">
+  <div class="min-detail-hero" style="background:linear-gradient(160deg,#1C1A17,#111110)">
+    <div class="pg-back" onclick="nav('ministerios')" style="color:rgba(237,232,223,.7);margin-bottom:16px"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Ministérios</div>
+    <div class="min-detail-cover-placeholder">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      <span>Adicione uma foto</span>
+    </div>
+    <div class="min-detail-tag">Ministério</div>
+    <div class="min-detail-name">Kids</div>
+    <div class="min-detail-sub">Semeando a fé desde a infância</div>
+  </div>
+  <div class="min-detail-body">
+    <div class="min-detail-card">
+      <div class="min-detail-card-title">Sobre o Ministério</div>
+      <div class="min-detail-card-text">O Kids é um ministério dedicado a semear a fé nas crianças de forma divertida, criativa e bíblica. Acreditamos que cada criança é preciosa e merece conhecer o amor de Deus desde cedo.</div>
+    </div>
+    <div class="min-detail-info-grid">
+      <div class="min-detail-info-item">
+        <div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+        <div class="min-detail-info-label">Líder</div>
+        <div class="min-detail-info-value">— A cadastrar —</div>
+      </div>
+      <div class="min-detail-info-item">
+        <div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="min-detail-info-label">Horário</div>
+        <div class="min-detail-info-value">Dom · 19h00</div>
+      </div>
+      <div class="min-detail-info-item">
+        <div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div class="min-detail-info-label">Encontros</div>
+        <div class="min-detail-info-value">Semanais</div>
+      </div>
+      <div class="min-detail-info-item">
+        <div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="min-detail-info-label">Público</div>
+        <div class="min-detail-info-value">0 a 11 anos</div>
+      </div>
+    </div>
+    <button class="min-detail-vol-btn" onclick="nav('voluntario')">Quero servir aqui</button>
+  </div>
+</div>
+
+<!-- Teens -->
+<div class="page" id="p-min-teens">
+  <div class="min-detail-hero" style="background:linear-gradient(160deg,#1C1A17,#111110)">
+    <div class="pg-back" onclick="nav('ministerios')" style="color:rgba(237,232,223,.7);margin-bottom:16px"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Ministérios</div>
+    <div class="min-detail-cover-placeholder">
+      <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span>Adicione uma foto</span>
+    </div>
+    <div class="min-detail-tag">Ministério</div>
+    <div class="min-detail-name">Teens</div>
+    <div class="min-detail-sub">Identidade e propósito</div>
+  </div>
+  <div class="min-detail-body">
+    <div class="min-detail-card">
+      <div class="min-detail-card-title">Sobre o Ministério</div>
+      <div class="min-detail-card-text">O Teens é um espaço seguro onde adolescentes descobrem sua identidade em Cristo e encontram propósito para suas vidas. Com uma linguagem jovem e relevante, impactamos essa geração com a Palavra de Deus.</div>
+    </div>
+    <div class="min-detail-info-grid">
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Líder</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="min-detail-info-label">Horário</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="min-detail-info-label">Encontros</div><div class="min-detail-info-value">Semanais</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Público</div><div class="min-detail-info-value">12 a 17 anos</div></div>
+    </div>
+    <button class="min-detail-vol-btn" onclick="nav('voluntario')">Quero servir aqui</button>
+  </div>
+</div>
+
+<!-- Música -->
+<div class="page" id="p-min-musica">
+  <div class="min-detail-hero" style="background:linear-gradient(160deg,#1C1A17,#111110)">
+    <div class="pg-back" onclick="nav('ministerios')" style="color:rgba(237,232,223,.7);margin-bottom:16px"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Ministérios</div>
+    <div class="min-detail-cover-placeholder">
+      <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      <span>Adicione uma foto</span>
+    </div>
+    <div class="min-detail-tag">Ministério</div>
+    <div class="min-detail-name">Música</div>
+    <div class="min-detail-sub">Expressão criativa e adoração</div>
+  </div>
+  <div class="min-detail-body">
+    <div class="min-detail-card"><div class="min-detail-card-title">Sobre o Ministério</div><div class="min-detail-card-text">O ministério de Música existe para conduzir a congregação à presença de Deus através da adoração. Buscamos excelência e unção em cada momento de louvor.</div></div>
+    <div class="min-detail-info-grid">
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Líder</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="min-detail-info-label">Ensaios</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/></svg></div><div class="min-detail-info-label">Instrumento</div><div class="min-detail-info-value">Todos</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Público</div><div class="min-detail-info-value">Todas as idades</div></div>
+    </div>
+    <button class="min-detail-vol-btn" onclick="nav('voluntario')">Quero servir aqui</button>
+  </div>
+</div>
+
+<!-- Louvor -->
+<div class="page" id="p-min-louvor">
+  <div class="min-detail-hero" style="background:linear-gradient(160deg,#1C1A17,#111110)">
+    <div class="pg-back" onclick="nav('ministerios')" style="color:rgba(237,232,223,.7);margin-bottom:16px"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Ministérios</div>
+    <div class="min-detail-cover-placeholder">
+      <svg viewBox="0 0 24 24"><path d="M12 22c-4.97 0-9-2.69-9-6s4.03-6 9-6 9 2.69 9 6-4.03 6-9 6z"/><path d="M12 10V2"/></svg>
+      <span>Adicione uma foto</span>
+    </div>
+    <div class="min-detail-tag">Ministério</div>
+    <div class="min-detail-name">Louvor</div>
+    <div class="min-detail-sub">Ministério de adoração e pregação</div>
+  </div>
+  <div class="min-detail-body">
+    <div class="min-detail-card"><div class="min-detail-card-title">Sobre o Ministério</div><div class="min-detail-card-text">O ministério de Louvor é responsável por criar uma atmosfera de adoração genuína em nossos cultos. Cada membro é treinado para ministrar com unção e excelência.</div></div>
+    <div class="min-detail-info-grid">
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Líder</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="min-detail-info-label">Horário</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="min-detail-info-label">Encontros</div><div class="min-detail-info-value">Semanais</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Público</div><div class="min-detail-info-value">Todas as idades</div></div>
+    </div>
+    <button class="min-detail-vol-btn" onclick="nav('voluntario')">Quero servir aqui</button>
+  </div>
+</div>
+
+<!-- Intercessão -->
+<div class="page" id="p-min-intercessao">
+  <div class="min-detail-hero" style="background:linear-gradient(160deg,#1C1A17,#111110)">
+    <div class="pg-back" onclick="nav('ministerios')" style="color:rgba(237,232,223,.7);margin-bottom:16px"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Ministérios</div>
+    <div class="min-detail-cover-placeholder">
+      <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+      <span>Adicione uma foto</span>
+    </div>
+    <div class="min-detail-tag">Ministério</div>
+    <div class="min-detail-name">Intercessão</div>
+    <div class="min-detail-sub">Oração e intercessão pela cidade</div>
+  </div>
+  <div class="min-detail-body">
+    <div class="min-detail-card"><div class="min-detail-card-title">Sobre o Ministério</div><div class="min-detail-card-text">O ministério de Intercessão é o sustento espiritual da igreja. Nossos intercessores oram pela congregação, pela cidade e pelas nações, crendo no poder transformador da oração.</div></div>
+    <div class="min-detail-info-grid">
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Líder</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="min-detail-info-label">Horário</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="min-detail-info-label">Encontros</div><div class="min-detail-info-value">Semanais</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Público</div><div class="min-detail-info-value">Todas as idades</div></div>
+    </div>
+    <button class="min-detail-vol-btn" onclick="nav('voluntario')">Quero servir aqui</button>
+  </div>
+</div>
+
+<!-- Recepção -->
+<div class="page" id="p-min-recepcao">
+  <div class="min-detail-hero" style="background:linear-gradient(160deg,#1C1A17,#111110)">
+    <div class="pg-back" onclick="nav('ministerios')" style="color:rgba(237,232,223,.7);margin-bottom:16px"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Ministérios</div>
+    <div class="min-detail-cover-placeholder">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Adicione uma foto</span>
+    </div>
+    <div class="min-detail-tag">Ministério</div>
+    <div class="min-detail-name">Recepção</div>
+    <div class="min-detail-sub">Acolhendo cada pessoa com amor</div>
+  </div>
+  <div class="min-detail-body">
+    <div class="min-detail-card"><div class="min-detail-card-title">Sobre o Ministério</div><div class="min-detail-card-text">O ministério de Recepção é o primeiro contato de cada visitante com a Casa Farol. Com hospitalidade e amor, acolhemos cada pessoa como se fosse a primeira vez que alguém chega ao lar.</div></div>
+    <div class="min-detail-info-grid">
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Líder</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="min-detail-info-label">Horário</div><div class="min-detail-info-value">Nos cultos</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="min-detail-info-label">Encontros</div><div class="min-detail-info-value">Semanais</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Público</div><div class="min-detail-info-value">Todas as idades</div></div>
+    </div>
+    <button class="min-detail-vol-btn" onclick="nav('voluntario')">Quero servir aqui</button>
+  </div>
+</div>
+
+<!-- Mídia & Transmissão -->
+<div class="page" id="p-min-midia">
+  <div class="min-detail-hero" style="background:linear-gradient(160deg,#1C1A17,#111110)">
+    <div class="pg-back" onclick="nav('ministerios')" style="color:rgba(237,232,223,.7);margin-bottom:16px"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Ministérios</div>
+    <div class="min-detail-cover-placeholder">
+      <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      <span>Adicione uma foto</span>
+    </div>
+    <div class="min-detail-tag">Ministério</div>
+    <div class="min-detail-name">Mídia & Transmissão</div>
+    <div class="min-detail-sub">Alcançando vidas através da mídia</div>
+  </div>
+  <div class="min-detail-body">
+    <div class="min-detail-card"><div class="min-detail-card-title">Sobre o Ministério</div><div class="min-detail-card-text">O ministério de Mídia & Transmissão cuida de toda a comunicação visual e transmissão ao vivo da Casa Farol. Usamos a tecnologia como ferramenta para alcançar vidas além das paredes da igreja.</div></div>
+    <div class="min-detail-info-grid">
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Líder</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="min-detail-info-label">Horário</div><div class="min-detail-info-value">Nos cultos</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div class="min-detail-info-label">Área</div><div class="min-detail-info-value">Vídeo · Foto · Design</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Público</div><div class="min-detail-info-value">Todas as idades</div></div>
+    </div>
+    <button class="min-detail-vol-btn" onclick="nav('voluntario')">Quero servir aqui</button>
+  </div>
+</div>
+
+<!-- Missões -->
+<div class="page" id="p-min-missoes">
+  <div class="min-detail-hero" style="background:linear-gradient(160deg,#1C1A17,#111110)">
+    <div class="pg-back" onclick="nav('ministerios')" style="color:rgba(237,232,223,.7);margin-bottom:16px"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Ministérios</div>
+    <div class="min-detail-cover-placeholder">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span>Adicione uma foto</span>
+    </div>
+    <div class="min-detail-tag">Ministério</div>
+    <div class="min-detail-name">Missões</div>
+    <div class="min-detail-sub">Levando o evangelho às nações</div>
+  </div>
+  <div class="min-detail-body">
+    <div class="min-detail-card"><div class="min-detail-card-title">Sobre o Ministério</div><div class="min-detail-card-text">O ministério de Missões mobiliza a Casa Farol para levar o evangelho além das fronteiras. Apoiamos missionários e participamos de projetos evangelísticos locais e internacionais.</div></div>
+    <div class="min-detail-info-grid">
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Líder</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="min-detail-info-label">Reuniões</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg></div><div class="min-detail-info-label">Alcance</div><div class="min-detail-info-value">Local e Internacional</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Público</div><div class="min-detail-info-value">Todas as idades</div></div>
+    </div>
+    <button class="min-detail-vol-btn" onclick="nav('voluntario')">Quero servir aqui</button>
+  </div>
+</div>
+
+<!-- Store -->
+<div class="page" id="p-min-store">
+  <div class="min-detail-hero" style="background:linear-gradient(160deg,#1C1A17,#111110)">
+    <div class="pg-back" onclick="nav('ministerios')" style="color:rgba(237,232,223,.7);margin-bottom:16px"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Ministérios</div>
+    <div class="min-detail-cover-placeholder">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span>Adicione uma foto</span>
+    </div>
+    <div class="min-detail-tag">Ministério</div>
+    <div class="min-detail-name">Store</div>
+    <div class="min-detail-sub">Loja oficial da Igreja</div>
+  </div>
+  <div class="min-detail-body">
+    <div class="min-detail-card"><div class="min-detail-card-title">Sobre a Loja</div><div class="min-detail-card-text">A Store é a loja oficial da Igreja, onde você encontra produtos exclusivos que expressam nossa identidade e fé. Os recursos arrecadados apoiam os projetos da igreja.</div></div>
+    <div class="min-detail-info-grid">
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="min-detail-info-label">Responsável</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="min-detail-info-label">Horário</div><div class="min-detail-info-value">Nos cultos</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/></svg></div><div class="min-detail-info-label">Produtos</div><div class="min-detail-info-value">— A cadastrar —</div></div>
+      <div class="min-detail-info-item"><div class="min-detail-info-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="min-detail-info-label">Apoio</div><div class="min-detail-info-value">Projetos da Igreja</div></div>
+    </div>
+    <button class="min-detail-vol-btn" onclick="nav('voluntario')">Quero servir aqui</button>
+  </div>
+</div>
+
+  <!-- CULTOS PAGE -->
+  <div class="page" id="p-cultos">
+    <div class="ph rv in">
+      <div class="pg-back" onclick="nav('inicio')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Início</div>
+      <div class="ph-eye">Programação</div>
+      <div class="ph-h"><em>Cultos &amp;</em> Eventos</div>
+    </div>
+
+    <div class="tabs" id="cultos-tabs" style="position:static;">
+      <div class="tab on" onclick="cultosTab('cultos')">Cultos</div>
+      <div class="tab" onclick="cultosTab('eventos')">Eventos</div>
+    </div>
+
+    <!-- CULTOS PANEL -->
+    <div id="cultos-panel-cultos" style="padding:16px">
+      <!-- Próximo culto -->
+      <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:10px">Próximo Culto</div>
+      <div class="prox-card" id="prox-card" style="margin-bottom:20px"></div>
+      <!-- Lista semanal -->
+      <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:10px">Programação Semanal</div>
+      <div class="culto-lc-list">
+        <div class="culto-lc-row">
+          <div class="culto-lc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="culto-lc-body">
+            <div class="culto-lc-name">Culto de Domingo</div>
+            <div class="culto-lc-day">Todo domingo</div>
+          </div>
+          <div class="culto-lc-time">19h00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENTOS PANEL -->
+    <div id="cultos-panel-eventos" style="padding:16px;display:none">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:14px">Eventos de Agosto</div>
+      <div class="evt-wrap">
+        <div class="evt-row"><div class="evt-aside"><div class="evt-dn">10</div><div class="evt-dw">SEG</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">Início</div><div class="evt-name">Jejum Coletivo</div></div></div></div>
+        <div class="evt-row"><div class="evt-aside"><div class="evt-dn">12</div><div class="evt-dw">QUA</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">19h30</div><div class="evt-name">Curso de Batismo</div><div class="evt-note">Inscrições no link da bio</div></div></div></div>
+        <div class="evt-row"><div class="evt-aside"><div class="evt-dn">14</div><div class="evt-dw">SEX</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">19h30</div><div class="evt-name">Sala de Oração</div><div class="evt-note">Para mulheres</div></div></div></div>
+        <div class="evt-row"><div class="evt-aside"><div class="evt-dn">15</div><div class="evt-dw">SÁB</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">—</div><div class="evt-name">Encontro de Adolescentes</div></div></div></div>
+        <div class="evt-row"><div class="evt-aside"><div class="evt-dn">16</div><div class="evt-dw">DOM</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">Encerramento</div><div class="evt-name">Jejum Coletivo</div></div></div></div>
+        <div class="evt-row"><div class="evt-aside"><div class="evt-dn">29</div><div class="evt-dw">SÁB</div><div class="evt-vl"></div></div><div class="evt-main"><div class="evt-card"><div class="evt-tag">—</div><div class="evt-name">Encontro de Adolescentes</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CURSOS ═══ -->
+  <div class="page" id="p-cursos">
+    <div class="pg-back" onclick="nav('inicio')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Início</div>
+    <div class="ph rv in"><div class="ph-eye">Formação</div><div class="ph-h"><em>Nossos</em> Cursos</div><div class="ph-sub">Cresça no conhecimento e na fé</div></div>
+    <div style="padding:0 16px 24px">
+      <div class="culto-lc-list">
+        <div class="culto-lc-row">
+          <div class="culto-lc-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div class="culto-lc-body">
+            <div class="culto-lc-name">Curso de Batismo</div>
+            <div class="culto-lc-day">Inscrições no link da bio</div>
+          </div>
+          <div class="culto-lc-time">19h30</div>
+        </div>
+      </div>
+      <div style="font-size:13px;color:var(--ink3);margin-top:16px;line-height:1.5">Edite esta seção no código HTML (id="p-cursos") para adicionar seus cursos, turmas e datas de inscrição.</div>
+    </div>
+  </div>
 
 <!-- ═══ CÉLULAS ═══ -->
 <div class="page" id="p-celulas">
@@ -1836,7 +2367,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 
 </div>
 <script>
-var PAGES=['inicio','ministerios','celulas','contribuir','contato','historia','cadastro','plano','biblia','oracao','mensagens','perfil'];
+var PAGES=['inicio','ministerios','celulas','contribuir','contato','historia','cadastro','plano','biblia','oracao','mensagens','perfil','voluntario','min-kids','min-teens','min-musica','min-louvor','min-intercessao','min-recepcao','min-midia','min-missoes','min-store','cultos','cursos'];
 var NAV_KEYS=['inicio','ministerios','celulas','contribuir','contato'];
 
 // ── SPLASH ANIMATION ──────────────────────────────
@@ -1903,8 +2434,15 @@ function buildNextStrip(){
     '<div class="ncs-info"><div class="ncs-eyebrow">'+(isToday?'Hoje':'Próximo Culto')+'</div><div class="ncs-name">'+found.name+'</div><div class="ncs-time">'+found.time+'</div></div>';
 }
 
-function openCultos(){ var m=document.getElementById('modal-cultos'); if(m){m.classList.add('open');} }
-function openEventos(){ var m=document.getElementById('modal-eventos'); if(m){m.classList.add('open');} }
+function openCultos(){ nav('cultos'); cultosTab('cultos'); }
+function cultosTab(which){
+  ['cultos','eventos'].forEach(function(k){
+    var panel=document.getElementById('cultos-panel-'+k);
+    if(panel) panel.style.display=(k===which?'':'none');
+  });
+  var tabs=document.querySelectorAll('#cultos-tabs .tab');
+  tabs.forEach(function(tab,i){ tab.classList.toggle('on', ['cultos','eventos'][i]===which); });
+}
 function closeModal(id){ var m=document.getElementById(id); if(m){m.classList.remove('open');} }
 function nav(id){
   PAGES.forEach(function(p){var e=document.getElementById('p-'+p);if(e)e.classList.remove('active');});
@@ -2908,6 +3446,7 @@ nav=function(id){
   _cf_origNav2(id);
   if(id==='oracao'){setTimeout(oraInit,60);}
   if(id==='mensagens'){setTimeout(spotiInit,60);}
+  if(id==='cultos'){setTimeout(buildCultoList,60);}
   if(id==='plano'){setTimeout(planRender,60);}
   if(id==='perfil'){setTimeout(perfUpdateStats,60);}
 };
@@ -2945,6 +3484,49 @@ function spotiInit(){
   // Hide config if link already set
   var cfg=document.getElementById('spoti-config');
   if(cfg)cfg.style.display=link?'none':'block';
+}
+
+
+// ══ VOLUNTÁRIO ══
+var volMinSelecionado = '';
+function volSelectMin(card){
+  document.querySelectorAll('.vol-min-card').forEach(function(c){c.classList.remove('selected');});
+  card.classList.add('selected');
+  volMinSelecionado = card.getAttribute('data-min');
+  var disp=document.getElementById('vol-ministerio-display');
+  if(disp)disp.value=volMinSelecionado;
+}
+function volSubmit(){
+  var nome=(document.getElementById('vol-nome')||{}).value||'';
+  var wa=(document.getElementById('vol-whatsapp')||{}).value||'';
+  if(!nome.trim()||!wa.trim()){alert('Por favor preencha nome e WhatsApp.');return;}
+  if(!volMinSelecionado){alert('Selecione o ministério onde deseja servir.');return;}
+  // Save locally
+  var inscricoes=[];
+  try{inscricoes=JSON.parse(localStorage.getItem('cf_voluntarios')||'[]');}catch(e){}
+  inscricoes.push({
+    nome:nome,whatsapp:wa,
+    email:(document.getElementById('vol-cidade')||{}).value||'',
+    ministerio:volMinSelecionado,
+    motivo:(document.getElementById('vol-motivo')||{}).value||'',
+    data:new Date().toLocaleDateString('pt-BR')
+  });
+  try{localStorage.setItem('cf_voluntarios',JSON.stringify(inscricoes));}catch(e){}
+  var form=document.getElementById('vol-form');
+  var success=document.getElementById('vol-success');
+  if(form)form.style.display='none';
+  if(success)success.style.display='block';
+}
+function volReset(){
+  volMinSelecionado='';
+  document.querySelectorAll('.vol-min-card').forEach(function(c){c.classList.remove('selected');});
+  ['vol-nome','vol-whatsapp','vol-cidade','vol-motivo','vol-ministerio-display'].forEach(function(id){
+    var el=document.getElementById(id); if(el)el.value='';
+  });
+  var form=document.getElementById('vol-form');
+  var success=document.getElementById('vol-success');
+  if(form)form.style.display='block';
+  if(success)success.style.display='none';
 }
 
 </script>
