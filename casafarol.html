@@ -449,8 +449,8 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .bib-reader-content{padding:20px 20px 60px;line-height:1.85;}
 .bib-verse{
   display:flex;gap:0;align-items:baseline;
-  margin-bottom:14px;cursor:pointer;
-  border-radius:8px;padding:6px 8px;
+  margin-bottom:6px;cursor:pointer;
+  border-radius:8px;padding:8px 8px 8px 4px;
   transition:background .12s;
 }
 .bib-verse:active,.bib-verse.selected{background:var(--gold-bg);}
@@ -1694,60 +1694,55 @@ function bibRenderReader(chapData,idx){
 }
 
 function bibExtractVerses(nodes){
-  // Flatten all content into tokens first
   var tokens=[];
-  function flatten(arr){
+  function flatten(arr,inTitle){
     if(!Array.isArray(arr))return;
     arr.forEach(function(n){
       if(!n)return;
-      if(n.type==='tag'&&(n.name==='verse-num'||n.name==='v')){
+      // Section titles — skip their text content
+      var tagName=n.name||'';
+      var isTitle=(tagName==='title'||tagName==='h3'||tagName==='heading'||tagName==='s'||tagName==='ms');
+      if(n.type==='tag'&&(tagName==='verse-num'||tagName==='v'||tagName==='vn')){
         var num=n.attrs&&n.attrs.value?n.attrs.value:'';
         if(!num&&n.attrs&&n.attrs.number)num=n.attrs.number;
         if(!num&&n.items)num=bibTextFlat(n.items).trim();
-        var id=n.attrs&&n.attrs.verseorgid?n.attrs.verseorgid:
-               (n.attrs&&n.attrs.id?n.attrs.id:'');
+        num=num.replace(/[^0-9]/g,'');
+        var id=(n.attrs&&n.attrs.verseorgid)?n.attrs.verseorgid:
+               ((n.attrs&&n.attrs.id)?n.attrs.id:'');
         if(num)tokens.push({type:'vstart',num:num,id:id||'v'+num});
-      } else if(n.type==='tag'&&n.name==='verse-end'){
-        // ignore
-      } else if(n.type==='text'){
+      } else if(n.type==='tag'&&isTitle){
+        // skip title text entirely
+      } else if(n.type==='tag'&&(tagName==='note'||tagName==='f'||tagName==='x')){
+        // skip footnotes/cross-refs
+      } else if(n.type==='text'&&!inTitle){
         var t=(n.text||'').replace(/\s+/g,' ');
         if(t.trim())tokens.push({type:'text',text:t});
       } else if(n.items){
-        flatten(n.items);
+        flatten(n.items,inTitle||isTitle);
       }
     });
   }
-  flatten(nodes);
+  flatten(nodes,false);
 
-  // Build verse objects
+  // Build verses
   var verses=[],cur=null;
   tokens.forEach(function(t){
     if(t.type==='vstart'){
       cur={id:t.id,num:t.num,text:''};
       verses.push(cur);
-    } else if(t.type==='text'){
-      if(cur){cur.text+=t.text;}
+    } else if(t.type==='text'&&cur){
+      cur.text+=t.text;
     }
   });
 
-  // Clean up text
-  verses.forEach(function(v){v.text=v.text.trim();});
-  verses=verses.filter(function(v){return v.text.length>0;});
+  verses.forEach(function(v){v.text=v.text.replace(/\s+/g,' ').trim();});
+  // Keep verses even if short (v1 might be short like "No princípio...")
+  verses=verses.filter(function(v){return v.num&&v.text.length>0;});
 
-  // Fallback: if still no verses, try splitting by number pattern
+  // Fallback
   if(!verses.length){
     var raw=bibTextFlat(nodes).trim();
-    if(raw){
-      // Try to split "1Text 2Text" pattern
-      var parts=raw.split(/(?=\b[0-9]+[A-Z])/);
-      if(parts.length>1){
-        parts.forEach(function(p){
-          var m=p.match(/^([0-9]+)(.*)/s);
-          if(m)verses.push({id:'v'+m[1],num:m[1],text:m[2].trim()});
-        });
-      }
-      if(!verses.length)verses.push({id:'v1',num:'1',text:raw});
-    }
+    if(raw)verses.push({id:'v1',num:'1',text:raw});
   }
   return verses;
 }
