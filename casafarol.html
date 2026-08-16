@@ -1695,57 +1695,87 @@ function bibRenderReader(chapData,idx){
 
 function bibExtractVerses(nodes){
   var tokens=[];
-  function flatten(arr,inTitle){
+  var SKIP_TAGS={title:1,heading:1,s:1,ms:1,h:1,mt:1,d:1,note:1,f:1,x:1};
+  var VERSE_TAGS={'verse-num':1,v:1,vn:1};
+
+  function flatten(arr,skip){
     if(!Array.isArray(arr))return;
-    arr.forEach(function(n){
-      if(!n)return;
-      // Section titles — skip their text content
-      var tagName=n.name||'';
-      var isTitle=(tagName==='title'||tagName==='h3'||tagName==='heading'||tagName==='s'||tagName==='ms');
-      if(n.type==='tag'&&(tagName==='verse-num'||tagName==='v'||tagName==='vn')){
-        var num=n.attrs&&n.attrs.value?n.attrs.value:'';
-        if(!num&&n.attrs&&n.attrs.number)num=n.attrs.number;
-        if(!num&&n.items)num=bibTextFlat(n.items).trim();
+    for(var i=0;i<arr.length;i++){
+      var n=arr[i]; if(!n)continue;
+      var tag=n.name||'';
+      if(n.type==='tag'&&VERSE_TAGS[tag]){
+        var num=String((n.attrs&&(n.attrs.value||n.attrs.number))||'');
+        if(!num&&n.items)num=n.items.map(function(x){return x.text||'';}).join('');
         num=num.replace(/[^0-9]/g,'');
-        var id=(n.attrs&&n.attrs.verseorgid)?n.attrs.verseorgid:
-               ((n.attrs&&n.attrs.id)?n.attrs.id:'');
-        if(num)tokens.push({type:'vstart',num:num,id:id||'v'+num});
-      } else if(n.type==='tag'&&isTitle){
-        // skip title text entirely
-      } else if(n.type==='tag'&&(tagName==='note'||tagName==='f'||tagName==='x')){
-        // skip footnotes/cross-refs
-      } else if(n.type==='text'&&!inTitle){
-        var t=(n.text||'').replace(/\s+/g,' ');
-        if(t.trim())tokens.push({type:'text',text:t});
-      } else if(n.items){
-        flatten(n.items,inTitle||isTitle);
+        if(num)tokens.push({t:'v',n:num});
+      } else if(n.type==='tag'&&SKIP_TAGS[tag]){
+        // skip
+      } else if(n.type==='text'&&!skip){
+        var tx=(n.text||'').replace(/[\r\n]+/g,' ').replace(/[ \t]+/g,' ');
+        if(tx.trim())tokens.push({t:'x',x:tx});
+      } else if(n.items&&!SKIP_TAGS[tag]){
+        flatten(n.items,skip);
       }
-    });
+    }
   }
   flatten(nodes,false);
 
-  // Build verses
+  // Build verses from structured tokens
   var verses=[],cur=null;
-  tokens.forEach(function(t){
-    if(t.type==='vstart'){
-      cur={id:t.id,num:t.num,text:''};
-      verses.push(cur);
-    } else if(t.type==='text'&&cur){
-      cur.text+=t.text;
+  for(var i=0;i<tokens.length;i++){
+    var tk=tokens[i];
+    if(tk.t==='v'){cur={id:'v'+tk.n,num:tk.n,text:''};verses.push(cur);}
+    else if(tk.t==='x'&&cur){cur.text+=tk.x;}
+  }
+  verses.forEach(function(v){v.text=v.text.replace(/[ \t]+/g,' ').trim();});
+  verses=verses.filter(function(v){return v.text.length>0;});
+
+  // Fallback: API returned inline numbers — parse raw text
+  if(verses.length<=1){
+    var raw='';
+    function getRaw(a){
+      if(!Array.isArray(a))return;
+      a.forEach(function(n){
+        if(n.type==='text')raw+=n.text||'';
+        if(n.items)getRaw(n.items);
+      });
     }
-  });
+    getRaw(nodes);
+    raw=raw.replace(/[\r\n]+/g,' ').replace(/[ \t]+/g,' ').trim();
 
-  verses.forEach(function(v){v.text=v.text.replace(/\s+/g,' ').trim();});
-  // Keep verses even if short (v1 might be short like "No princípio...")
-  verses=verses.filter(function(v){return v.num&&v.text.length>0;});
+    // Strip leading section title before first digit: "A criação1No..." -> "1No..."
+    raw=raw.replace(/^[^\d]+(?=\d)/,'');
 
-  // Fallback
-  if(!verses.length){
-    var raw=bibTextFlat(nodes).trim();
-    if(raw)verses.push({id:'v1',num:'1',text:raw});
+    // Split inline verse numbers: "1No princípio 2A terra 3Então"
+    // Find all positions where a digit sequence is followed by a non-digit, non-space
+    var built=[];
+    var positions=[];
+    var ri=0;
+    while(ri<raw.length){
+      // Find a digit
+      if(raw[ri]>='0'&&raw[ri]<='9'){
+        var ns=ri;
+        while(ri<raw.length&&raw[ri]>='0'&&raw[ri]<='9')ri++;
+        var ne=ri;
+        // Check next char is a letter (not space/digit)
+        if(ne<raw.length&&raw[ne]!==' '&&(raw[ne]<'0'||raw[ne]>'9')){
+          positions.push({idx:ns,end:ne,num:raw.slice(ns,ne)});
+        }
+      } else { ri++; }
+    }
+    for(var p=0;p<positions.length;p++){
+      var tstart=positions[p].end;
+      var tend=p+1<positions.length?positions[p+1].idx:raw.length;
+      var txt=raw.slice(tstart,tend).replace(/[ \t]+/g,' ').trim();
+      if(txt)built.push({id:'v'+positions[p].num,num:positions[p].num,text:txt});
+    }
+
+    if(built.length>1){verses=built;}
+    else if(raw&&!verses.length){verses=[{id:'v1',num:'1',text:raw}];}
   }
   return verses;
 }
+
 function bibText(items){if(!items)return '';return items.map(function(n){return n.text||'';}).join('');}
 function bibTextFlat(nodes){
   if(!Array.isArray(nodes))return '';
