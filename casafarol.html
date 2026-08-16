@@ -1452,8 +1452,22 @@ async function bibLoadBibles(){
 
 async function bibLoadBooks(){
   try{
-    var data=await bibFetch('/bibles/'+BIB.bibleId+'/books');
-    BIB.books=data.data||[]; bibShowHome();
+    var data=await bibFetch('/bibles/'+BIB.bibleId+'/books?include-chapters=false&include-chapters-and-sections=false');
+    BIB.books=data.data||[];
+    // Tag each book with testament based on API field or known canonical list
+    var NT_IDS=['MAT','MRK','LUK','JHN','ACT','ROM','1CO','2CO','GAL','EPH','PHP','COL',
+      '1TH','2TH','1TI','2TI','TIT','PHM','HEB','JAS','1PE','2PE','1JN','2JN','3JN','JUD','REV'];
+    BIB.books.forEach(function(b){
+      var abbr=(b.abbreviation||b.id||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+      // Use API testament field if available
+      if(b.testament){ b._testament=b.testament; }
+      else {
+        // Fallback: check if book abbreviation matches NT list
+        var isNT=NT_IDS.some(function(id){return abbr.indexOf(id)>=0||id.indexOf(abbr)>=0;});
+        b._testament = isNT ? 'NT' : 'OT';
+      }
+    });
+    bibShowHome();
   }catch(e){bibShowError('Erro ao carregar livros',e.message);}
 }
 
@@ -1493,15 +1507,19 @@ function bibRenderFavs(){
 function bibShowTestament(code,chipEl){
   document.querySelectorAll('.bib-testament-tab').forEach(function(t){t.classList.remove('on');});
   if(chipEl)chipEl.classList.add('on');
-  var OT=39;
-  var list=code==='OT'?BIB.books.slice(0,OT):BIB.books.slice(OT);
-  var offset=code==='OT'?0:OT;
+  // Filter by _testament tag set during load
+  var list=BIB.books.filter(function(b){return b._testament===code;});
+  // Fallback: if tagging didn't work, split at 39
+  if(!list.length){
+    var OT=39;
+    list=code==='OT'?BIB.books.slice(0,OT):BIB.books.slice(OT);
+  }
   var el=bibEl('bib-books-list'); if(!el)return;
   el.innerHTML='';
   list.forEach(function(b,i){
     var d=document.createElement('div');
     d.className='bib-book-item';
-    d.innerHTML='<div class="bib-book-num">'+(offset+i+1)+'</div>'
+    d.innerHTML='<div class="bib-book-num">'+(i+1)+'</div>'
       +'<div class="bib-book-name">'+b.name+'</div>'
       +'<div class="bib-book-abbr">'+(b.abbreviation||'')+'</div>'
       +'<div class="bib-book-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>';
