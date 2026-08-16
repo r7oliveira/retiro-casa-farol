@@ -306,10 +306,10 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   width:72px;height:72px;border-radius:18px;
   display:flex;align-items:center;justify-content:center;
   transition:transform .12s,opacity .12s;
-  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+  box-shadow:0 2px 8px rgba(0,0,0,0.10);
 }
-.ios-icon-bg svg{width:32px;height:32px;stroke:#fff;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
-.ios-label{font-size:11px;font-weight:500;color:var(--ink2);text-align:center;line-height:1.3;max-width:80px;}
+.ios-icon-bg svg{width:30px;height:30px;stroke:var(--gold-lt);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.ios-label{font-size:11px;font-weight:600;color:var(--ink2);text-align:center;line-height:1.3;max-width:80px;}
 
 /* ── NEXT CULTO STRIP ── */
 .ncs-section{padding:0 16px 20px;}
@@ -388,7 +388,7 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .bib-input-sm{padding:8px 12px;font-size:13px;margin-bottom:0;}
 .bib-primary-btn{width:100%;background:var(--ink);color:var(--bg);border-radius:10px;padding:13px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:opacity .2s;}
 .bib-primary-btn:active{opacity:.8;}
-.bib-danger-btn{width:100%;background:rgba(200,50,50,.08);color:#C83232;border:1px solid rgba(200,50,50,.15);border-radius:10px;padding:12px;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;}
+.bib-danger-btn{width:100%;background:var(--bg);color:var(--ink3);border:1px solid var(--border2);border-radius:10px;padding:12px;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;}
 
 /* Loader */
 .bib-loader{display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;}
@@ -549,10 +549,10 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .ncs-title{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink);margin-bottom:10px;}
 
 /* ══ ORACAO PAGE ══ */
-.ora-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#3D1A6E 0%,#2D1250 100%);}
-.ora-eye{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;}
+.ora-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#1C1A17 0%,#111110 100%);}
+.ora-eye{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,232,223,0.5);margin-bottom:8px;}
 .ora-hl{font-family:var(--serif);font-size:38px;font-weight:500;color:#fff;line-height:.95;}
-.ora-hl em{font-style:italic;color:#D4ADFB;}
+.ora-hl em{font-style:italic;color:var(--gold-lt);}
 .ora-sub{font-size:13px;color:rgba(255,255,255,.55);margin-top:8px;line-height:1.5;}
 .ora-body{padding:16px;}
 .ora-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:12px;}
@@ -564,7 +564,7 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   font-family:var(--sans);outline:none;resize:none;min-height:120px;
   background:var(--bg);line-height:1.6;transition:border-color .2s;
 }
-.ora-textarea:focus{border-color:#8E44AD;}
+.ora-textarea:focus{border-color:var(--gold);}
 .ora-anon{display:flex;align-items:center;gap:10px;padding:12px 0;cursor:pointer;}
 .ora-anon-check{
   width:20px;height:20px;border-radius:5px;
@@ -572,12 +572,12 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
   transition:all .15s;
 }
-.ora-anon-check.checked{background:#8E44AD;border-color:#8E44AD;}
+.ora-anon-check.checked{background:#8E44AD;border-color:var(--gold);}
 .ora-anon-check svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:3;display:none;}
 .ora-anon-check.checked svg{display:block;}
 .ora-anon-label{font-size:14px;color:var(--ink2);}
 .ora-submit{
-  width:100%;background:linear-gradient(135deg,#8E44AD,#6C3483);
+  width:100%;background:var(--ink);
   color:#fff;border-radius:var(--r-sm);padding:15px;
   font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
   transition:opacity .2s;
@@ -606,7 +606,7 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .ora-item-meta{font-size:11px;color:var(--ink4);margin-top:4px;}
 
 /* ══ MENSAGENS PAGE ══ */
-.msg-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#1A3A5C 0%,#0D2035 100%);}
+.msg-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#1C1A17 0%,#111110 100%);}
 .msg-eye{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px;}
 .msg-hl{font-family:var(--serif);font-size:38px;font-weight:500;color:#fff;line-height:.95;}
 .msg-hl em{font-style:italic;color:#7FB3D3;}
@@ -652,10 +652,10 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .msg-empty-text{font-size:14px;line-height:1.6;}
 
 /* ══ PLANO DE LEITURA ══ */
-.plan-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#1A4731 0%,#0D2E1E 100%);}
-.plan-eye{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px;}
+.plan-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#1C1A17 0%,#111110 100%);}
+.plan-eye{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,232,223,.5);margin-bottom:8px;}
 .plan-hl{font-family:var(--serif);font-size:38px;font-weight:500;color:#fff;line-height:.95;}
-.plan-hl em{font-style:italic;color:#82C9A0;}
+.plan-hl em{font-style:italic;color:var(--gold-lt);}
 .plan-sub{font-size:13px;color:rgba(255,255,255,.55);margin-top:8px;}
 .plan-body{padding:16px;}
 .plan-progress-card{
@@ -691,8 +691,8 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .plan-day.done .plan-day-check{color:var(--gold);}
 
 /* ══ PERFIL PAGE ══ */
-.perf-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#2C2C2C 0%,#111 100%);}
-.perf-eye{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px;}
+.perf-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#1C1A17 0%,#111110 100%);}
+.perf-eye{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,232,223,.4);margin-bottom:8px;}
 .perf-hl{font-family:var(--serif);font-size:38px;font-weight:500;color:#fff;line-height:.95;}
 .perf-hl em{font-style:italic;color:var(--gold-lt);}
 .perf-body{padding:16px;}
@@ -718,8 +718,8 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .perf-last-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:2px;}
 .perf-last-value{font-family:var(--serif);font-size:16px;font-weight:500;color:var(--ink);}
 .perf-reset-btn{
-  width:100%;background:rgba(200,50,50,.07);color:#C83232;
-  border:1px solid rgba(200,50,50,.12);border-radius:var(--r-sm);
+  width:100%;background:var(--bg);color:var(--ink3);
+  border:1px solid var(--border2);border-radius:var(--r-sm);
   padding:12px;font-size:13px;font-weight:600;cursor:pointer;
   margin-top:12px;
 }
@@ -757,13 +757,13 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   color:#EDE8DF;letter-spacing:.01em;
 }
 .spoti-identity{
-  background:linear-gradient(180deg,#1A3A5C 0%,#111110 100%);
+  background:linear-gradient(180deg,#1C1A17 0%,#111110 100%);
   padding:20px 20px 28px;
   display:flex;flex-direction:column;align-items:center;text-align:center;
 }
 .spoti-cover{
   width:160px;height:160px;border-radius:16px;
-  background:linear-gradient(145deg,#1A3A5C,#0D2035);
+  background:linear-gradient(145deg,#1C1A17,#111110);
   border:1px solid rgba(255,255,255,.08);
   display:flex;align-items:center;justify-content:center;
   margin-bottom:16px;
@@ -1072,8 +1072,8 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .cur-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;}
 .cur-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;}
 .cur-name{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--ink);}
-.badge-open{background:var(--green-bg);color:var(--green);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:40px;}
-.badge-soon{background:#FFF7ED;color:#C2410C;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:40px;}
+.badge-open{background:var(--gold-bg);color:var(--gold);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:40px;}
+.badge-soon{background:var(--bg2);color:var(--ink3);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:40px;}
 .cur-desc{font-size:13px;color:var(--ink3);line-height:1.5;margin-top:4px;}
 .cur-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
 .cur-fi{font-size:12px;color:var(--ink4);font-weight:500;}
@@ -1122,7 +1122,7 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .soc-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6;}
 .wa-btn{
-  width:100%;background:#22C55E;color:#fff;
+  width:100%;background:var(--ink);color:#fff;
   border-radius:var(--r-sm);padding:14px;
   display:flex;align-items:center;justify-content:center;
   gap:10px;font-size:14px;font-weight:700;
@@ -1206,28 +1206,28 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
     <div class="ios-grid">
 
       <div class="ios-icon" onclick="nav('historia')">
-        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#3B5998,#2D4270)">
+        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#1C1A17,#111110)">
           <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         </div>
         <div class="ios-label">Igreja</div>
       </div>
 
       <div class="ios-icon" onclick="nav('ministerios')">
-        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#7B5EA7,#5B3E8A)">
+        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#1C1A17,#111110)">
           <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         </div>
         <div class="ios-label">Ministérios</div>
       </div>
 
       <div class="ios-icon" onclick="openCultos()">
-        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#C0392B,#922B21)">
+        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#1C1A17,#111110)">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
         <div class="ios-label">Cultos</div>
       </div>
 
       <div class="ios-icon" onclick="openEventos()">
-        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#E67E22,#BA6010)">
+        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#1C1A17,#111110)">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
         </div>
         <div class="ios-label">Eventos</div>
@@ -1241,28 +1241,28 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       </div>
 
       <div class="ios-icon" onclick="nav('plano')">
-        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#16A085,#0E6655)">
+        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#1C1A17,#111110)">
           <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         </div>
         <div class="ios-label">Plano</div>
       </div>
 
       <div class="ios-icon" onclick="nav('oracao')">
-        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#8E44AD,#6C3483)">
+        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#1C1A17,#111110)">
           <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
         </div>
         <div class="ios-label">Oração</div>
       </div>
 
       <div class="ios-icon" onclick="nav('contribuir')">
-        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#27AE60,#1A7A42)">
+        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#1C1A17,#111110)">
           <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </div>
         <div class="ios-label">Contribuir</div>
       </div>
 
       <div class="ios-icon" onclick="nav('mensagens')">
-        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#2980B9,#1A5276)">
+        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#1C1A17,#111110)">
           <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
         </div>
         <div class="ios-label">Mensagens</div>
