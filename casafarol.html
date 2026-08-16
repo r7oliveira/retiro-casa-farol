@@ -445,16 +445,46 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .bib-nav-btn{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--ink2);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 12px;cursor:pointer;}
 .bib-nav-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
 .bib-nav-btn:disabled{opacity:.3;cursor:default;}
-.bib-reader-content{flex:1;overflow-y:auto;padding:16px 16px 40px;-webkit-overflow-scrolling:touch;}
-.bib-verse{padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;display:flex;gap:10px;align-items:flex-start;}
-.bib-verse:active{background:var(--gold-bg);margin:0 -16px;padding:10px 16px;}
+.bib-reader-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.bib-reader-content{padding:20px 20px 60px;line-height:1.85;}
+.bib-verse{
+  display:flex;gap:0;align-items:baseline;
+  margin-bottom:14px;cursor:pointer;
+  border-radius:8px;padding:6px 8px;
+  transition:background .12s;
+}
+.bib-verse:active,.bib-verse.selected{background:var(--gold-bg);}
 .bib-verse.fav{background:var(--gold-bg);}
-.bib-vnum{font-size:11px;font-weight:700;color:var(--gold);min-width:22px;margin-top:3px;flex-shrink:0;}
-.bib-vtext{font-size:17px;line-height:1.7;color:var(--ink);}
-.bib-verse-actions{display:none;gap:10px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+#p-biblia.bib-dark .bib-verse.selected,
+#p-biblia.bib-dark .bib-verse.fav{background:rgba(184,146,74,0.1);}
+.bib-vnum{
+  font-size:10px;font-weight:700;
+  color:var(--gold);
+  min-width:24px;flex-shrink:0;
+  margin-top:4px;line-height:1;
+  font-family:var(--sans);
+  letter-spacing:.02em;
+}
+.bib-vtext{
+  font-size:17px;line-height:1.85;
+  color:var(--ink);
+  font-family:var(--serif);
+  font-weight:400;
+  flex:1;
+}
+#p-biblia.bib-dark .bib-vtext{color:#D4CCBC;}
+.bib-verse-actions{
+  display:none;gap:16px;
+  margin-top:10px;padding-top:10px;
+  border-top:1px solid var(--border);
+}
 .bib-verse.selected .bib-verse-actions{display:flex;}
-.bib-vaction{font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:5px;}
-.bib-vaction svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+.bib-vaction{
+  font-size:11px;font-weight:700;color:var(--gold);
+  letter-spacing:.06em;text-transform:uppercase;
+  cursor:pointer;display:flex;align-items:center;gap:5px;
+}
+.bib-vaction svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
 
 /* Favorites */
 .bib-fav-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:0 16px 8px;cursor:pointer;}
@@ -1664,23 +1694,60 @@ function bibRenderReader(chapData,idx){
 }
 
 function bibExtractVerses(nodes){
-  var verses=[],cur=null;
-  function walk(arr){
+  // Flatten all content into tokens first
+  var tokens=[];
+  function flatten(arr){
     if(!Array.isArray(arr))return;
     arr.forEach(function(n){
       if(!n)return;
-      if(n.type==='tag'&&n.name==='verse-num'){
-        var num=n.attrs&&n.attrs.value?n.attrs.value:(n.items?bibText(n.items):'');
-        var id=n.attrs&&n.attrs.verseorgid?n.attrs.verseorgid:(n.attrs&&n.attrs.id?n.attrs.id:'v'+num);
-        cur={id:id,num:num,text:''};verses.push(cur);
-      } else if(n.type==='text'){if(cur)cur.text+=n.text||'';}
-      else if(n.items){walk(n.items);}
+      if(n.type==='tag'&&(n.name==='verse-num'||n.name==='v')){
+        var num=n.attrs&&n.attrs.value?n.attrs.value:'';
+        if(!num&&n.attrs&&n.attrs.number)num=n.attrs.number;
+        if(!num&&n.items)num=bibTextFlat(n.items).trim();
+        var id=n.attrs&&n.attrs.verseorgid?n.attrs.verseorgid:
+               (n.attrs&&n.attrs.id?n.attrs.id:'');
+        if(num)tokens.push({type:'vstart',num:num,id:id||'v'+num});
+      } else if(n.type==='tag'&&n.name==='verse-end'){
+        // ignore
+      } else if(n.type==='text'){
+        var t=(n.text||'').replace(/\s+/g,' ');
+        if(t.trim())tokens.push({type:'text',text:t});
+      } else if(n.items){
+        flatten(n.items);
+      }
     });
   }
-  walk(nodes);
+  flatten(nodes);
+
+  // Build verse objects
+  var verses=[],cur=null;
+  tokens.forEach(function(t){
+    if(t.type==='vstart'){
+      cur={id:t.id,num:t.num,text:''};
+      verses.push(cur);
+    } else if(t.type==='text'){
+      if(cur){cur.text+=t.text;}
+    }
+  });
+
+  // Clean up text
+  verses.forEach(function(v){v.text=v.text.trim();});
+  verses=verses.filter(function(v){return v.text.length>0;});
+
+  // Fallback: if still no verses, try splitting by number pattern
   if(!verses.length){
-    var raw=bibTextFlat(nodes);
-    if(raw)verses.push({id:'v1',num:'1',text:raw});
+    var raw=bibTextFlat(nodes).trim();
+    if(raw){
+      // Try to split "1Text 2Text" pattern
+      var parts=raw.split(/(?=\b[0-9]+[A-Z])/);
+      if(parts.length>1){
+        parts.forEach(function(p){
+          var m=p.match(/^([0-9]+)(.*)/s);
+          if(m)verses.push({id:'v'+m[1],num:m[1],text:m[2].trim()});
+        });
+      }
+      if(!verses.length)verses.push({id:'v1',num:'1',text:raw});
+    }
   }
   return verses;
 }
@@ -1688,7 +1755,10 @@ function bibText(items){if(!items)return '';return items.map(function(n){return 
 function bibTextFlat(nodes){
   if(!Array.isArray(nodes))return '';
   var out='';
-  nodes.forEach(function(n){if(n.type==='text')out+=n.text||'';if(n.items)out+=bibTextFlat(n.items);});
+  nodes.forEach(function(n){
+    if(n.type==='text')out+=n.text||'';
+    if(n.items)out+=bibTextFlat(n.items);
+  });
   return out;
 }
 
