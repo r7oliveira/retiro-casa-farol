@@ -1452,19 +1452,23 @@ async function bibLoadBibles(){
 
 async function bibLoadBooks(){
   try{
-    var data=await bibFetch('/bibles/'+BIB.bibleId+'/books?include-chapters=false&include-chapters-and-sections=false');
+    var data=await bibFetch('/bibles/'+BIB.bibleId+'/books');
     BIB.books=data.data||[];
-    // Tag each book with testament based on API field or known canonical list
-    var NT_IDS=['MAT','MRK','LUK','JHN','ACT','ROM','1CO','2CO','GAL','EPH','PHP','COL',
-      '1TH','2TH','1TI','2TI','TIT','PHM','HEB','JAS','1PE','2PE','1JN','2JN','3JN','JUD','REV'];
+    // Canonical OT book IDs used by API.Bible
+    var OT_IDS=['GEN','EXO','LEV','NUM','DEU','JOS','JDG','RUT','1SA','2SA','1KI','2KI',
+      '1CH','2CH','EZR','NEH','EST','JOB','PSA','PRO','ECC','SNG','ISA','JER','LAM',
+      'EZK','DAN','HOS','JOL','AMO','OBA','JON','MIC','NAM','HAB','ZEP','HAG','ZEC','MAL'];
     BIB.books.forEach(function(b){
-      var abbr=(b.abbreviation||b.id||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
       // Use API testament field if available
-      if(b.testament){ b._testament=b.testament; }
-      else {
-        // Fallback: check if book abbreviation matches NT list
-        var isNT=NT_IDS.some(function(id){return abbr.indexOf(id)>=0||id.indexOf(abbr)>=0;});
-        b._testament = isNT ? 'NT' : 'OT';
+      if(b.testament){
+        b._testament = b.testament;
+      } else {
+        // Match by book ID prefix against canonical OT list
+        var bid = (b.id||'').toUpperCase();
+        var isOT = OT_IDS.some(function(oid){
+          return bid===oid || bid.indexOf(oid)===0 || oid.indexOf(bid)===0;
+        });
+        b._testament = isOT ? 'OT' : 'NT';
       }
     });
     bibShowHome();
@@ -1509,10 +1513,14 @@ function bibShowTestament(code,chipEl){
   if(chipEl)chipEl.classList.add('on');
   // Filter by _testament tag set during load
   var list=BIB.books.filter(function(b){return b._testament===code;});
-  // Fallback: if tagging didn't work, split at 39
+  // Fallback: if tagging didn't work, split at canonical count
   if(!list.length){
-    var OT=39;
-    list=code==='OT'?BIB.books.slice(0,OT):BIB.books.slice(OT);
+    var splitAt=BIB.books.findIndex(function(b){
+      var bid=(b.id||'').toUpperCase();
+      return bid==='MAT'||bid.indexOf('MAT')===0;
+    });
+    if(splitAt<0)splitAt=39;
+    list=code==='OT'?BIB.books.slice(0,splitAt):BIB.books.slice(splitAt);
   }
   var el=bibEl('bib-books-list'); if(!el)return;
   el.innerHTML='';
