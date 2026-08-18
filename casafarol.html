@@ -526,6 +526,30 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .bib-fav-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:0 16px 8px;cursor:pointer;}
 .bib-fav-ref{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
 .bib-fav-text{font-size:14px;color:var(--ink);line-height:1.55;}
+.bib-fav-empty{padding:40px 20px;text-align:center;color:var(--ink3);font-size:14px;}
+
+/* Favorites entry button (home screen) */
+.bib-fav-btn{
+  margin:0 16px 4px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:14px 16px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+  transition:transform .1s;
+}
+.bib-fav-btn:active{transform:scale(.98);background:var(--gold-bg);}
+.bib-fav-btn-icon{
+  width:38px;height:38px;border-radius:10px;flex-shrink:0;
+  background:var(--gold-bg);border:1px solid var(--gold-border);
+  display:flex;align-items:center;justify-content:center;
+}
+.bib-fav-btn-icon svg{width:18px;height:18px;stroke:var(--gold);fill:var(--gold);stroke-width:1.4;}
+.bib-fav-btn-body{flex:1;min-width:0;}
+.bib-fav-btn-title{font-size:15px;font-weight:600;color:var(--ink);}
+.bib-fav-btn-sub{font-size:12px;color:var(--ink3);margin-top:1px;}
+.bib-fav-btn-arrow{color:var(--ink4);flex-shrink:0;}
+.bib-fav-btn-arrow svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
+#p-biblia.bib-dark .bib-fav-btn{background:#1C1A17;border-color:#2A2824;}
+#p-biblia.bib-dark .bib-fav-btn-title{color:#EDE8DF;}
 
 /* Settings modal */
 .bib-modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0);display:flex;align-items:flex-end;pointer-events:none;transition:background .25s;}
@@ -2095,10 +2119,18 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       <div class="bib-continue-card" id="bib-continue-card" onclick="bibContinue()"></div>
     </div>
 
-    <!-- Favorites -->
+    <!-- Favorites button -->
     <div id="bib-fav-wrap" style="display:none">
-      <div class="bib-section-label">Favoritos</div>
-      <div id="bib-fav-list"></div>
+      <div class="bib-fav-btn" onclick="bibShowFavorites()">
+        <div class="bib-fav-btn-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="bib-fav-btn-body">
+          <div class="bib-fav-btn-title">Favoritos</div>
+          <div class="bib-fav-btn-sub" id="bib-fav-count-label">0 versículos salvos</div>
+        </div>
+        <div class="bib-fav-btn-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
     </div>
 
     <!-- Testamentos -->
@@ -2109,6 +2141,18 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       </div>
       <div id="bib-books-list" class="bib-book-list"></div>
     </div>
+  </div>
+
+  <!-- FAVORITES SCREEN -->
+  <div class="bib-screen" id="bib-screen-favorites" style="display:none">
+    <div class="bib-nav-row">
+      <div class="bib-back-sm" onclick="bibShowHome()">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Início
+      </div>
+      <div class="bib-nav-title">Favoritos</div>
+      <div style="width:56px"></div>
+    </div>
+    <div id="bib-fav-full-list" style="padding:16px 0"></div>
   </div>
 
   <!-- CHAPTERS -->
@@ -2675,7 +2719,7 @@ function bibClearKey(){
 function bibShowSetup(){ bibShowScreen('setup'); }
 
 function bibShowScreen(name){
-  var screens=['setup','loading','error','home','chapters','verses','reader'];
+  var screens=['setup','loading','error','home','chapters','verses','reader','favorites'];
   screens.forEach(function(s){
     var el=bibEl('bib-screen-'+s);
     if(!el)return;
@@ -2763,18 +2807,35 @@ function bibShowHome(){
 }
 
 function bibRenderFavs(){
-  var fw=bibEl('bib-fav-wrap'), fl=bibEl('bib-fav-list');
-  if(!fw||!fl)return;
+  var fw=bibEl('bib-fav-wrap'), lbl=bibEl('bib-fav-count-label');
+  if(!fw)return;
   if(!BIB.favorites.length){fw.style.display='none';return;}
   fw.style.display='block';
-  fl.innerHTML='';
-  BIB.favorites.slice(0,3).forEach(function(f){
+  if(lbl){
+    var n=BIB.favorites.length;
+    lbl.textContent=n+(n===1?' versículo salvo':' versículos salvos');
+  }
+}
+
+function bibShowFavorites(){
+  bibShowScreen('favorites');
+  bibRenderFavoritesFull();
+}
+
+function bibRenderFavoritesFull(){
+  var list=bibEl('bib-fav-full-list'); if(!list)return;
+  list.innerHTML='';
+  if(!BIB.favorites.length){
+    list.innerHTML='<div class="bib-fav-empty">Você ainda não tem versículos favoritados.<br>Toque em um versículo na leitura e depois em "Favoritar".</div>';
+    return;
+  }
+  BIB.favorites.forEach(function(f,i){
     var d=document.createElement('div');
     d.className='bib-fav-item';
     d.innerHTML='<div class="bib-fav-ref">'+f.ref+'</div>'
-      +'<div class="bib-fav-text">'+f.text.substring(0,120)+'...</div>';
-    d.onclick=(function(fv){return function(){bibOpenFav(fv.verseId,fv.ref);};})(f);
-    fl.appendChild(d);
+      +'<div class="bib-fav-text">'+f.text+'</div>';
+    d.onclick=(function(fv){return function(){bibOpenFav(fv);};})(f);
+    list.appendChild(d);
   });
 }
 
@@ -3209,15 +3270,22 @@ function bibClearSelection(){
 function bibFavSelected(){
   var items=bibSelectionList();
   if(!items.length)return;
+  var bookId=BIB.currentBook?BIB.currentBook.id:null;
+  var chap=BIB.currentChapters[BIB.currentChapterIdx];
+  var chapterId=chap?chap.id:null;
   items.forEach(function(it){
     var existing=BIB.favorites.findIndex(function(f){return f.verseId===it.v.id;});
     if(existing<0){
-      BIB.favorites.unshift({verseId:it.v.id,ref:it.ref+' '+it.v.num,text:it.v.text});
+      BIB.favorites.unshift({
+        verseId:it.v.id,ref:it.ref+' '+it.v.num,text:it.v.text,
+        bookId:bookId,chapterId:chapterId,vnum:parseInt(it.v.num)||1
+      });
       if(it.wrap)it.wrap.classList.add('fav');
     }
   });
   if(BIB.favorites.length>50)BIB.favorites.length=50;
   bibSave();
+  bibRenderFavs();
   bibClearSelection();
 }
 function bibShareSelected(){
@@ -3236,8 +3304,15 @@ function bibShareVerse(ref,text){
   else{prompt('Copie o versículo:',msg);}
 }
 
-function bibOpenFav(verseId,ref){
-  alert('Favorito: '+ref+'\nAbra o livro para ler.');
+function bibOpenFav(f){
+  if(!f.bookId||!f.chapterId){
+    alert('Este favorito é de uma versão antiga e não pode ser reaberto automaticamente. Remova e favorite novamente.');
+    return;
+  }
+  bibSelectBook(f.bookId).then(function(){
+    var idx=BIB.currentChapters.findIndex(function(c){return c.id===f.chapterId;});
+    if(idx>=0)bibSelectChapterAt(idx,f.vnum||1);
+  }).catch(function(){});
 }
 
 function bibContinue(){
