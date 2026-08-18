@@ -781,15 +781,26 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   caret-color:var(--gold);
 }
 .notas-editor-title::placeholder{color:var(--ink4);}
-.notas-editor-textarea{
-  border:none;outline:none;background:transparent;resize:none;
+.notas-text-wrap{position:relative;flex:1;min-height:50vh;}
+.notas-editor-backdrop{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;
   font-family:var(--sans);font-size:16px;line-height:1.6;color:var(--ink);
-  width:100%;flex:1;min-height:50vh;padding:2px 0;
+  padding:2px 0;white-space:pre-wrap;word-wrap:break-word;
+}
+.notas-editor-backdrop b{font-weight:800;}
+.notas-editor-backdrop i{font-style:italic;}
+.notas-editor-backdrop mark{background:rgba(252,233,106,.6);color:inherit;border-radius:.15em;padding:0 .05em;}
+.notas-editor-textarea{
+  position:absolute;inset:0;z-index:2;
+  border:none;outline:none;background:transparent;resize:none;
+  font-family:var(--sans);font-size:16px;line-height:1.6;
+  color:transparent;-webkit-text-fill-color:transparent;
+  width:100%;height:100%;padding:2px 0;
   white-space:pre-wrap;word-wrap:break-word;
   caret-color:var(--gold);
   -webkit-user-select:text;user-select:text;
 }
-.notas-editor-textarea::placeholder{color:var(--ink4);}
+.notas-editor-textarea::placeholder{color:var(--ink4);-webkit-text-fill-color:var(--ink4);}
 .notas-editor-toolbar{
   display:flex;align-items:center;gap:2px;
   padding:8px 10px max(10px, env(safe-area-inset-bottom));
@@ -2136,9 +2147,13 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       <input id="notas-editor-title" class="notas-editor-title" type="text" placeholder="Título"
         oninput="notasScheduleAutosave()"
         onkeydown="if(event.key==='Enter'){event.preventDefault();var t=bibEl('notas-editor-text');if(t)t.focus();}">
-      <textarea id="notas-editor-text" class="notas-editor-textarea"
-        placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
-        oninput="notasScheduleAutosave();"></textarea>
+      <div class="notas-text-wrap">
+        <div id="notas-editor-backdrop" class="notas-editor-backdrop" aria-hidden="true"></div>
+        <textarea id="notas-editor-text" class="notas-editor-textarea"
+          placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
+          oninput="notasScheduleAutosave();notasScheduleBackdrop();"
+          onscroll="notasSyncBackdropScroll()"></textarea>
+      </div>
     </div>
     <div class="notas-editor-toolbar">
       <div class="notas-tool-btn" onmousedown="event.preventDefault()" onclick="notasInsertChecklist()" title="Lista de tarefas">
@@ -4028,12 +4043,44 @@ function notasApplyViewportFix(){
   });
 }
 
+// ══ ESPELHO FORMATADO (mostra negrito/itálico/marca-texto de verdade
+//    por trás da caixa de texto invisível, sem perder a confiabilidade
+//    do campo nativo — a digitação em si nunca toca esse espelho) ══
+var NOTAS_BD_RAF=null;
+function notasScheduleBackdrop(){
+  if(NOTAS_BD_RAF)return;
+  NOTAS_BD_RAF=requestAnimationFrame(function(){
+    NOTAS_BD_RAF=null;
+    notasRenderBackdrop();
+  });
+}
+function notasEscapeHtmlLite(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function notasRenderBackdrop(){
+  var editor=bibEl('notas-editor-text'), bd=bibEl('notas-editor-backdrop');
+  if(!editor||!bd)return;
+  var raw=editor.value;
+  var html=notasEscapeHtmlLite(raw);
+  html=html.replace(/\*\*([^\n]+?)\*\*/g,'<b>$1</b>');
+  html=html.replace(/(^|[^\w])_([^\n_]+?)_(?!\w)/g,'$1<i>$2</i>');
+  html=html.replace(/==([^\n=]+?)==/g,'<mark>$1</mark>');
+  if(raw.charAt(raw.length-1)==='\n')html+='&nbsp;';
+  bd.innerHTML=html;
+  notasSyncBackdropScroll();
+}
+function notasSyncBackdropScroll(){
+  var editor=bibEl('notas-editor-text'), bd=bibEl('notas-editor-backdrop');
+  if(editor&&bd)bd.scrollTop=editor.scrollTop;
+}
+
 function notasOpenNew(){
   NOTAS_EDITING_ID=null;
   var ti=bibEl('notas-editor-title'); if(ti)ti.value='';
   var tx=bibEl('notas-editor-text'); if(tx){tx.value='';}
   var dt=bibEl('notas-editor-date'); if(dt)dt.textContent=notasFormatFull(new Date().toISOString());
   notasApplyFontSize(notasGetFontSize());
+  notasRenderBackdrop();
   notasCloseMoreMenu(); notasCloseFontMenu();
   notasBindViewportFix();
   var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.add('open');
@@ -4074,6 +4121,7 @@ function notasOpenEdit(id){
   }
   var dt=bibEl('notas-editor-date'); if(dt)dt.textContent=notasFormatFull(n.updatedAt||n.date);
   notasApplyFontSize(notasGetFontSize());
+  notasRenderBackdrop();
   notasCloseMoreMenu(); notasCloseFontMenu();
   notasBindViewportFix();
   var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.add('open');
@@ -4125,6 +4173,7 @@ function notasInsertChecklist(){
   var pos=start+insert.length;
   editor.setSelectionRange(pos,pos);
   notasScheduleAutosave();
+  notasScheduleBackdrop();
 }
 function notasWrapSelection(marker){
   var editor=bibEl('notas-editor-text'); if(!editor)return;
@@ -4149,6 +4198,7 @@ function notasWrapSelection(marker){
   editor.value=newVal;
   editor.setSelectionRange(newStart,newEnd);
   notasScheduleAutosave();
+  notasScheduleBackdrop();
 }
 function notasToggleBold(){ notasWrapSelection('**'); }
 function notasToggleItalic(){ notasWrapSelection('_'); }
@@ -4161,6 +4211,7 @@ function notasGetFontSize(){
 }
 function notasApplyFontSize(size){
   var editor=bibEl('notas-editor-text'); if(editor)editor.style.fontSize=size+'px';
+  var bd=bibEl('notas-editor-backdrop'); if(bd)bd.style.fontSize=size+'px';
   var lbl=bibEl('notas-font-label'); if(lbl)lbl.textContent=size;
 }
 function notasSetFontSize(size){
