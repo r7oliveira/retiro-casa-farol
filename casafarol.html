@@ -763,11 +763,15 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .notas-editor-title::placeholder{color:var(--ink4);}
 .notas-editor-textarea{
-  border:none;outline:none;background:transparent;resize:none;
+  border:none;outline:none;background:transparent;
   font-family:var(--sans);font-size:16px;line-height:1.6;color:var(--ink);
   width:100%;flex:1;min-height:50vh;padding:2px 0;
+  white-space:pre-wrap;word-wrap:break-word;
 }
-.notas-editor-textarea::placeholder{color:var(--ink4);}
+.notas-editor-textarea:empty:before{
+  content:attr(data-placeholder);color:var(--ink4);pointer-events:none;
+}
+.notas-editor-textarea mark{background:rgba(252,233,106,.6);color:inherit;border-radius:.15em;padding:0 .05em;}
 .notas-editor-toolbar{
   display:flex;align-items:center;gap:2px;
   padding:8px 10px max(10px, env(safe-area-inset-bottom));
@@ -776,10 +780,12 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .notas-tool-btn{
   width:40px;height:40px;display:flex;align-items:center;justify-content:center;
-  color:var(--gold);cursor:pointer;
+  color:var(--gold);cursor:pointer;font-size:17px;font-weight:700;font-family:var(--sans);
 }
 .notas-tool-btn.disabled{color:var(--ink4);cursor:default;}
 .notas-tool-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;}
+.notas-tool-b{font-weight:800;}
+.notas-tool-i{font-style:italic;}
 
 /* ══ MENSAGENS PAGE ══ */
 .msg-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#1C1A17 0%,#111110 100%);}
@@ -2105,18 +2111,18 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       <input id="notas-editor-title" class="notas-editor-title" type="text" placeholder="Título"
         oninput="notasScheduleAutosave()"
         onkeydown="if(event.key==='Enter'){event.preventDefault();var t=bibEl('notas-editor-text');if(t)t.focus();}">
-      <textarea id="notas-editor-text" class="notas-editor-textarea" placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
-        oninput="notasAutoResize();notasScheduleAutosave();"></textarea>
+      <div id="notas-editor-text" class="notas-editor-textarea" contenteditable="true"
+        data-placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
+        oninput="notasScheduleAutosave()"></div>
     </div>
     <div class="notas-editor-toolbar">
-      <div class="notas-tool-btn" onclick="notasInsertChecklist()" title="Lista de tarefas">
+      <div class="notas-tool-btn" onmousedown="event.preventDefault()" onclick="notasInsertChecklist()" title="Lista de tarefas">
         <svg viewBox="0 0 24 24"><rect x="3" y="5" width="6" height="6" rx="1"/><polyline points="4.5 8 5.5 9 7.5 6.5" stroke="var(--bg)" stroke-width="1.2"/><line x1="12" y1="7" x2="21" y2="7"/><rect x="3" y="15" width="6" height="6" rx="1"/><line x1="12" y1="17" x2="21" y2="17"/></svg>
       </div>
-      <div class="notas-tool-btn disabled" title="Anexos indisponíveis nesta versão">
-        <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-      </div>
-      <div class="notas-tool-btn disabled" title="Formatação indisponível nesta versão">
-        <svg viewBox="0 0 24 24"><path d="M4 20l4-11 4 11" fill="none"/><path d="M5.5 15h5"/><path d="M15 8h4a2 2 0 0 1 0 4h-4V8z"/><path d="M15 12h4.5a2 2 0 0 1 0 4H15v-4z"/></svg>
+      <div class="notas-tool-btn notas-tool-b" onmousedown="event.preventDefault()" onclick="notasToggleBold()" title="Negrito">B</div>
+      <div class="notas-tool-btn notas-tool-i" onmousedown="event.preventDefault()" onclick="notasToggleItalic()" title="Itálico">I</div>
+      <div class="notas-tool-btn" onmousedown="event.preventDefault()" onclick="notasToggleHighlight()" title="Marca-texto">
+        <svg viewBox="0 0 24 24"><path d="M3 21l3-1 11-11-2-2L4 18l-1 3z"/><path d="M14 6l4 4"/></svg>
       </div>
     </div>
   </div>
@@ -2461,11 +2467,8 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       <div class="bib-sel-btn" onclick="bibOpenHighlightPicker()">
         <svg viewBox="0 0 24 24"><path d="M3 21l3-1 11-11-2-2L4 18l-1 3z"/><path d="M14 6l4 4"/></svg>Marcar
       </div>
-      <div class="bib-sel-btn" onclick="bibFavSelected()">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Favoritar
-      </div>
-      <div class="bib-sel-btn" onclick="bibShareSelected()">
-        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Compartilhar
+      <div class="bib-sel-btn" onclick="bibCopySelected()">
+        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copiar
       </div>
       <div class="bib-sel-clear" onclick="bibClearSelection()">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -3045,7 +3048,7 @@ function bibRenderFavoritesFull(){
   var list=bibEl('bib-fav-full-list'); if(!list)return;
   list.innerHTML='';
   if(!BIB.favorites.length){
-    list.innerHTML='<div class="bib-fav-empty">Você ainda não tem versículos favoritados.<br>Toque em um versículo na leitura e depois em "Favoritar".</div>';
+    list.innerHTML='<div class="bib-fav-empty">Você ainda não tem versículos favoritados.<br>Toque em um versículo na leitura e depois em "Marcar".</div>';
     return;
   }
   BIB.favorites.forEach(function(f,i){
@@ -3493,38 +3496,22 @@ function bibClearSelection(){
   BIB.selectedVerses={};
   bibUpdateSelectionBar();
 }
-function bibFavSelected(){
-  var items=bibSelectionList();
-  if(!items.length)return;
-  var bookId=BIB.currentBook?BIB.currentBook.id:null;
-  var chap=BIB.currentChapters[BIB.currentChapterIdx];
-  var chapterId=chap?chap.id:null;
-  items.forEach(function(it){
-    var existing=BIB.favorites.findIndex(function(f){return f.verseId===it.v.id;});
-    if(existing<0){
-      BIB.favorites.unshift({
-        verseId:it.v.id,ref:it.ref+' '+it.v.num,text:it.v.text,
-        bookId:bookId,chapterId:chapterId,vnum:parseInt(it.v.num)||1
-      });
-      var mk=it.wrap&&it.wrap._markEl;
-      if(mk&&!BIB.highlights[it.v.id])mk.classList.add('bib-hl-fav');
-    }
-  });
-  if(BIB.favorites.length>50)BIB.favorites.length=50;
-  bibSave();
-  bibRenderFavs();
-  bibClearSelection();
-}
-function bibShareSelected(){
+function bibCopySelected(){
   var items=bibSelectionList();
   if(!items.length)return;
   var nums=items.map(function(it){return it.v.num;});
   var refLabel=items[0].ref+' '+(nums.length>1?(nums[0]+'-'+nums[nums.length-1]):nums[0]);
   var text=items.map(function(it){return it.v.text;}).join(' ');
-  bibShareVerse(refLabel,text);
+  var msg='"'+text+'" — '+refLabel;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(msg).then(function(){alert('Versículo copiado!');});
+  } else {
+    prompt('Copie o versículo:',msg);
+  }
+  bibClearSelection();
 }
 
-// ══ MARCA-TEXTO (highlight colors) ══
+// ══ MARCA-TEXTO (marca e favorita ao mesmo tempo) ══
 function bibOpenHighlightPicker(){
   var sw=bibEl('bib-hl-swatches');
   if(sw&&!sw.children.length){
@@ -3545,16 +3532,28 @@ function bibCloseHighlightPicker(){
 }
 function bibApplyHighlight(colorKey){
   var items=bibSelectionList();
+  if(!items.length)return;
+  var bookId=BIB.currentBook?BIB.currentBook.id:null;
+  var chap=BIB.currentChapters[BIB.currentChapterIdx];
+  var chapterId=chap?chap.id:null;
   items.forEach(function(it){
     BIB.highlights[it.v.id]=colorKey;
+    var existing=BIB.favorites.findIndex(function(f){return f.verseId===it.v.id;});
+    if(existing<0){
+      BIB.favorites.unshift({
+        verseId:it.v.id,ref:it.ref+' '+it.v.num,text:it.v.text,
+        bookId:bookId,chapterId:chapterId,vnum:parseInt(it.v.num)||1
+      });
+    }
     var mk=it.wrap&&it.wrap._markEl;
     if(mk){
-      mk.classList.remove('bib-hl-fav');
       HL_COLORS.forEach(function(c){mk.classList.remove('bib-hl-'+c.key);});
       mk.classList.add('bib-hl-'+colorKey);
     }
   });
+  if(BIB.favorites.length>50)BIB.favorites.length=50;
   bibSave();
+  bibRenderFavs();
   bibCloseHighlightPicker();
   bibClearSelection();
 }
@@ -3562,23 +3561,14 @@ function bibRemoveHighlight(){
   var items=bibSelectionList();
   items.forEach(function(it){
     delete BIB.highlights[it.v.id];
+    BIB.favorites=BIB.favorites.filter(function(f){return f.verseId!==it.v.id;});
     var mk=it.wrap&&it.wrap._markEl;
-    if(mk){
-      HL_COLORS.forEach(function(c){mk.classList.remove('bib-hl-'+c.key);});
-      var isFav=BIB.favorites.some(function(f){return f.verseId===it.v.id;});
-      mk.classList.toggle('bib-hl-fav',isFav);
-    }
+    if(mk){ HL_COLORS.forEach(function(c){mk.classList.remove('bib-hl-'+c.key);}); }
   });
   bibSave();
+  bibRenderFavs();
   bibCloseHighlightPicker();
   bibClearSelection();
-}
-
-function bibShareVerse(ref,text){
-  var msg='"'+text+'" — '+ref;
-  if(navigator.share){navigator.share({title:'Versículo',text:msg});}
-  else if(navigator.clipboard){navigator.clipboard.writeText(msg).then(function(){alert('Versículo copiado!');});}
-  else{prompt('Copie o versículo:',msg);}
 }
 
 function bibOpenFav(f){
@@ -3976,19 +3966,20 @@ function notasRender(){
 }
 
 function notasAutoResize(){
-  var tx=bibEl('notas-editor-text'); if(!tx)return;
-  tx.style.height='auto';
-  tx.style.height=tx.scrollHeight+'px';
+  // contenteditable cresce sozinho; mantido apenas por compatibilidade
 }
 
 function notasOpenNew(){
   NOTAS_EDITING_ID=null;
   var ti=bibEl('notas-editor-title'); if(ti)ti.value='';
-  var tx=bibEl('notas-editor-text'); if(tx){tx.value=''; tx.style.height='';}
+  var tx=bibEl('notas-editor-text'); if(tx){tx.innerHTML='';}
   var dt=bibEl('notas-editor-date'); if(dt)dt.textContent=notasFormatFull(new Date().toISOString());
   notasCloseMoreMenu();
   var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.add('open');
   setTimeout(function(){ if(ti)ti.focus(); },320);
+}
+function notasEscapeHtml(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 function notasOpenEdit(id){
   var list=notasLoad();
@@ -3996,11 +3987,14 @@ function notasOpenEdit(id){
   if(!n)return;
   NOTAS_EDITING_ID=id;
   var ti=bibEl('notas-editor-title'); if(ti)ti.value=n.title||'';
-  var tx=bibEl('notas-editor-text'); if(tx)tx.value=n.text||'';
+  var tx=bibEl('notas-editor-text');
+  if(tx){
+    if(n.html!=null){ tx.innerHTML=n.html; }
+    else { tx.innerHTML=notasEscapeHtml(n.text||'').replace(/\n/g,'<br>'); }
+  }
   var dt=bibEl('notas-editor-date'); if(dt)dt.textContent=notasFormatFull(n.updatedAt||n.date);
   notasCloseMoreMenu();
   var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.add('open');
-  setTimeout(notasAutoResize,50);
 }
 function notasCloseEditor(){
   notasCloseMoreMenu();
@@ -4014,7 +4008,9 @@ function notasScheduleAutosave(){
 }
 function notasCommit(){
   var title=((bibEl('notas-editor-title')||{}).value||'').trim();
-  var text=((bibEl('notas-editor-text')||{}).value||'').trim();
+  var editor=bibEl('notas-editor-text');
+  var html=editor?editor.innerHTML:'';
+  var text=editor?editor.innerText.trim():'';
   if(!title&&!text){
     // Nota vazia: se estava editando uma nota existente que ficou vazia, apaga
     if(NOTAS_EDITING_ID){
@@ -4028,23 +4024,42 @@ function notasCommit(){
   var now=new Date().toISOString();
   if(NOTAS_EDITING_ID){
     var idx=list.findIndex(function(x){return x.id===NOTAS_EDITING_ID;});
-    if(idx>=0){ list[idx].title=title; list[idx].text=text; list[idx].updatedAt=now; }
+    if(idx>=0){ list[idx].title=title; list[idx].text=text; list[idx].html=html; list[idx].updatedAt=now; }
   } else {
     NOTAS_EDITING_ID='n'+Date.now();
-    list.push({id:NOTAS_EDITING_ID, title:title, text:text, date:now, updatedAt:now});
+    list.push({id:NOTAS_EDITING_ID, title:title, text:text, html:html, date:now, updatedAt:now});
   }
   notasSaveAll(list);
 }
 function notasInsertChecklist(){
-  var tx=bibEl('notas-editor-text'); if(!tx)return;
-  var start=tx.selectionStart||0, end=tx.selectionEnd||0;
-  var before=tx.value.substring(0,start), after=tx.value.substring(end);
-  var needsBreak=before.length&&before[before.length-1]!=='\n';
-  var insert=(needsBreak?'\n':'')+'☐ ';
-  tx.value=before+insert+after;
-  var pos=start+insert.length;
-  tx.focus(); tx.setSelectionRange(pos,pos);
-  notasAutoResize();
+  var editor=bibEl('notas-editor-text'); if(!editor)return;
+  editor.focus();
+  var needsBreak=editor.innerText&&editor.innerText.length>0&&editor.innerText.charAt(editor.innerText.length-1)!=='\n';
+  document.execCommand('insertHTML', false, (needsBreak?'<br>':'')+'☐&nbsp;');
+  notasScheduleAutosave();
+}
+function notasToggleBold(){
+  var editor=bibEl('notas-editor-text'); if(!editor)return;
+  editor.focus();
+  document.execCommand('bold');
+  notasScheduleAutosave();
+}
+function notasToggleItalic(){
+  var editor=bibEl('notas-editor-text'); if(!editor)return;
+  editor.focus();
+  document.execCommand('italic');
+  notasScheduleAutosave();
+}
+function notasToggleHighlight(){
+  var editor=bibEl('notas-editor-text'); if(!editor)return;
+  editor.focus();
+  var sel=window.getSelection();
+  if(!sel||sel.rangeCount===0||sel.isCollapsed)return;
+  var node=sel.anchorNode;
+  var el=node&&node.nodeType===3?node.parentElement:node;
+  var alreadyMarked=el&&el.closest&&el.closest('mark');
+  try{ document.execCommand('styleWithCSS', false, true); }catch(e){}
+  document.execCommand('hiliteColor', false, alreadyMarked?'transparent':'rgba(252,233,106,.6)');
   notasScheduleAutosave();
 }
 function notasToggleMoreMenu(){
@@ -4055,7 +4070,8 @@ function notasCloseMoreMenu(){
 }
 function notasShareCurrent(){
   var title=(bibEl('notas-editor-title')||{}).value||'';
-  var text=(bibEl('notas-editor-text')||{}).value||'';
+  var editor=bibEl('notas-editor-text');
+  var text=editor?editor.innerText:'';
   var msg=(title?title+'\n\n':'')+text;
   if(!msg.trim())return;
   if(navigator.share){navigator.share({title:title||'Nota',text:msg});}
