@@ -748,6 +748,24 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .notas-more-item:active{background:var(--gold-bg);}
 .notas-more-item.danger{color:#C0392B;}
 .notas-more-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
+.notas-font-menu{
+  position:absolute;top:40px;right:0;
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  box-shadow:0 12px 30px rgba(17,17,16,.15);
+  padding:6px 8px;display:flex;align-items:center;gap:2px;
+  opacity:0;transform:translateY(-6px) scale(.96);pointer-events:none;
+  transition:opacity .15s,transform .15s;z-index:10;
+}
+.notas-font-menu.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all;}
+.notas-font-btn{
+  width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:var(--ink);border-radius:8px;cursor:pointer;
+}
+.notas-font-btn:active{background:var(--gold-bg);}
+.notas-font-btn-big{font-size:20px;}
+.notas-font-label{
+  min-width:26px;text-align:center;font-size:13px;font-weight:600;color:var(--ink3);
+}
 .notas-editor-date{
   text-align:center;font-size:12.5px;color:var(--ink4);
   padding:2px 16px 10px;flex-shrink:0;
@@ -789,6 +807,24 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .notas-tool-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;}
 .notas-tool-b{font-weight:800;}
 .notas-tool-i{font-style:italic;}
+.notas-editor-toolbar{position:relative;}
+.notas-hl-menu{
+  position:absolute;bottom:100%;left:10px;right:10px;margin-bottom:8px;
+  background:var(--ink);border-radius:14px;
+  padding:10px 12px;display:flex;align-items:center;gap:10px;
+  box-shadow:0 12px 30px rgba(17,17,16,.28);
+  opacity:0;transform:translateY(6px) scale(.97);pointer-events:none;
+  transition:opacity .15s,transform .15s;z-index:12;
+}
+.notas-hl-menu.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all;}
+.notas-hl-swatches{display:flex;align-items:center;gap:9px;flex:1;justify-content:center;}
+.notas-hl-dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid rgba(255,255,255,.2);transition:transform .12s;flex-shrink:0;}
+.notas-hl-dot:active{transform:scale(.82);}
+.notas-hl-remove{
+  width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.14);
+  display:flex;align-items:center;justify-content:center;color:#EDE8DF;cursor:pointer;flex-shrink:0;
+}
+.notas-hl-remove svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4;}
 
 /* ══ MENSAGENS PAGE ══ */
 .msg-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#1C1A17 0%,#111110 100%);}
@@ -2095,6 +2131,9 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Notas
       </div>
       <div class="notas-editor-actions">
+        <div class="notas-editor-icon-btn" onclick="notasToggleFontMenu()" title="Tamanho da letra">
+          <svg viewBox="0 0 24 24"><path d="M3 19l4-13 4 13" fill="none"/><path d="M4 14h6"/><path d="M14 19V9h3.5a2.5 2.5 0 0 1 0 5H14"/></svg>
+        </div>
         <div class="notas-editor-icon-btn" onclick="notasShareCurrent()">
           <svg viewBox="0 0 24 24"><path d="M12 3v12"/><polyline points="7 8 12 3 17 8"/><path d="M5 21h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-3"/><path d="M5 21a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h3"/></svg>
         </div>
@@ -2107,17 +2146,23 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
             Excluir Nota
           </div>
         </div>
+        <div class="notas-font-menu" id="notas-font-menu">
+          <div class="notas-font-btn" onmousedown="event.preventDefault()" onclick="notasChangeFontSize(-1)">A</div>
+          <div class="notas-font-label" id="notas-font-label">16</div>
+          <div class="notas-font-btn notas-font-btn-big" onmousedown="event.preventDefault()" onclick="notasChangeFontSize(1)">A</div>
+        </div>
       </div>
     </div>
     <div class="notas-editor-date" id="notas-editor-date">Nova nota</div>
-    <div class="notas-editor-body" onclick="notasCloseMoreMenu()">
+    <div class="notas-editor-body" onclick="notasCloseMoreMenu();notasCloseFontMenu();notasCloseHlMenu();">
       <input id="notas-editor-title" class="notas-editor-title" type="text" placeholder="Título"
         oninput="notasScheduleAutosave()"
         onkeydown="if(event.key==='Enter'){event.preventDefault();var t=bibEl('notas-editor-text');if(t)t.focus();}">
       <div id="notas-editor-text" class="notas-editor-textarea" contenteditable="true"
         data-placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
         oninput="notasScheduleAutosave();"
-        onkeyup="notasScrollCaretIntoView()"></div>
+        onkeyup="notasScrollCaretIntoView()"
+        onpaste="notasHandlePaste(event)"></div>
     </div>
     <div class="notas-editor-toolbar">
       <div class="notas-tool-btn" onmousedown="event.preventDefault()" onclick="notasInsertChecklist()" title="Lista de tarefas">
@@ -2125,8 +2170,14 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       </div>
       <div class="notas-tool-btn notas-tool-b" onmousedown="event.preventDefault()" onclick="notasToggleBold()" title="Negrito">B</div>
       <div class="notas-tool-btn notas-tool-i" onmousedown="event.preventDefault()" onclick="notasToggleItalic()" title="Itálico">I</div>
-      <div class="notas-tool-btn" onmousedown="event.preventDefault()" onclick="notasToggleHighlight()" title="Marca-texto">
+      <div class="notas-tool-btn" onmousedown="event.preventDefault()" onclick="notasToggleHlMenu()" title="Marca-texto">
         <svg viewBox="0 0 24 24"><path d="M3 21l3-1 11-11-2-2L4 18l-1 3z"/><path d="M14 6l4 4"/></svg>
+      </div>
+      <div class="notas-hl-menu" id="notas-hl-menu">
+        <div class="notas-hl-remove" onmousedown="event.preventDefault()" onclick="notasApplyHighlightColor('transparent')" title="Remover marcação">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <div class="notas-hl-swatches" id="notas-hl-swatches"></div>
       </div>
     </div>
   </div>
@@ -3977,7 +4028,10 @@ function notasAutoResize(){
 // o teclado às vezes não "empurra" a área visível, dando a impressão
 // de que não é possível escrever mais abaixo. Ajustamos a altura do
 // editor pela Visual Viewport API e garantimos que o cursor role à vista.
+// Tudo com requestAnimationFrame + checagem de mudança real, para não
+// entrar num loop de resize->scroll->resize que trava a digitação.
 var NOTAS_VV_BOUND=false;
+var NOTAS_VV_RAF=null;
 function notasBindViewportFix(){
   if(NOTAS_VV_BOUND||!window.visualViewport)return;
   NOTAS_VV_BOUND=true;
@@ -3985,28 +4039,39 @@ function notasBindViewportFix(){
   window.visualViewport.addEventListener('scroll', notasApplyViewportFix);
 }
 function notasApplyViewportFix(){
-  var scr=bibEl('notas-editor-screen'); if(!scr||!scr.classList.contains('open'))return;
-  var vv=window.visualViewport; if(!vv)return;
-  scr.style.height=vv.height+'px';
-  scr.style.top=vv.offsetTop+'px';
+  if(NOTAS_VV_RAF)return;
+  NOTAS_VV_RAF=requestAnimationFrame(function(){
+    NOTAS_VV_RAF=null;
+    var scr=bibEl('notas-editor-screen'); if(!scr||!scr.classList.contains('open'))return;
+    var vv=window.visualViewport; if(!vv)return;
+    var h=Math.round(vv.height)+'px';
+    var t=Math.round(vv.offsetTop)+'px';
+    if(scr.style.height!==h)scr.style.height=h;
+    if(scr.style.top!==t)scr.style.top=t;
+  });
 }
+var NOTAS_SCROLL_RAF=null;
 function notasScrollCaretIntoView(){
-  var body=bibEl('notas-editor-body'); if(!body)return;
-  var sel=window.getSelection();
-  if(!sel||sel.rangeCount===0)return;
-  var range=sel.getRangeAt(0).cloneRange();
-  range.collapse(true);
-  var rect=range.getClientRects()[0];
-  if(!rect&&range.startContainer&&range.startContainer.getBoundingClientRect){
-    rect=range.startContainer.getBoundingClientRect();
-  }
-  if(!rect)return;
-  var bRect=body.getBoundingClientRect();
-  if(rect.bottom>bRect.bottom-24){
-    body.scrollTop+=(rect.bottom-bRect.bottom)+60;
-  } else if(rect.top<bRect.top+8){
-    body.scrollTop-=(bRect.top-rect.top)+20;
-  }
+  if(NOTAS_SCROLL_RAF)return;
+  NOTAS_SCROLL_RAF=requestAnimationFrame(function(){
+    NOTAS_SCROLL_RAF=null;
+    var body=bibEl('notas-editor-body'); if(!body)return;
+    var sel=window.getSelection();
+    if(!sel||sel.rangeCount===0)return;
+    var range=sel.getRangeAt(0).cloneRange();
+    range.collapse(true);
+    var rect=range.getClientRects()[0];
+    if(!rect&&range.startContainer&&range.startContainer.nodeType===1&&range.startContainer.getBoundingClientRect){
+      rect=range.startContainer.getBoundingClientRect();
+    }
+    if(!rect)return;
+    var bRect=body.getBoundingClientRect();
+    if(rect.bottom>bRect.bottom-24){
+      body.scrollTop+=(rect.bottom-bRect.bottom)+60;
+    } else if(rect.top<bRect.top+8){
+      body.scrollTop-=(bRect.top-rect.top)+20;
+    }
+  });
 }
 
 function notasOpenNew(){
@@ -4014,7 +4079,8 @@ function notasOpenNew(){
   var ti=bibEl('notas-editor-title'); if(ti)ti.value='';
   var tx=bibEl('notas-editor-text'); if(tx){tx.innerHTML='';}
   var dt=bibEl('notas-editor-date'); if(dt)dt.textContent=notasFormatFull(new Date().toISOString());
-  notasCloseMoreMenu();
+  notasApplyFontSize(notasGetFontSize());
+  notasCloseMoreMenu(); notasCloseFontMenu(); notasCloseHlMenu();
   notasBindViewportFix();
   var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.add('open');
   setTimeout(notasApplyViewportFix,50);
@@ -4035,7 +4101,8 @@ function notasOpenEdit(id){
     else { tx.innerHTML=notasEscapeHtml(n.text||'').replace(/\n/g,'<br>'); }
   }
   var dt=bibEl('notas-editor-date'); if(dt)dt.textContent=notasFormatFull(n.updatedAt||n.date);
-  notasCloseMoreMenu();
+  notasApplyFontSize(notasGetFontSize());
+  notasCloseMoreMenu(); notasCloseFontMenu(); notasCloseHlMenu();
   notasBindViewportFix();
   var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.add('open');
   setTimeout(notasApplyViewportFix,50);
@@ -4086,28 +4153,95 @@ function notasInsertChecklist(){
 function notasToggleBold(){
   var editor=bibEl('notas-editor-text'); if(!editor)return;
   editor.focus();
+  try{ document.execCommand('styleWithCSS', false, false); }catch(e){}
   document.execCommand('bold');
   notasScheduleAutosave();
 }
 function notasToggleItalic(){
   var editor=bibEl('notas-editor-text'); if(!editor)return;
   editor.focus();
+  try{ document.execCommand('styleWithCSS', false, false); }catch(e){}
   document.execCommand('italic');
   notasScheduleAutosave();
 }
-function notasToggleHighlight(){
+
+// ══ MARCA-TEXTO (menu de cores) ══
+function notasToggleHlMenu(){
+  var editor=bibEl('notas-editor-text'); if(!editor)return;
+  var sw=bibEl('notas-hl-swatches');
+  if(sw&&!sw.children.length){
+    HL_COLORS.forEach(function(c){
+      var dot=document.createElement('div');
+      dot.className='notas-hl-dot';
+      dot.style.background=c.hex;
+      dot.onmousedown=function(e){e.preventDefault();};
+      dot.onclick=(function(hex){return function(){notasApplyHighlightColor(hex);};})(c.hex);
+      sw.appendChild(dot);
+    });
+  }
+  notasCloseMoreMenu(); notasCloseFontMenu();
+  var m=bibEl('notas-hl-menu'); if(m)m.classList.toggle('open');
+}
+function notasCloseHlMenu(){
+  var m=bibEl('notas-hl-menu'); if(m)m.classList.remove('open');
+}
+function notasApplyHighlightColor(hex){
   var editor=bibEl('notas-editor-text'); if(!editor)return;
   editor.focus();
   var sel=window.getSelection();
-  if(!sel||sel.rangeCount===0||sel.isCollapsed)return;
-  var node=sel.anchorNode;
-  var el=node&&node.nodeType===3?node.parentElement:node;
-  var alreadyMarked=el&&el.closest&&el.closest('mark');
-  try{ document.execCommand('styleWithCSS', false, true); }catch(e){}
-  document.execCommand('hiliteColor', false, alreadyMarked?'transparent':'rgba(252,233,106,.6)');
+  if(sel&&sel.rangeCount>0&&!sel.isCollapsed){
+    try{ document.execCommand('styleWithCSS', false, true); }catch(e){}
+    document.execCommand('hiliteColor', false, hex==='transparent'?'transparent':hex);
+    notasScheduleAutosave();
+  }
+  notasCloseHlMenu();
+}
+
+// ══ TAMANHO DA LETRA ══
+var NOTAS_FONT_SIZES=[13,14,15,16,17,18,20,22,24,26,28];
+function notasGetFontSize(){
+  try{ var v=parseInt(localStorage.getItem('cf_notas_fontsize')||'16'); return isNaN(v)?16:v; }catch(e){ return 16; }
+}
+function notasApplyFontSize(size){
+  var editor=bibEl('notas-editor-text'); if(editor)editor.style.fontSize=size+'px';
+  var lbl=bibEl('notas-font-label'); if(lbl)lbl.textContent=size;
+}
+function notasSetFontSize(size){
+  try{ localStorage.setItem('cf_notas_fontsize', String(size)); }catch(e){}
+  notasApplyFontSize(size);
+}
+function notasChangeFontSize(dir){
+  var cur=notasGetFontSize();
+  var idx=NOTAS_FONT_SIZES.indexOf(cur);
+  if(idx<0){
+    // Acha o tamanho mais próximo salvo
+    idx=0; var best=Infinity;
+    NOTAS_FONT_SIZES.forEach(function(s,i){ var d=Math.abs(s-cur); if(d<best){best=d;idx=i;} });
+  }
+  idx=Math.max(0, Math.min(NOTAS_FONT_SIZES.length-1, idx+dir));
+  notasSetFontSize(NOTAS_FONT_SIZES[idx]);
+}
+function notasToggleFontMenu(){
+  notasCloseMoreMenu(); notasCloseHlMenu();
+  var lbl=bibEl('notas-font-label'); if(lbl)lbl.textContent=notasGetFontSize();
+  var m=bibEl('notas-font-menu'); if(m)m.classList.toggle('open');
+}
+function notasCloseFontMenu(){
+  var m=bibEl('notas-font-menu'); if(m)m.classList.remove('open');
+}
+
+// ══ COLAR TEXTO SIMPLES (usa a fonte do app, sem carregar formatação de fora) ══
+function notasHandlePaste(e){
+  e.preventDefault();
+  var text='';
+  if(e.clipboardData&&e.clipboardData.getData){ text=e.clipboardData.getData('text/plain'); }
+  else if(window.clipboardData&&window.clipboardData.getData){ text=window.clipboardData.getData('Text'); }
+  if(!text)return;
+  document.execCommand('insertText', false, text);
   notasScheduleAutosave();
 }
 function notasToggleMoreMenu(){
+  notasCloseFontMenu(); notasCloseHlMenu();
   var m=bibEl('notas-more-menu'); if(m)m.classList.toggle('open');
 }
 function notasCloseMoreMenu(){
