@@ -749,11 +749,11 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .notas-more-item.danger{color:#C0392B;}
 .notas-more-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
 .notas-font-menu{
-  position:absolute;bottom:100%;left:10px;margin-bottom:8px;
+  position:absolute;top:100%;left:10px;margin-top:8px;
   background:var(--surface);border:1px solid var(--border);border-radius:14px;
   box-shadow:0 12px 30px rgba(17,17,16,.15);
   padding:6px 8px;display:flex;align-items:center;gap:2px;
-  opacity:0;transform:translateY(6px) scale(.96);pointer-events:none;
+  opacity:0;transform:translateY(-6px) scale(.96);pointer-events:none;
   transition:opacity .15s,transform .15s;z-index:12;
 }
 .notas-font-menu.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all;}
@@ -803,8 +803,8 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .notas-editor-textarea::placeholder{color:var(--ink4);-webkit-text-fill-color:var(--ink4);}
 .notas-editor-toolbar{
   display:flex;align-items:center;gap:2px;
-  padding:8px 10px max(10px, env(safe-area-inset-bottom));
-  border-top:1px solid var(--border);
+  padding:6px 10px;
+  border-bottom:1px solid var(--border);
   background:var(--bg);flex-shrink:0;
 }
 .notas-tool-btn{
@@ -2142,19 +2142,6 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         </div>
       </div>
     </div>
-    <div class="notas-editor-date" id="notas-editor-date">Nova nota</div>
-    <div class="notas-editor-body" onclick="notasCloseMoreMenu();notasCloseFontMenu();">
-      <input id="notas-editor-title" class="notas-editor-title" type="text" placeholder="Título"
-        oninput="notasScheduleAutosave()"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();var t=bibEl('notas-editor-text');if(t)t.focus();}">
-      <div class="notas-text-wrap">
-        <div id="notas-editor-backdrop" class="notas-editor-backdrop" aria-hidden="true"></div>
-        <textarea id="notas-editor-text" class="notas-editor-textarea"
-          placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
-          oninput="notasScheduleAutosave();notasScheduleBackdrop();"
-          onscroll="notasSyncBackdropScroll()"></textarea>
-      </div>
-    </div>
     <div class="notas-editor-toolbar">
       <div class="notas-tool-btn" onmousedown="event.preventDefault()" onclick="notasInsertChecklist()" title="Lista de tarefas">
         <svg viewBox="0 0 24 24"><rect x="3" y="5" width="6" height="6" rx="1"/><polyline points="4.5 8 5.5 9 7.5 6.5" stroke="var(--bg)" stroke-width="1.2"/><line x1="12" y1="7" x2="21" y2="7"/><rect x="3" y="15" width="6" height="6" rx="1"/><line x1="12" y1="17" x2="21" y2="17"/></svg>
@@ -2176,6 +2163,19 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         <div class="notas-font-btn" onmousedown="event.preventDefault()" onclick="notasChangeFontSize(-1)">A</div>
         <div class="notas-font-label" id="notas-font-label">16</div>
         <div class="notas-font-btn notas-font-btn-big" onmousedown="event.preventDefault()" onclick="notasChangeFontSize(1)">A</div>
+      </div>
+    </div>
+    <div class="notas-editor-date" id="notas-editor-date">Nova nota</div>
+    <div class="notas-editor-body" onclick="notasCloseMoreMenu();notasCloseFontMenu();">
+      <input id="notas-editor-title" class="notas-editor-title" type="text" placeholder="Título"
+        oninput="notasScheduleAutosave()"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();var t=bibEl('notas-editor-text');if(t)t.focus();}">
+      <div class="notas-text-wrap">
+        <div id="notas-editor-backdrop" class="notas-editor-backdrop" aria-hidden="true"></div>
+        <textarea id="notas-editor-text" class="notas-editor-textarea"
+          placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
+          oninput="notasScheduleAutosave();notasScheduleBackdrop();"
+          onscroll="notasSyncBackdropScroll()"></textarea>
       </div>
     </div>
   </div>
