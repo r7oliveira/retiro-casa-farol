@@ -749,12 +749,12 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 .notas-more-item.danger{color:#C0392B;}
 .notas-more-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
 .notas-font-menu{
-  position:absolute;top:40px;right:0;
+  position:absolute;bottom:100%;left:10px;margin-bottom:8px;
   background:var(--surface);border:1px solid var(--border);border-radius:14px;
   box-shadow:0 12px 30px rgba(17,17,16,.15);
   padding:6px 8px;display:flex;align-items:center;gap:2px;
-  opacity:0;transform:translateY(-6px) scale(.96);pointer-events:none;
-  transition:opacity .15s,transform .15s;z-index:10;
+  opacity:0;transform:translateY(6px) scale(.96);pointer-events:none;
+  transition:opacity .15s,transform .15s;z-index:12;
 }
 .notas-font-menu.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all;}
 .notas-font-btn{
@@ -2137,9 +2137,6 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Notas
       </div>
       <div class="notas-editor-actions">
-        <div class="notas-editor-icon-btn" onclick="notasToggleFontMenu()" title="Tamanho da letra">
-          <svg viewBox="0 0 24 24"><path d="M3 19l4-13 4 13" fill="none"/><path d="M4 14h6"/><path d="M14 19V9h3.5a2.5 2.5 0 0 1 0 5H14"/></svg>
-        </div>
         <div class="notas-editor-icon-btn" onclick="notasShareCurrent()">
           <svg viewBox="0 0 24 24"><path d="M12 3v12"/><polyline points="7 8 12 3 17 8"/><path d="M5 21h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-3"/><path d="M5 21a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h3"/></svg>
         </div>
@@ -2151,11 +2148,6 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
             <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             Excluir Nota
           </div>
-        </div>
-        <div class="notas-font-menu" id="notas-font-menu">
-          <div class="notas-font-btn" onmousedown="event.preventDefault()" onclick="notasChangeFontSize(-1)">A</div>
-          <div class="notas-font-label" id="notas-font-label">16</div>
-          <div class="notas-font-btn notas-font-btn-big" onmousedown="event.preventDefault()" onclick="notasChangeFontSize(1)">A</div>
         </div>
       </div>
     </div>
@@ -2183,11 +2175,20 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         </svg>
         <span class="notas-tool-hl-label">Marcar</span>
       </div>
+      <div class="notas-tool-btn notas-tool-hl" onmousedown="event.preventDefault()" onclick="notasToggleFontMenu()" title="Tamanho da letra">
+        <svg viewBox="0 0 24 24"><path d="M3 19l4-13 4 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 19V9h3.5a2.5 2.5 0 0 1 0 5H14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="notas-tool-hl-label">Fonte</span>
+      </div>
       <div class="notas-hl-menu" id="notas-hl-menu">
         <div class="notas-hl-remove" onmousedown="event.preventDefault()" onclick="notasApplyHighlightColor('transparent')" title="Remover marcação">
           <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </div>
         <div class="notas-hl-swatches" id="notas-hl-swatches"></div>
+      </div>
+      <div class="notas-font-menu" id="notas-font-menu">
+        <div class="notas-font-btn" onmousedown="event.preventDefault()" onclick="notasChangeFontSize(-1)">A</div>
+        <div class="notas-font-label" id="notas-font-label">16</div>
+        <div class="notas-font-btn notas-font-btn-big" onmousedown="event.preventDefault()" onclick="notasChangeFontSize(1)">A</div>
       </div>
     </div>
   </div>
