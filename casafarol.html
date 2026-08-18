@@ -3566,7 +3566,7 @@ function bibCopySelected(){
   var items=bibSelectionList();
   if(!items.length)return;
   var nums=items.map(function(it){return it.v.num;});
-  var refLabel=items[0].ref+' '+(nums.length>1?(nums[0]+'-'+nums[nums.length-1]):nums[0]);
+  var refLabel=items[0].ref+':'+(nums.length>1?(nums[0]+'-'+nums[nums.length-1]):nums[0]);
   var text=items.map(function(it){return it.v.text;}).join(' ');
   var msg='"'+text+'" — '+refLabel;
   if(navigator.clipboard){
@@ -3607,7 +3607,7 @@ function bibApplyHighlight(colorKey){
     var existing=BIB.favorites.findIndex(function(f){return f.verseId===it.v.id;});
     if(existing<0){
       BIB.favorites.unshift({
-        verseId:it.v.id,ref:it.ref+' '+it.v.num,text:it.v.text,
+        verseId:it.v.id,ref:it.ref+':'+it.v.num,text:it.v.text,
         bookId:bookId,chapterId:chapterId,vnum:parseInt(it.v.num)||1
       });
     }
