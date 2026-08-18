@@ -782,17 +782,14 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .notas-editor-title::placeholder{color:var(--ink4);}
 .notas-editor-textarea{
-  border:none;outline:none;background:transparent;
+  border:none;outline:none;background:transparent;resize:none;
   font-family:var(--sans);font-size:16px;line-height:1.6;color:var(--ink);
   width:100%;flex:1;min-height:50vh;padding:2px 0;
   white-space:pre-wrap;word-wrap:break-word;
   caret-color:var(--gold);
   -webkit-user-select:text;user-select:text;
 }
-.notas-editor-textarea:empty:before{
-  content:attr(data-placeholder);color:var(--ink4);pointer-events:none;
-}
-.notas-editor-textarea mark{background:rgba(252,233,106,.6);color:inherit;border-radius:.15em;padding:0 .05em;}
+.notas-editor-textarea::placeholder{color:var(--ink4);}
 .notas-editor-toolbar{
   display:flex;align-items:center;gap:2px;
   padding:8px 10px max(10px, env(safe-area-inset-bottom));
@@ -814,23 +811,6 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   font-size:9.5px;font-weight:700;letter-spacing:.02em;color:var(--gold);
 }
 .notas-editor-toolbar{position:relative;}
-.notas-hl-menu{
-  position:absolute;bottom:100%;left:10px;right:10px;margin-bottom:8px;
-  background:var(--ink);border-radius:14px;
-  padding:10px 12px;display:flex;align-items:center;gap:10px;
-  box-shadow:0 12px 30px rgba(17,17,16,.28);
-  opacity:0;transform:translateY(6px) scale(.97);pointer-events:none;
-  transition:opacity .15s,transform .15s;z-index:12;
-}
-.notas-hl-menu.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all;}
-.notas-hl-swatches{display:flex;align-items:center;gap:9px;flex:1;justify-content:center;}
-.notas-hl-dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid rgba(255,255,255,.2);transition:transform .12s;flex-shrink:0;}
-.notas-hl-dot:active{transform:scale(.82);}
-.notas-hl-remove{
-  width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.14);
-  display:flex;align-items:center;justify-content:center;color:#EDE8DF;cursor:pointer;flex-shrink:0;
-}
-.notas-hl-remove svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4;}
 
 /* ══ MENSAGENS PAGE ══ */
 .msg-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#1C1A17 0%,#111110 100%);}
@@ -2152,15 +2132,13 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       </div>
     </div>
     <div class="notas-editor-date" id="notas-editor-date">Nova nota</div>
-    <div class="notas-editor-body" onclick="notasCloseMoreMenu();notasCloseFontMenu();notasCloseHlMenu();">
+    <div class="notas-editor-body" onclick="notasCloseMoreMenu();notasCloseFontMenu();">
       <input id="notas-editor-title" class="notas-editor-title" type="text" placeholder="Título"
         oninput="notasScheduleAutosave()"
         onkeydown="if(event.key==='Enter'){event.preventDefault();var t=bibEl('notas-editor-text');if(t)t.focus();}">
-      <div id="notas-editor-text" class="notas-editor-textarea" contenteditable="true"
-        data-placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
-        oninput="notasScheduleAutosave();"
-        onkeyup="notasScrollCaretIntoView()"
-        onpaste="notasHandlePaste(event)"></div>
+      <textarea id="notas-editor-text" class="notas-editor-textarea"
+        placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
+        oninput="notasScheduleAutosave();"></textarea>
     </div>
     <div class="notas-editor-toolbar">
       <div class="notas-tool-btn" onmousedown="event.preventDefault()" onclick="notasInsertChecklist()" title="Lista de tarefas">
@@ -2168,7 +2146,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       </div>
       <div class="notas-tool-btn notas-tool-b" onmousedown="event.preventDefault()" onclick="notasToggleBold()" title="Negrito">B</div>
       <div class="notas-tool-btn notas-tool-i" onmousedown="event.preventDefault()" onclick="notasToggleItalic()" title="Itálico">I</div>
-      <div class="notas-tool-btn notas-tool-hl" onmousedown="event.preventDefault()" onclick="notasToggleHlMenu()" title="Marca-texto">
+      <div class="notas-tool-btn notas-tool-hl" onmousedown="event.preventDefault()" onclick="notasToggleHighlight()" title="Marca-texto">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m9 11-6 6v3h3l9-9"/>
           <path d="m17 3 4 4-9 9-4-4z" fill="#FCE96A" stroke="currentColor"/>
@@ -2178,12 +2156,6 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
       <div class="notas-tool-btn notas-tool-hl" onmousedown="event.preventDefault()" onclick="notasToggleFontMenu()" title="Tamanho da letra">
         <svg viewBox="0 0 24 24"><path d="M3 19l4-13 4 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 19V9h3.5a2.5 2.5 0 0 1 0 5H14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span class="notas-tool-hl-label">Fonte</span>
-      </div>
-      <div class="notas-hl-menu" id="notas-hl-menu">
-        <div class="notas-hl-remove" onmousedown="event.preventDefault()" onclick="notasApplyHighlightColor('transparent')" title="Remover marcação">
-          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </div>
-        <div class="notas-hl-swatches" id="notas-hl-swatches"></div>
       </div>
       <div class="notas-font-menu" id="notas-font-menu">
         <div class="notas-font-btn" onmousedown="event.preventDefault()" onclick="notasChangeFontSize(-1)">A</div>
@@ -4020,7 +3992,7 @@ function notasRender(){
     .forEach(function(n){
       var d=document.createElement('div');
       d.className='notas-item';
-      var preview=(n.text||'').replace(/\n+/g,' ').trim();
+      var preview=(n.text||'').replace(/[*_=]/g,'').replace(/\n+/g,' ').trim();
       d.innerHTML=
         '<div class="notas-item-title">'+(n.title||'Nova nota')+'</div>'
         +(n.verse?'<div class="notas-item-verse">'+n.verse+'</div>':'')
@@ -4031,16 +4003,10 @@ function notasRender(){
     });
 }
 
-function notasAutoResize(){
-  // contenteditable cresce sozinho; mantido apenas por compatibilidade
-}
-
 // Corrige o bug do teclado no iOS: como o editor usa position:fixed,
-// o teclado às vezes não "empurra" a área visível, dando a impressão
-// de que não é possível escrever mais abaixo. Ajustamos a altura do
-// editor pela Visual Viewport API e garantimos que o cursor role à vista.
-// Tudo com requestAnimationFrame + checagem de mudança real, para não
-// entrar num loop de resize->scroll->resize que trava a digitação.
+// o teclado às vezes não "empurra" a área visível. Ajustamos a altura
+// do editor pela Visual Viewport API, com requestAnimationFrame para
+// não pesar. O textarea nativo cuida de rolar até o cursor sozinho.
 var NOTAS_VV_BOUND=false;
 var NOTAS_VV_RAF=null;
 function notasBindViewportFix(){
@@ -4061,43 +4027,40 @@ function notasApplyViewportFix(){
     if(scr.style.top!==t)scr.style.top=t;
   });
 }
-var NOTAS_SCROLL_RAF=null;
-function notasScrollCaretIntoView(){
-  if(NOTAS_SCROLL_RAF)return;
-  NOTAS_SCROLL_RAF=requestAnimationFrame(function(){
-    NOTAS_SCROLL_RAF=null;
-    var body=bibEl('notas-editor-body'); if(!body)return;
-    var sel=window.getSelection();
-    if(!sel||sel.rangeCount===0)return;
-    var range=sel.getRangeAt(0).cloneRange();
-    range.collapse(true);
-    var rect=range.getClientRects()[0];
-    if(!rect&&range.startContainer&&range.startContainer.nodeType===1&&range.startContainer.getBoundingClientRect){
-      rect=range.startContainer.getBoundingClientRect();
-    }
-    if(!rect)return;
-    var bRect=body.getBoundingClientRect();
-    if(rect.bottom>bRect.bottom-24){
-      body.scrollTop+=(rect.bottom-bRect.bottom)+60;
-    } else if(rect.top<bRect.top+8){
-      body.scrollTop-=(bRect.top-rect.top)+20;
-    }
-  });
-}
 
 function notasOpenNew(){
   NOTAS_EDITING_ID=null;
   var ti=bibEl('notas-editor-title'); if(ti)ti.value='';
-  var tx=bibEl('notas-editor-text'); if(tx){tx.innerHTML='';}
+  var tx=bibEl('notas-editor-text'); if(tx){tx.value='';}
   var dt=bibEl('notas-editor-date'); if(dt)dt.textContent=notasFormatFull(new Date().toISOString());
-  notasCloseMoreMenu(); notasCloseFontMenu(); notasCloseHlMenu();
+  notasApplyFontSize(notasGetFontSize());
+  notasCloseMoreMenu(); notasCloseFontMenu();
   notasBindViewportFix();
   var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.add('open');
   setTimeout(notasApplyViewportFix,50);
   setTimeout(function(){ if(ti)ti.focus(); },320);
 }
-function notasEscapeHtml(s){
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function notasHtmlToPlain(html){
+  // Compatibilidade com notas antigas salvas quando o editor era rich-text.
+  var tmp=document.createElement('div');
+  tmp.innerHTML=html;
+  function walk(node){
+    var out='';
+    node.childNodes.forEach(function(c){
+      if(c.nodeType===3){ out+=c.textContent; return; }
+      if(c.nodeType!==1)return;
+      var tag=c.tagName.toLowerCase();
+      var inner=walk(c);
+      if(tag==='b'||tag==='strong'){ out+='**'+inner+'**'; }
+      else if(tag==='i'||tag==='em'){ out+='_'+inner+'_'; }
+      else if(tag==='mark'){ out+='=='+inner+'=='; }
+      else if(tag==='font'&&c.style&&c.style.backgroundColor){ out+='=='+inner+'=='; }
+      else if(tag==='div'||tag==='p'||tag==='br'){ out+=(out&&!out.endsWith('\n')?'\n':'')+inner+(tag!=='br'?'\n':''); }
+      else { out+=inner; }
+    });
+    return out;
+  }
+  return walk(tmp).replace(/\n{3,}/g,'\n\n').trim();
 }
 function notasOpenEdit(id){
   var list=notasLoad();
@@ -4107,11 +4070,11 @@ function notasOpenEdit(id){
   var ti=bibEl('notas-editor-title'); if(ti)ti.value=n.title||'';
   var tx=bibEl('notas-editor-text');
   if(tx){
-    if(n.html!=null){ tx.innerHTML=n.html; }
-    else { tx.innerHTML=notasEscapeHtml(n.text||'').replace(/\n/g,'<br>'); }
+    tx.value = n.html!=null ? notasHtmlToPlain(n.html) : (n.text||'');
   }
   var dt=bibEl('notas-editor-date'); if(dt)dt.textContent=notasFormatFull(n.updatedAt||n.date);
-  notasCloseMoreMenu(); notasCloseFontMenu(); notasCloseHlMenu();
+  notasApplyFontSize(notasGetFontSize());
+  notasCloseMoreMenu(); notasCloseFontMenu();
   notasBindViewportFix();
   var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.add('open');
   setTimeout(notasApplyViewportFix,50);
@@ -4130,8 +4093,7 @@ function notasScheduleAutosave(){
 function notasCommit(){
   var title=((bibEl('notas-editor-title')||{}).value||'').trim();
   var editor=bibEl('notas-editor-text');
-  var html=editor?editor.innerHTML:'';
-  var text=editor?editor.innerText.trim():'';
+  var text=editor?editor.value.trim():'';
   if(!title&&!text){
     // Nota vazia: se estava editando uma nota existente que ficou vazia, apaga
     if(NOTAS_EDITING_ID){
@@ -4145,134 +4107,84 @@ function notasCommit(){
   var now=new Date().toISOString();
   if(NOTAS_EDITING_ID){
     var idx=list.findIndex(function(x){return x.id===NOTAS_EDITING_ID;});
-    if(idx>=0){ list[idx].title=title; list[idx].text=text; list[idx].html=html; list[idx].updatedAt=now; }
+    if(idx>=0){ list[idx].title=title; list[idx].text=text; delete list[idx].html; list[idx].updatedAt=now; }
   } else {
     NOTAS_EDITING_ID='n'+Date.now();
-    list.push({id:NOTAS_EDITING_ID, title:title, text:text, html:html, date:now, updatedAt:now});
+    list.push({id:NOTAS_EDITING_ID, title:title, text:text, date:now, updatedAt:now});
   }
   notasSaveAll(list);
 }
 function notasInsertChecklist(){
   var editor=bibEl('notas-editor-text'); if(!editor)return;
   editor.focus();
-  var needsBreak=editor.innerText&&editor.innerText.length>0&&editor.innerText.charAt(editor.innerText.length-1)!=='\n';
-  document.execCommand('insertHTML', false, (needsBreak?'<br>':'')+'☐&nbsp;');
+  var start=editor.selectionStart||0, end=editor.selectionEnd||0;
+  var before=editor.value.substring(0,start), after=editor.value.substring(end);
+  var needsBreak=before.length>0&&before.charAt(before.length-1)!=='\n';
+  var insert=(needsBreak?'\n':'')+'☐ ';
+  editor.value=before+insert+after;
+  var pos=start+insert.length;
+  editor.setSelectionRange(pos,pos);
   notasScheduleAutosave();
 }
-function notasToggleBold(){
+function notasWrapSelection(marker){
   var editor=bibEl('notas-editor-text'); if(!editor)return;
   editor.focus();
-  try{ document.execCommand('styleWithCSS', false, false); }catch(e){}
-  document.execCommand('bold');
-  notasScheduleAutosave();
-}
-function notasToggleItalic(){
-  var editor=bibEl('notas-editor-text'); if(!editor)return;
-  editor.focus();
-  try{ document.execCommand('styleWithCSS', false, false); }catch(e){}
-  document.execCommand('italic');
-  notasScheduleAutosave();
-}
-
-// ══ MARCA-TEXTO (menu de cores) ══
-function notasToggleHlMenu(){
-  var editor=bibEl('notas-editor-text'); if(!editor)return;
-  var sw=bibEl('notas-hl-swatches');
-  if(sw&&!sw.children.length){
-    HL_COLORS.forEach(function(c){
-      var dot=document.createElement('div');
-      dot.className='notas-hl-dot';
-      dot.style.background=c.hex;
-      dot.onmousedown=function(e){e.preventDefault();};
-      dot.onclick=(function(hex){return function(){notasApplyHighlightColor(hex);};})(c.hex);
-      sw.appendChild(dot);
-    });
-  }
-  notasCloseMoreMenu(); notasCloseFontMenu();
-  var m=bibEl('notas-hl-menu'); if(m)m.classList.toggle('open');
-}
-function notasCloseHlMenu(){
-  var m=bibEl('notas-hl-menu'); if(m)m.classList.remove('open');
-}
-function notasApplyHighlightColor(hex){
-  var editor=bibEl('notas-editor-text'); if(!editor)return;
-  editor.focus();
-  var sel=window.getSelection();
-  if(sel&&sel.rangeCount>0&&!sel.isCollapsed){
-    try{ document.execCommand('styleWithCSS', false, true); }catch(e){}
-    document.execCommand('hiliteColor', false, hex==='transparent'?'transparent':hex);
-    notasScheduleAutosave();
-  }
-  notasCloseHlMenu();
-}
-
-// ══ TAMANHO DA LETRA (aplica só no texto selecionado) ══
-var NOTAS_FONT_SIZES=[11,12,13,14,15,16,17,18,20,22,24,26,28,32];
-var NOTAS_BASE_FONT_SIZE=16;
-function notasClosestSizeIndex(px){
-  var idx=0, best=Infinity;
-  NOTAS_FONT_SIZES.forEach(function(s,i){ var d=Math.abs(s-px); if(d<best){best=d;idx=i;} });
-  return idx;
-}
-function notasGetSelectionFontSize(){
-  var sel=window.getSelection();
-  var el=null;
-  if(sel&&sel.rangeCount>0){
-    var node=sel.anchorNode;
-    el=node&&node.nodeType===3?node.parentElement:node;
-  }
-  if(!el){
-    var editor=bibEl('notas-editor-text');
-    if(editor)el=editor;
-  }
-  if(!el)return NOTAS_BASE_FONT_SIZE;
-  var px=parseFloat(window.getComputedStyle(el).fontSize);
-  return isNaN(px)?NOTAS_BASE_FONT_SIZE:Math.round(px);
-}
-function notasChangeFontSize(dir){
-  var editor=bibEl('notas-editor-text'); if(!editor)return;
-  editor.focus();
-  var sel=window.getSelection();
-  if(!sel||sel.rangeCount===0||sel.isCollapsed){
-    alert('Selecione o trecho de texto que deseja aumentar ou diminuir.');
+  var start=editor.selectionStart, end=editor.selectionEnd;
+  if(start===end){
+    alert('Selecione o texto que deseja formatar.');
     return;
   }
-  var cur=notasGetSelectionFontSize();
-  var idx=NOTAS_FONT_SIZES.indexOf(cur);
-  if(idx<0)idx=notasClosestSizeIndex(cur);
-  idx=Math.max(0, Math.min(NOTAS_FONT_SIZES.length-1, idx+dir));
-  var newSize=NOTAS_FONT_SIZES[idx];
-  try{ document.execCommand('styleWithCSS', false, false); }catch(e){}
-  document.execCommand('fontSize', false, '7');
-  var marks=editor.querySelectorAll('font[size="7"]');
-  marks.forEach(function(f){
-    f.removeAttribute('size');
-    f.style.fontSize=newSize+'px';
-  });
-  var lbl=bibEl('notas-font-label'); if(lbl)lbl.textContent=newSize;
+  var val=editor.value;
+  var mLen=marker.length;
+  var alreadyWrapped = val.substring(start-mLen,start)===marker && val.substring(end,end+mLen)===marker;
+  var newVal, newStart, newEnd;
+  if(alreadyWrapped){
+    newVal=val.substring(0,start-mLen)+val.substring(start,end)+val.substring(end+mLen);
+    newStart=start-mLen; newEnd=end-mLen;
+  } else {
+    var selected=val.substring(start,end);
+    newVal=val.substring(0,start)+marker+selected+marker+val.substring(end);
+    newStart=start+mLen; newEnd=end+mLen;
+  }
+  editor.value=newVal;
+  editor.setSelectionRange(newStart,newEnd);
   notasScheduleAutosave();
 }
+function notasToggleBold(){ notasWrapSelection('**'); }
+function notasToggleItalic(){ notasWrapSelection('_'); }
+function notasToggleHighlight(){ notasWrapSelection('=='); }
+
+// ══ TAMANHO DA LETRA (aplica em toda a nota) ══
+var NOTAS_FONT_SIZES=[13,14,15,16,17,18,20,22,24,26,28];
+function notasGetFontSize(){
+  try{ var v=parseInt(localStorage.getItem('cf_notas_fontsize')||'16'); return isNaN(v)?16:v; }catch(e){ return 16; }
+}
+function notasApplyFontSize(size){
+  var editor=bibEl('notas-editor-text'); if(editor)editor.style.fontSize=size+'px';
+  var lbl=bibEl('notas-font-label'); if(lbl)lbl.textContent=size;
+}
+function notasSetFontSize(size){
+  try{ localStorage.setItem('cf_notas_fontsize', String(size)); }catch(e){}
+  notasApplyFontSize(size);
+}
+function notasChangeFontSize(dir){
+  var cur=notasGetFontSize();
+  var idx=NOTAS_FONT_SIZES.indexOf(cur);
+  if(idx<0){ idx=0; var best=Infinity; NOTAS_FONT_SIZES.forEach(function(s,i){var d=Math.abs(s-cur); if(d<best){best=d;idx=i;}}); }
+  idx=Math.max(0, Math.min(NOTAS_FONT_SIZES.length-1, idx+dir));
+  notasSetFontSize(NOTAS_FONT_SIZES[idx]);
+}
 function notasToggleFontMenu(){
-  notasCloseMoreMenu(); notasCloseHlMenu();
-  var lbl=bibEl('notas-font-label'); if(lbl)lbl.textContent=notasGetSelectionFontSize();
+  notasCloseMoreMenu();
+  var lbl=bibEl('notas-font-label'); if(lbl)lbl.textContent=notasGetFontSize();
   var m=bibEl('notas-font-menu'); if(m)m.classList.toggle('open');
 }
 function notasCloseFontMenu(){
   var m=bibEl('notas-font-menu'); if(m)m.classList.remove('open');
 }
 
-// ══ COLAR TEXTO SIMPLES (usa a fonte do app, sem carregar formatação de fora) ══
-function notasHandlePaste(e){
-  e.preventDefault();
-  var text='';
-  if(e.clipboardData&&e.clipboardData.getData){ text=e.clipboardData.getData('text/plain'); }
-  else if(window.clipboardData&&window.clipboardData.getData){ text=window.clipboardData.getData('Text'); }
-  if(!text)return;
-  document.execCommand('insertText', false, text);
-  notasScheduleAutosave();
-}
 function notasToggleMoreMenu(){
-  notasCloseFontMenu(); notasCloseHlMenu();
+  notasCloseFontMenu();
   var m=bibEl('notas-more-menu'); if(m)m.classList.toggle('open');
 }
 function notasCloseMoreMenu(){
@@ -4281,7 +4193,7 @@ function notasCloseMoreMenu(){
 function notasShareCurrent(){
   var title=(bibEl('notas-editor-title')||{}).value||'';
   var editor=bibEl('notas-editor-text');
-  var text=editor?editor.innerText:'';
+  var text=editor?editor.value:'';
   var msg=(title?title+'\n\n':'')+text;
   if(!msg.trim())return;
   if(navigator.share){navigator.share({title:title||'Nota',text:msg});}
