@@ -760,6 +760,7 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   border:none;outline:none;background:transparent;
   font-family:var(--sans);font-size:23px;font-weight:700;color:var(--ink);
   padding:4px 0 8px;width:100%;
+  caret-color:var(--gold);
 }
 .notas-editor-title::placeholder{color:var(--ink4);}
 .notas-editor-textarea{
@@ -767,6 +768,8 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   font-family:var(--sans);font-size:16px;line-height:1.6;color:var(--ink);
   width:100%;flex:1;min-height:50vh;padding:2px 0;
   white-space:pre-wrap;word-wrap:break-word;
+  caret-color:var(--gold);
+  -webkit-user-select:text;user-select:text;
 }
 .notas-editor-textarea:empty:before{
   content:attr(data-placeholder);color:var(--ink4);pointer-events:none;
@@ -2113,7 +2116,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         onkeydown="if(event.key==='Enter'){event.preventDefault();var t=bibEl('notas-editor-text');if(t)t.focus();}">
       <div id="notas-editor-text" class="notas-editor-textarea" contenteditable="true"
         data-placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
-        oninput="notasScheduleAutosave();notasScrollCaretIntoView();"
+        oninput="notasScheduleAutosave();"
         onkeyup="notasScrollCaretIntoView()"></div>
     </div>
     <div class="notas-editor-toolbar">
@@ -3994,15 +3997,8 @@ function notasScrollCaretIntoView(){
   var range=sel.getRangeAt(0).cloneRange();
   range.collapse(true);
   var rect=range.getClientRects()[0];
-  if(!rect){
-    // Range vazio (ex: linha em branco) — usa um span temporário para medir
-    var marker=document.createElement('span');
-    marker.textContent='\u200b';
-    range.insertNode(marker);
-    rect=marker.getBoundingClientRect();
-    var p=marker.parentNode;
-    p.removeChild(marker);
-    p.normalize();
+  if(!rect&&range.startContainer&&range.startContainer.getBoundingClientRect){
+    rect=range.startContainer.getBoundingClientRect();
   }
   if(!rect)return;
   var bRect=body.getBoundingClientRect();
