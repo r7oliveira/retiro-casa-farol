@@ -463,9 +463,7 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   transition:background .12s;
 }
 .bib-verse:active,.bib-verse.selected{background:var(--gold-bg);}
-.bib-verse.fav{background:var(--gold-bg);}
-#p-biblia.bib-dark .bib-verse.selected,
-#p-biblia.bib-dark .bib-verse.fav{background:rgba(184,146,74,0.1);}
+#p-biblia.bib-dark .bib-verse.selected{background:rgba(184,146,74,0.12);}
 .bib-vnum{
   font-size:10px;font-weight:700;
   color:var(--gold);
@@ -482,18 +480,47 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   flex:1;
 }
 #p-biblia.bib-dark .bib-vtext{color:#D4CCBC;}
-.bib-verse-actions{
-  display:none;gap:16px;
-  margin-top:10px;padding-top:10px;
-  border-top:1px solid var(--border);
+/* Marca-texto (highlighter) para versículos favoritados */
+.bib-verse.fav .bib-vtext{
+  background-image:linear-gradient(120deg, rgba(245,201,90,.6) 0%, rgba(245,201,90,.6) 100%);
+  background-repeat:no-repeat;
+  background-size:100% 0.55em;
+  background-position:0 88%;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
 }
-.bib-verse.selected .bib-verse-actions{display:flex;}
-.bib-vaction{
-  font-size:11px;font-weight:700;color:var(--gold);
-  letter-spacing:.06em;text-transform:uppercase;
-  cursor:pointer;display:flex;align-items:center;gap:5px;
+#p-biblia.bib-dark .bib-verse.fav .bib-vtext{
+  background-image:linear-gradient(120deg, rgba(184,146,74,.4) 0%, rgba(184,146,74,.4) 100%);
 }
-.bib-vaction svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
+/* Selection bar (multi-select actions) */
+.bib-selection-bar{
+  position:fixed;left:16px;right:16px;
+  bottom:max(16px, env(safe-area-inset-bottom));
+  background:var(--ink);color:#FAFAF8;border-radius:16px;
+  padding:12px 14px 12px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  box-shadow:0 12px 30px rgba(17,17,16,.28);
+  transform:translateY(140%);opacity:0;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),opacity .2s;
+  pointer-events:none;z-index:60;
+}
+.bib-selection-bar.show{transform:translateY(0);opacity:1;pointer-events:all;}
+.bib-sel-count{font-size:12.5px;font-weight:600;color:#EDE8DF;flex-shrink:0;}
+.bib-sel-actions{display:flex;align-items:center;gap:16px;}
+.bib-sel-btn{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--gold-lt);letter-spacing:.03em;cursor:pointer;text-transform:uppercase;white-space:nowrap;}
+.bib-sel-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+.bib-sel-clear{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:#EDE8DF;cursor:pointer;flex-shrink:0;}
+.bib-sel-clear svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4;}
+
+/* Version picker */
+.bib-version-list{padding:0 16px 30px;display:flex;flex-direction:column;gap:6px;}
+.bib-version-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 16px;cursor:pointer;transition:all .12s;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.bib-version-item:active{transform:scale(.98);}
+.bib-version-item.on{background:var(--gold-bg);border-color:var(--gold-border);}
+.bib-version-name{font-size:14px;font-weight:600;color:var(--ink);}
+.bib-version-abbr{font-size:12px;color:var(--ink3);flex-shrink:0;}
+#p-biblia.bib-dark .bib-version-item{background:#1C1A17;border-color:#2A2824;color:#EDE8DF;}
+#p-biblia.bib-dark .bib-version-item.on{background:rgba(184,146,74,0.12);border-color:var(--gold);}
+.bib-settings-link{font-size:13px;font-weight:700;color:var(--gold);cursor:pointer;text-align:right;}
 
 /* Favorites */
 .bib-fav-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:0 16px 8px;cursor:pointer;}
@@ -2169,10 +2196,38 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
           <button class="bib-toggle" id="bib-dark-toggle" onclick="bibToggleDark()"></button>
         </div>
         <div class="bib-settings-row">
-          <div class="bib-settings-label">Bíblia conectada</div>
-          <div class="bib-settings-value" id="bib-bible-name">—</div>
+          <div class="bib-settings-label">Versão da Bíblia</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="bib-settings-value" id="bib-bible-name">—</div>
+            <div class="bib-settings-link" onclick="bibOpenVersionPicker()">Trocar →</div>
+          </div>
         </div>
         <button class="bib-danger-btn" onclick="bibClearKey()">Remover API Key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION PICKER MODAL -->
+  <div class="bib-modal-overlay" id="bib-version-modal" onclick="bibCloseVersionModal()">
+    <div class="bib-modal-sheet" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="bib-modal-title">Escolha a Versão</div>
+      <div class="bib-version-list" id="bib-version-list"></div>
+    </div>
+  </div>
+
+  <!-- SELECTION BAR (multi-select) -->
+  <div class="bib-selection-bar" id="bib-selection-bar">
+    <div class="bib-sel-count" id="bib-sel-count">1 selecionado</div>
+    <div class="bib-sel-actions">
+      <div class="bib-sel-btn" onclick="bibFavSelected()">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Favoritar
+      </div>
+      <div class="bib-sel-btn" onclick="bibShareSelected()">
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Compartilhar
+      </div>
+      <div class="bib-sel-clear" onclick="bibClearSelection()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </div>
     </div>
   </div>
@@ -2562,7 +2617,8 @@ var BIB = {
   currentChapterIdx:0, fontSize:17, dark:false,
   readChapters:{}, favorites:[], lastPosition:null,
   _cachedChapData:null, _cachedChapIdx:-1,
-  _scrollToVerse:null, pickerChapterIdx:0, pickerVerseCount:0
+  _scrollToVerse:null, pickerChapterIdx:0, pickerVerseCount:0,
+  selectedVerses:{}, availableVersions:[]
 };
 var BIB_BASE = 'https://api.scripture.api.bible/v1';
 function bibEl(id){ return document.getElementById(id); }
@@ -2996,6 +3052,8 @@ function bibRenderReader(chapData,idx,scrollToVerse){
   var content=bibEl('bib-reader-content'); if(!content)return;
   content.scrollTop=0; content.innerHTML='';
   BIB._scrollToVerse=scrollToVerse||null;
+  BIB.selectedVerses={};
+  bibUpdateSelectionBar();
   var verses=bibExtractVerses(chapData.content||[]);
   var isFav={};
   BIB.favorites.forEach(function(f){isFav[f.verseId]=true;});
@@ -3005,30 +3063,12 @@ function bibRenderReader(chapData,idx,scrollToVerse){
     wrap.id='v-'+v.id;
     var numEl=document.createElement('div');
     numEl.className='bib-vnum'; numEl.textContent=v.num;
-    var body=document.createElement('div');
     var textEl=document.createElement('div');
     textEl.className='bib-vtext';
     textEl.style.fontSize=BIB.fontSize+'px';
     textEl.textContent=v.text;
-    var actions=document.createElement('div');
-    actions.className='bib-verse-actions';
-    // Fav button
-    var favBtn=document.createElement('span');
-    favBtn.className='bib-vaction';
-    favBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Favoritar';
-    favBtn.onclick=(function(vv,rr,fb){return function(e){e.stopPropagation();bibFavVerse(vv,rr,fb);};})(v,ref,favBtn);
-    // Share button
-    var shareBtn=document.createElement('span');
-    shareBtn.className='bib-vaction';
-    shareBtn.innerHTML='<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Compartilhar';
-    shareBtn.onclick=(function(vv,rr){return function(e){e.stopPropagation();bibShareVerse(rr+' '+vv.num,vv.text);};})(v,ref);
-    actions.appendChild(favBtn); actions.appendChild(shareBtn);
-    body.appendChild(textEl); body.appendChild(actions);
-    wrap.appendChild(numEl); wrap.appendChild(body);
-    wrap.onclick=function(){
-      document.querySelectorAll('.bib-verse.selected').forEach(function(el){if(el!==wrap)el.classList.remove('selected');});
-      wrap.classList.toggle('selected');
-    };
+    wrap.appendChild(numEl); wrap.appendChild(textEl);
+    wrap.onclick=(function(vv,rr,ww){return function(){bibToggleVerseSelect(ww,vv,rr);};})(v,ref,wrap);
     content.appendChild(wrap);
   });
   // Scroll to target verse if specified
@@ -3135,20 +3175,58 @@ function bibTextFlat(nodes){
   return out;
 }
 
-function bibFavVerse(v,ref,btn){
-  var existing=BIB.favorites.findIndex(function(f){return f.verseId===v.id;});
-  var wrap=bibEl('v-'+v.id);
-  if(existing>=0){
-    BIB.favorites.splice(existing,1);
-    if(wrap)wrap.classList.remove('fav');
-    btn.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Favoritar';
+function bibToggleVerseSelect(wrap,v,ref){
+  if(BIB.selectedVerses[v.id]){
+    delete BIB.selectedVerses[v.id];
+    wrap.classList.remove('selected');
   } else {
-    BIB.favorites.unshift({verseId:v.id,ref:ref+' '+v.num,text:v.text});
-    if(BIB.favorites.length>50)BIB.favorites.length=50;
-    if(wrap)wrap.classList.add('fav');
-    btn.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>Favoritado';
+    BIB.selectedVerses[v.id]={v:v,ref:ref,wrap:wrap};
+    wrap.classList.add('selected');
   }
+  bibUpdateSelectionBar();
+}
+function bibSelectionList(){
+  return Object.keys(BIB.selectedVerses)
+    .map(function(id){return BIB.selectedVerses[id];})
+    .sort(function(a,b){return parseInt(a.v.num)-parseInt(b.v.num);});
+}
+function bibUpdateSelectionBar(){
+  var bar=bibEl('bib-selection-bar'); if(!bar)return;
+  var n=Object.keys(BIB.selectedVerses).length;
+  if(n>0){
+    bar.classList.add('show');
+    var cnt=bibEl('bib-sel-count');
+    if(cnt)cnt.textContent=n+(n===1?' versículo selecionado':' versículos selecionados');
+  } else {
+    bar.classList.remove('show');
+  }
+}
+function bibClearSelection(){
+  bibSelectionList().forEach(function(it){ if(it.wrap)it.wrap.classList.remove('selected'); });
+  BIB.selectedVerses={};
+  bibUpdateSelectionBar();
+}
+function bibFavSelected(){
+  var items=bibSelectionList();
+  if(!items.length)return;
+  items.forEach(function(it){
+    var existing=BIB.favorites.findIndex(function(f){return f.verseId===it.v.id;});
+    if(existing<0){
+      BIB.favorites.unshift({verseId:it.v.id,ref:it.ref+' '+it.v.num,text:it.v.text});
+      if(it.wrap)it.wrap.classList.add('fav');
+    }
+  });
+  if(BIB.favorites.length>50)BIB.favorites.length=50;
   bibSave();
+  bibClearSelection();
+}
+function bibShareSelected(){
+  var items=bibSelectionList();
+  if(!items.length)return;
+  var nums=items.map(function(it){return it.v.num;});
+  var refLabel=items[0].ref+' '+(nums.length>1?(nums[0]+'-'+nums[nums.length-1]):nums[0]);
+  var text=items.map(function(it){return it.v.text;}).join(' ');
+  bibShareVerse(refLabel,text);
 }
 
 function bibShareVerse(ref,text){
@@ -3201,6 +3279,51 @@ function bibShowSettings(){
 function bibCloseSettings(){
   var m=bibEl('bib-settings-modal'); if(m)m.classList.remove('open');
 }
+
+// ══ VERSAO DA BIBLIA ══
+async function bibOpenVersionPicker(){
+  var m=bibEl('bib-version-modal'); if(m)m.classList.add('open');
+  var list=bibEl('bib-version-list');
+  if(list)list.innerHTML='<div style="padding:24px 4px;text-align:center;color:var(--ink3);font-size:13px">Carregando versões…</div>';
+  try{
+    if(!BIB.availableVersions.length){
+      var data=await bibFetch('/bibles?language=por');
+      BIB.availableVersions=data.data||[];
+    }
+    bibRenderVersionList();
+  }catch(e){
+    if(list)list.innerHTML='<div style="padding:24px 4px;text-align:center;color:var(--ink3);font-size:13px">Erro ao carregar versões. Verifique sua conexão.</div>';
+  }
+}
+function bibRenderVersionList(){
+  var list=bibEl('bib-version-list'); if(!list)return;
+  list.innerHTML='';
+  if(!BIB.availableVersions.length){
+    list.innerHTML='<div style="padding:24px 4px;text-align:center;color:var(--ink3);font-size:13px">Nenhuma versão em português encontrada na sua conta API.Bible.</div>';
+    return;
+  }
+  BIB.availableVersions.forEach(function(b){
+    var name=b.name||b.nameLocal||b.abbreviation||'Bíblia';
+    var d=document.createElement('div');
+    d.className='bib-version-item'+(b.id===BIB.bibleId?' on':'');
+    d.innerHTML='<div class="bib-version-name">'+name+'</div>'
+      +'<div class="bib-version-abbr">'+(b.abbreviation||'')+'</div>';
+    d.onclick=(function(id,nm){return function(){bibSelectVersion(id,nm);};})(b.id,name);
+    list.appendChild(d);
+  });
+}
+function bibSelectVersion(id,name){
+  bibCloseVersionModal();
+  if(id===BIB.bibleId){bibCloseSettings();return;}
+  BIB.bibleId=id; BIB.bibleName=name;
+  BIB.books=[]; BIB.currentBook=null; BIB.currentChapters=[];
+  BIB._cachedChapData=null; BIB._cachedChapIdx=-1;
+  bibSave();
+  bibCloseSettings();
+  bibShowScreen('loading');
+  bibLoadBooks();
+}
+function bibCloseVersionModal(){var m=bibEl('bib-version-modal'); if(m)m.classList.remove('open');}
 
 // Hook into nav
 var _origNav=nav;
