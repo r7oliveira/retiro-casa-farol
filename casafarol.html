@@ -2113,7 +2113,8 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         onkeydown="if(event.key==='Enter'){event.preventDefault();var t=bibEl('notas-editor-text');if(t)t.focus();}">
       <div id="notas-editor-text" class="notas-editor-textarea" contenteditable="true"
         data-placeholder="Comece a escrever a anotação da pregação, os versículos citados e o que Deus falar com você..."
-        oninput="notasScheduleAutosave()"></div>
+        oninput="notasScheduleAutosave();notasScrollCaretIntoView();"
+        onkeyup="notasScrollCaretIntoView()"></div>
     </div>
     <div class="notas-editor-toolbar">
       <div class="notas-tool-btn" onmousedown="event.preventDefault()" onclick="notasInsertChecklist()" title="Lista de tarefas">
@@ -3969,13 +3970,58 @@ function notasAutoResize(){
   // contenteditable cresce sozinho; mantido apenas por compatibilidade
 }
 
+// Corrige o bug do teclado no iOS: como o editor usa position:fixed,
+// o teclado às vezes não "empurra" a área visível, dando a impressão
+// de que não é possível escrever mais abaixo. Ajustamos a altura do
+// editor pela Visual Viewport API e garantimos que o cursor role à vista.
+var NOTAS_VV_BOUND=false;
+function notasBindViewportFix(){
+  if(NOTAS_VV_BOUND||!window.visualViewport)return;
+  NOTAS_VV_BOUND=true;
+  window.visualViewport.addEventListener('resize', notasApplyViewportFix);
+  window.visualViewport.addEventListener('scroll', notasApplyViewportFix);
+}
+function notasApplyViewportFix(){
+  var scr=bibEl('notas-editor-screen'); if(!scr||!scr.classList.contains('open'))return;
+  var vv=window.visualViewport; if(!vv)return;
+  scr.style.height=vv.height+'px';
+  scr.style.top=vv.offsetTop+'px';
+}
+function notasScrollCaretIntoView(){
+  var body=bibEl('notas-editor-body'); if(!body)return;
+  var sel=window.getSelection();
+  if(!sel||sel.rangeCount===0)return;
+  var range=sel.getRangeAt(0).cloneRange();
+  range.collapse(true);
+  var rect=range.getClientRects()[0];
+  if(!rect){
+    // Range vazio (ex: linha em branco) — usa um span temporário para medir
+    var marker=document.createElement('span');
+    marker.textContent='\u200b';
+    range.insertNode(marker);
+    rect=marker.getBoundingClientRect();
+    var p=marker.parentNode;
+    p.removeChild(marker);
+    p.normalize();
+  }
+  if(!rect)return;
+  var bRect=body.getBoundingClientRect();
+  if(rect.bottom>bRect.bottom-24){
+    body.scrollTop+=(rect.bottom-bRect.bottom)+60;
+  } else if(rect.top<bRect.top+8){
+    body.scrollTop-=(bRect.top-rect.top)+20;
+  }
+}
+
 function notasOpenNew(){
   NOTAS_EDITING_ID=null;
   var ti=bibEl('notas-editor-title'); if(ti)ti.value='';
   var tx=bibEl('notas-editor-text'); if(tx){tx.innerHTML='';}
   var dt=bibEl('notas-editor-date'); if(dt)dt.textContent=notasFormatFull(new Date().toISOString());
   notasCloseMoreMenu();
+  notasBindViewportFix();
   var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.add('open');
+  setTimeout(notasApplyViewportFix,50);
   setTimeout(function(){ if(ti)ti.focus(); },320);
 }
 function notasEscapeHtml(s){
@@ -3994,12 +4040,15 @@ function notasOpenEdit(id){
   }
   var dt=bibEl('notas-editor-date'); if(dt)dt.textContent=notasFormatFull(n.updatedAt||n.date);
   notasCloseMoreMenu();
+  notasBindViewportFix();
   var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.add('open');
+  setTimeout(notasApplyViewportFix,50);
 }
 function notasCloseEditor(){
   notasCloseMoreMenu();
   notasCommit();
-  var scr=bibEl('notas-editor-screen'); if(scr)scr.classList.remove('open');
+  var scr=bibEl('notas-editor-screen');
+  if(scr){ scr.classList.remove('open'); scr.style.height=''; scr.style.top=''; }
   notasRender();
 }
 function notasScheduleAutosave(){
