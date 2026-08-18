@@ -480,25 +480,29 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
   flex:1;
 }
 #p-biblia.bib-dark .bib-vtext{color:#D4CCBC;}
-/* Marca-texto (highlighter) para versículos favoritados */
-.bib-verse.fav .bib-vtext{
-  background-image:linear-gradient(120deg, rgba(245,201,90,.6) 0%, rgba(245,201,90,.6) 100%);
-  background-repeat:no-repeat;
-  background-size:100% 0.55em;
-  background-position:0 88%;
+/* Marca-texto (highlighter) — aplicado num <span> inline, então o
+   fundo colorido acompanha só o texto, não a linha inteira */
+.bib-vmark{
+  border-radius:.2em;
   box-decoration-break:clone;
   -webkit-box-decoration-break:clone;
+  padding:.05em .2em;
+  margin:0 -.2em;
 }
-#p-biblia.bib-dark .bib-verse.fav .bib-vtext{
-  background-image:linear-gradient(120deg, rgba(184,146,74,.4) 0%, rgba(184,146,74,.4) 100%);
-}
-/* Marca-texto colorida (feature "Marcar") */
-.bib-verse.bib-hl-green .bib-vtext{background-image:linear-gradient(120deg, rgba(143,226,155,.65) 0%, rgba(143,226,155,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
-.bib-verse.bib-hl-yellow .bib-vtext{background-image:linear-gradient(120deg, rgba(252,233,106,.65) 0%, rgba(252,233,106,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
-.bib-verse.bib-hl-blue .bib-vtext{background-image:linear-gradient(120deg, rgba(143,211,244,.65) 0%, rgba(143,211,244,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
-.bib-verse.bib-hl-cream .bib-vtext{background-image:linear-gradient(120deg, rgba(247,239,192,.65) 0%, rgba(247,239,192,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
-.bib-verse.bib-hl-orange .bib-vtext{background-image:linear-gradient(120deg, rgba(245,192,131,.65) 0%, rgba(245,192,131,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
-.bib-verse.bib-hl-pink .bib-vtext{background-image:linear-gradient(120deg, rgba(243,168,220,.65) 0%, rgba(243,168,220,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.bib-vmark.bib-hl-fav{background-color:rgba(245,201,90,.55);}
+.bib-vmark.bib-hl-green{background-color:rgba(143,226,155,.6);}
+.bib-vmark.bib-hl-yellow{background-color:rgba(252,233,106,.6);}
+.bib-vmark.bib-hl-blue{background-color:rgba(143,211,244,.55);}
+.bib-vmark.bib-hl-cream{background-color:rgba(247,239,192,.85);}
+.bib-vmark.bib-hl-orange{background-color:rgba(245,192,131,.6);}
+.bib-vmark.bib-hl-pink{background-color:rgba(243,168,220,.55);}
+#p-biblia.bib-dark .bib-vmark.bib-hl-fav{background-color:rgba(245,201,90,.28);}
+#p-biblia.bib-dark .bib-vmark.bib-hl-green{background-color:rgba(143,226,155,.28);}
+#p-biblia.bib-dark .bib-vmark.bib-hl-yellow{background-color:rgba(252,233,106,.28);}
+#p-biblia.bib-dark .bib-vmark.bib-hl-blue{background-color:rgba(143,211,244,.28);}
+#p-biblia.bib-dark .bib-vmark.bib-hl-cream{background-color:rgba(247,239,192,.22);}
+#p-biblia.bib-dark .bib-vmark.bib-hl-orange{background-color:rgba(245,192,131,.28);}
+#p-biblia.bib-dark .bib-vmark.bib-hl-pink{background-color:rgba(243,168,220,.28);}
 /* Selection bar (multi-select actions) */
 .bib-selection-bar{
   position:fixed;left:16px;right:16px;
@@ -680,6 +684,28 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .ora-item-text{font-size:14px;color:var(--ink2);line-height:1.55;}
 .ora-item-meta{font-size:11px;color:var(--ink4);margin-top:4px;}
+
+/* ══ NOTAS PAGE (anotações de pregação) ══ */
+.notas-new-btn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--ink);color:#fff;border-radius:var(--r-sm);
+  padding:15px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:18px;transition:opacity .2s;
+}
+.notas-new-btn:active{opacity:.85;}
+.notas-new-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.4;}
+.notas-empty{padding:40px 16px;text-align:center;color:var(--ink3);font-size:14px;line-height:1.6;}
+.notas-item{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);
+  padding:16px;margin-bottom:10px;cursor:pointer;transition:transform .1s;
+}
+.notas-item:active{transform:scale(.98);background:var(--gold-bg);}
+.notas-item-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;}
+.notas-item-title{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--ink);}
+.notas-item-date{font-size:11px;color:var(--ink4);flex-shrink:0;white-space:nowrap;}
+.notas-item-verse{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+.notas-item-preview{font-size:13.5px;color:var(--ink3);line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 
 /* ══ MENSAGENS PAGE ══ */
 .msg-hero{padding:56px 20px 28px;background:linear-gradient(160deg,#1C1A17 0%,#111110 100%);}
@@ -1492,6 +1518,13 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         <div class="ios-label">Mensagens</div>
       </div>
 
+      <div class="ios-icon" onclick="nav('notas')">
+        <div class="ios-icon-bg" style="background:linear-gradient(145deg,#1C1A17,#111110)">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="ios-label">Notas</div>
+      </div>
+
     </div>
 
     <!-- Próximo culto strip -->
@@ -1949,6 +1982,45 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
         </div>
       </div>
       <div style="font-size:13px;color:var(--ink3);margin-top:16px;line-height:1.5">Edite esta seção no código HTML (id="p-cursos") para adicionar seus cursos, turmas e datas de inscrição.</div>
+    </div>
+  </div>
+
+  <!-- ═══ NOTAS (anotações de pregação) ═══ -->
+  <div class="page" id="p-notas">
+    <div class="pg-back" onclick="nav('inicio')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Início</div>
+    <div class="ph rv in">
+      <div class="ph-eye">Anotações</div>
+      <div class="ph-h"><em>Minhas</em> Notas</div>
+      <div class="ph-sub">Registre o que Deus falar com você durante o culto</div>
+    </div>
+    <div style="padding:0 16px 24px">
+      <button class="notas-new-btn" onclick="notasOpenNew()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nova Nota
+      </button>
+      <div id="notas-list"></div>
+      <div id="notas-empty" class="notas-empty" style="display:none">
+        Você ainda não tem nenhuma anotação.<br>Toque em "Nova Nota" para começar a registrar a pregação de hoje.
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTA EDITOR MODAL -->
+  <div class="modal-overlay" id="modal-notas" onclick="notasCloseModal()">
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="notas-modal-title">Nova Nota</div>
+      <div style="padding:0 20px 32px">
+        <input id="notas-input-title" class="bib-input" type="text" placeholder="Título (ex: Culto de Domingo)">
+        <input id="notas-input-verse" class="bib-input" type="text" placeholder="Versículo(s) — ex: João 3:16-18">
+        <textarea id="notas-input-text" class="ora-textarea" style="min-height:220px" placeholder="Escreva aqui os pontos da pregação, os versículos citados e o que Deus falar com você..."></textarea>
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <button class="bib-danger-btn" id="notas-delete-btn" style="display:none;align-items:center;justify-content:center;margin-top:0;width:auto;padding:15px 18px" onclick="notasDelete()">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+          <button class="ora-submit" style="flex:1" onclick="notasSave()">Salvar Nota</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2506,7 +2578,7 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 
 </div>
 <script>
-var PAGES=['inicio','ministerios','celulas','contribuir','contato','historia','cadastro','plano','biblia','oracao','mensagens','perfil','voluntario','min-kids','min-teens','min-musica','min-louvor','min-intercessao','min-recepcao','min-midia','min-missoes','min-store','cultos','cursos'];
+var PAGES=['inicio','ministerios','celulas','contribuir','contato','historia','cadastro','plano','biblia','oracao','mensagens','perfil','voluntario','min-kids','min-teens','min-musica','min-louvor','min-intercessao','min-recepcao','min-midia','min-missoes','min-store','cultos','cursos','notas'];
 var NAV_KEYS=['inicio','ministerios','celulas','contribuir','contato'];
 
 // ── SPLASH ANIMATION ──────────────────────────────
@@ -3170,17 +3242,22 @@ function bibRenderReader(chapData,idx,scrollToVerse){
   BIB.favorites.forEach(function(f){isFav[f.verseId]=true;});
   verses.forEach(function(v){
     var wrap=document.createElement('div');
-    var cls='bib-verse'+(isFav[v.id]?' fav':'');
-    if(BIB.highlights[v.id])cls+=' bib-hl-'+BIB.highlights[v.id];
-    wrap.className=cls;
+    wrap.className='bib-verse';
     wrap.id='v-'+v.id;
     var numEl=document.createElement('div');
     numEl.className='bib-vnum'; numEl.textContent=v.num;
     var textEl=document.createElement('div');
     textEl.className='bib-vtext';
     textEl.style.fontSize=BIB.fontSize+'px';
-    textEl.textContent=v.text;
+    var markEl=document.createElement('span');
+    var markCls='bib-vmark';
+    if(BIB.highlights[v.id]){markCls+=' bib-hl-'+BIB.highlights[v.id];}
+    else if(isFav[v.id]){markCls+=' bib-hl-fav';}
+    markEl.className=markCls;
+    markEl.textContent=v.text;
+    textEl.appendChild(markEl);
     wrap.appendChild(numEl); wrap.appendChild(textEl);
+    wrap._markEl=markEl;
     wrap.onclick=(function(vv,rr,ww){return function(){bibToggleVerseSelect(ww,vv,rr);};})(v,ref,wrap);
     content.appendChild(wrap);
   });
@@ -3332,7 +3409,8 @@ function bibFavSelected(){
         verseId:it.v.id,ref:it.ref+' '+it.v.num,text:it.v.text,
         bookId:bookId,chapterId:chapterId,vnum:parseInt(it.v.num)||1
       });
-      if(it.wrap)it.wrap.classList.add('fav');
+      var mk=it.wrap&&it.wrap._markEl;
+      if(mk&&!BIB.highlights[it.v.id])mk.classList.add('bib-hl-fav');
     }
   });
   if(BIB.favorites.length>50)BIB.favorites.length=50;
@@ -3372,9 +3450,11 @@ function bibApplyHighlight(colorKey){
   var items=bibSelectionList();
   items.forEach(function(it){
     BIB.highlights[it.v.id]=colorKey;
-    if(it.wrap){
-      HL_COLORS.forEach(function(c){it.wrap.classList.remove('bib-hl-'+c.key);});
-      it.wrap.classList.add('bib-hl-'+colorKey);
+    var mk=it.wrap&&it.wrap._markEl;
+    if(mk){
+      mk.classList.remove('bib-hl-fav');
+      HL_COLORS.forEach(function(c){mk.classList.remove('bib-hl-'+c.key);});
+      mk.classList.add('bib-hl-'+colorKey);
     }
   });
   bibSave();
@@ -3385,8 +3465,11 @@ function bibRemoveHighlight(){
   var items=bibSelectionList();
   items.forEach(function(it){
     delete BIB.highlights[it.v.id];
-    if(it.wrap){
-      HL_COLORS.forEach(function(c){it.wrap.classList.remove('bib-hl-'+c.key);});
+    var mk=it.wrap&&it.wrap._markEl;
+    if(mk){
+      HL_COLORS.forEach(function(c){mk.classList.remove('bib-hl-'+c.key);});
+      var isFav=BIB.favorites.some(function(f){return f.verseId===it.v.id;});
+      mk.classList.toggle('bib-hl-fav',isFav);
     }
   });
   bibSave();
@@ -3744,7 +3827,99 @@ nav=function(id){
   if(id==='cultos'){setTimeout(buildCultoList,60);}
   if(id==='plano'){setTimeout(planRender,60);}
   if(id==='perfil'){setTimeout(perfUpdateStats,60);}
+  if(id==='notas'){setTimeout(notasRender,60);}
 };
+
+// ══════════════════════════════════════════
+// NOTAS (anotações de pregação)
+// ══════════════════════════════════════════
+var NOTAS_EDITING_ID=null;
+
+function notasLoad(){
+  try{ return JSON.parse(localStorage.getItem('cf_notas')||'[]'); }catch(e){ return []; }
+}
+function notasSaveAll(list){
+  try{ localStorage.setItem('cf_notas', JSON.stringify(list)); }catch(e){}
+}
+function notasFormatDate(iso){
+  try{
+    var d=new Date(iso);
+    var dias=WDAYS2[d.getDay()]; var mes=MONTHS2[d.getMonth()];
+    return pad2(d.getDate())+' '+mes.substring(0,3)+' · '+pad2(d.getHours())+'h'+pad2(d.getMinutes());
+  }catch(e){ return ''; }
+}
+function notasRender(){
+  var list=notasLoad();
+  var wrap=bibEl('notas-list'), empty=bibEl('notas-empty');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  if(!list.length){ if(empty)empty.style.display='block'; return; }
+  if(empty)empty.style.display='none';
+  list.slice().sort(function(a,b){return (b.updatedAt||b.date)>(a.updatedAt||a.date)?1:-1;})
+    .forEach(function(n){
+      var d=document.createElement('div');
+      d.className='notas-item';
+      d.innerHTML=
+        '<div class="notas-item-top">'
+          +'<div class="notas-item-title">'+(n.title||'Sem título')+'</div>'
+          +'<div class="notas-item-date">'+notasFormatDate(n.updatedAt||n.date)+'</div>'
+        +'</div>'
+        +(n.verse?'<div class="notas-item-verse">'+n.verse+'</div>':'')
+        +'<div class="notas-item-preview">'+(n.text||'').replace(/</g,'&lt;')+'</div>';
+      d.onclick=(function(id){return function(){notasOpenEdit(id);};})(n.id);
+      wrap.appendChild(d);
+    });
+}
+function notasOpenNew(){
+  NOTAS_EDITING_ID=null;
+  var t=bibEl('notas-modal-title'); if(t)t.textContent='Nova Nota';
+  var ti=bibEl('notas-input-title'); if(ti)ti.value='';
+  var vi=bibEl('notas-input-verse'); if(vi)vi.value='';
+  var tx=bibEl('notas-input-text'); if(tx)tx.value='';
+  var del=bibEl('notas-delete-btn'); if(del)del.style.display='none';
+  var m=bibEl('modal-notas'); if(m)m.classList.add('open');
+}
+function notasOpenEdit(id){
+  var list=notasLoad();
+  var n=list.find(function(x){return x.id===id;});
+  if(!n)return;
+  NOTAS_EDITING_ID=id;
+  var t=bibEl('notas-modal-title'); if(t)t.textContent='Editar Nota';
+  var ti=bibEl('notas-input-title'); if(ti)ti.value=n.title||'';
+  var vi=bibEl('notas-input-verse'); if(vi)vi.value=n.verse||'';
+  var tx=bibEl('notas-input-text'); if(tx)tx.value=n.text||'';
+  var del=bibEl('notas-delete-btn'); if(del)del.style.display='flex';
+  var m=bibEl('modal-notas'); if(m)m.classList.add('open');
+}
+function notasCloseModal(){
+  var m=bibEl('modal-notas'); if(m)m.classList.remove('open');
+}
+function notasSave(){
+  var title=(bibEl('notas-input-title')||{}).value||'';
+  var verse=(bibEl('notas-input-verse')||{}).value||'';
+  var text=(bibEl('notas-input-text')||{}).value||'';
+  title=title.trim(); verse=verse.trim(); text=text.trim();
+  if(!title&&!text){ alert('Escreva ao menos um título ou uma anotação.'); return; }
+  var list=notasLoad();
+  var now=new Date().toISOString();
+  if(NOTAS_EDITING_ID){
+    var idx=list.findIndex(function(x){return x.id===NOTAS_EDITING_ID;});
+    if(idx>=0){ list[idx].title=title; list[idx].verse=verse; list[idx].text=text; list[idx].updatedAt=now; }
+  } else {
+    list.push({id:'n'+Date.now(), title:title, verse:verse, text:text, date:now, updatedAt:now});
+  }
+  notasSaveAll(list);
+  notasCloseModal();
+  notasRender();
+}
+function notasDelete(){
+  if(!NOTAS_EDITING_ID)return;
+  if(!confirm('Excluir esta nota?'))return;
+  var list=notasLoad().filter(function(x){return x.id!==NOTAS_EDITING_ID;});
+  notasSaveAll(list);
+  notasCloseModal();
+  notasRender();
+}
 
 
 
