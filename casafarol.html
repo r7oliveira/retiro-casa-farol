@@ -4010,9 +4010,9 @@ function notasRender(){
 }
 
 // Corrige o bug do teclado no iOS: como o editor usa position:fixed,
-// o teclado às vezes não "empurra" a área visível. Ajustamos a altura
-// do editor pela Visual Viewport API, com requestAnimationFrame para
-// não pesar.
+// o teclado às vezes não "empurra" a área visível. Ajustamos só a
+// ALTURA do editor pela Visual Viewport API (nunca o "topo" — isso
+// causava um bug visual em que a página de trás aparecia por cima).
 var NOTAS_VV_BOUND=false;
 var NOTAS_VV_RAF=null;
 function notasBindViewportFix(){
@@ -4028,9 +4028,7 @@ function notasApplyViewportFix(){
     var scr=bibEl('notas-editor-screen'); if(!scr||!scr.classList.contains('open'))return;
     var vv=window.visualViewport; if(!vv)return;
     var h=Math.round(vv.height)+'px';
-    var t=Math.round(vv.offsetTop)+'px';
     if(scr.style.height!==h)scr.style.height=h;
-    if(scr.style.top!==t)scr.style.top=t;
   });
 }
 
