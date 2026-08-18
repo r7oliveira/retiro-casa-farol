@@ -492,6 +492,13 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 #p-biblia.bib-dark .bib-verse.fav .bib-vtext{
   background-image:linear-gradient(120deg, rgba(184,146,74,.4) 0%, rgba(184,146,74,.4) 100%);
 }
+/* Marca-texto colorida (feature "Marcar") */
+.bib-verse.bib-hl-green .bib-vtext{background-image:linear-gradient(120deg, rgba(143,226,155,.65) 0%, rgba(143,226,155,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.bib-verse.bib-hl-yellow .bib-vtext{background-image:linear-gradient(120deg, rgba(252,233,106,.65) 0%, rgba(252,233,106,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.bib-verse.bib-hl-blue .bib-vtext{background-image:linear-gradient(120deg, rgba(143,211,244,.65) 0%, rgba(143,211,244,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.bib-verse.bib-hl-cream .bib-vtext{background-image:linear-gradient(120deg, rgba(247,239,192,.65) 0%, rgba(247,239,192,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.bib-verse.bib-hl-orange .bib-vtext{background-image:linear-gradient(120deg, rgba(245,192,131,.65) 0%, rgba(245,192,131,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.bib-verse.bib-hl-pink .bib-vtext{background-image:linear-gradient(120deg, rgba(243,168,220,.65) 0%, rgba(243,168,220,.65) 100%);background-repeat:no-repeat;background-size:100% 0.55em;background-position:0 88%;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
 /* Selection bar (multi-select actions) */
 .bib-selection-bar{
   position:fixed;left:16px;right:16px;
@@ -505,11 +512,29 @@ button{background:none;border:none;cursor:pointer;font-family:inherit;color:inhe
 }
 .bib-selection-bar.show{transform:translateY(0);opacity:1;pointer-events:all;}
 .bib-sel-count{font-size:12.5px;font-weight:600;color:#EDE8DF;flex-shrink:0;}
-.bib-sel-actions{display:flex;align-items:center;gap:16px;}
-.bib-sel-btn{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--gold-lt);letter-spacing:.03em;cursor:pointer;text-transform:uppercase;white-space:nowrap;}
+.bib-sel-actions{display:flex;align-items:center;gap:14px;}
+.bib-sel-btn{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--gold-lt);letter-spacing:.03em;cursor:pointer;text-transform:uppercase;white-space:nowrap;}
 .bib-sel-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
 .bib-sel-clear{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:#EDE8DF;cursor:pointer;flex-shrink:0;}
 .bib-sel-clear svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4;}
+
+/* Highlight color picker */
+.bib-hl-picker{
+  position:fixed;left:16px;right:16px;
+  bottom:max(16px, env(safe-area-inset-bottom));
+  background:var(--ink);border-radius:16px;
+  padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  box-shadow:0 12px 30px rgba(17,17,16,.28);
+  transform:translateY(140%);opacity:0;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),opacity .2s;
+  pointer-events:none;z-index:61;
+}
+.bib-hl-picker.show{transform:translateY(0);opacity:1;pointer-events:all;}
+.bib-hl-swatches{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+.bib-hl-dot{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid rgba(255,255,255,.2);transition:transform .12s;flex-shrink:0;}
+.bib-hl-dot:active{transform:scale(.82);}
+.bib-hl-remove,.bib-hl-close{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:#EDE8DF;cursor:pointer;flex-shrink:0;}
+.bib-hl-remove svg,.bib-hl-close svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4;}
 
 /* Version picker */
 .bib-version-list{padding:0 16px 30px;display:flex;flex-direction:column;gap:6px;}
@@ -2264,6 +2289,9 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
   <div class="bib-selection-bar" id="bib-selection-bar">
     <div class="bib-sel-count" id="bib-sel-count">1 selecionado</div>
     <div class="bib-sel-actions">
+      <div class="bib-sel-btn" onclick="bibOpenHighlightPicker()">
+        <svg viewBox="0 0 24 24"><path d="M3 21l3-1 11-11-2-2L4 18l-1 3z"/><path d="M14 6l4 4"/></svg>Marcar
+      </div>
       <div class="bib-sel-btn" onclick="bibFavSelected()">
         <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Favoritar
       </div>
@@ -2276,7 +2304,19 @@ select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=
     </div>
   </div>
 
+  <!-- HIGHLIGHT COLOR PICKER -->
+  <div class="bib-hl-picker" id="bib-hl-picker">
+    <div class="bib-hl-remove" onclick="bibRemoveHighlight()" title="Remover marcação">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
+    <div class="bib-hl-swatches" id="bib-hl-swatches"></div>
+    <div class="bib-hl-close" onclick="bibCloseHighlightPicker()" title="Fechar">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
+  </div>
+
 </div>
+
 
 
 <!-- ═══ ORAÇÃO ═══ -->
@@ -2662,8 +2702,16 @@ var BIB = {
   readChapters:{}, favorites:[], lastPosition:null,
   _cachedChapData:null, _cachedChapIdx:-1,
   _scrollToVerse:null, pickerChapterIdx:0, pickerVerseCount:0,
-  selectedVerses:{}, availableVersions:[]
+  selectedVerses:{}, availableVersions:[], highlights:{}
 };
+var HL_COLORS=[
+  {key:'green', hex:'#8FE29B'},
+  {key:'yellow', hex:'#FCE96A'},
+  {key:'blue', hex:'#8FD3F4'},
+  {key:'cream', hex:'#F7EFC0'},
+  {key:'orange', hex:'#F5C083'},
+  {key:'pink', hex:'#F3A8DC'}
+];
 var BIB_BASE = 'https://api.scripture.api.bible/v1';
 function bibEl(id){ return document.getElementById(id); }
 
@@ -2677,6 +2725,7 @@ function bibInit(){
     BIB.readChapters = JSON.parse(localStorage.getItem('bib_read')||'{}');
     BIB.favorites = JSON.parse(localStorage.getItem('bib_favs')||'[]');
     BIB.lastPosition = JSON.parse(localStorage.getItem('bib_last')||'null');
+    BIB.highlights = JSON.parse(localStorage.getItem('bib_hl')||'{}');
   }catch(e){}
   bibApplyDark();
   if(!BIB.apiKey){ bibShowScreen('setup'); return; }
@@ -2694,6 +2743,7 @@ function bibSave(){
     localStorage.setItem('bib_read', JSON.stringify(BIB.readChapters));
     localStorage.setItem('bib_favs', JSON.stringify(BIB.favorites));
     localStorage.setItem('bib_last', JSON.stringify(BIB.lastPosition));
+    localStorage.setItem('bib_hl', JSON.stringify(BIB.highlights));
   }catch(e){}
 }
 
@@ -3120,7 +3170,9 @@ function bibRenderReader(chapData,idx,scrollToVerse){
   BIB.favorites.forEach(function(f){isFav[f.verseId]=true;});
   verses.forEach(function(v){
     var wrap=document.createElement('div');
-    wrap.className='bib-verse'+(isFav[v.id]?' fav':'');
+    var cls='bib-verse'+(isFav[v.id]?' fav':'');
+    if(BIB.highlights[v.id])cls+=' bib-hl-'+BIB.highlights[v.id];
+    wrap.className=cls;
     wrap.id='v-'+v.id;
     var numEl=document.createElement('div');
     numEl.className='bib-vnum'; numEl.textContent=v.num;
@@ -3295,6 +3347,51 @@ function bibShareSelected(){
   var refLabel=items[0].ref+' '+(nums.length>1?(nums[0]+'-'+nums[nums.length-1]):nums[0]);
   var text=items.map(function(it){return it.v.text;}).join(' ');
   bibShareVerse(refLabel,text);
+}
+
+// ══ MARCA-TEXTO (highlight colors) ══
+function bibOpenHighlightPicker(){
+  var sw=bibEl('bib-hl-swatches');
+  if(sw&&!sw.children.length){
+    HL_COLORS.forEach(function(c){
+      var dot=document.createElement('div');
+      dot.className='bib-hl-dot';
+      dot.style.background=c.hex;
+      dot.onclick=(function(key){return function(){bibApplyHighlight(key);};})(c.key);
+      sw.appendChild(dot);
+    });
+  }
+  var bar=bibEl('bib-selection-bar'); if(bar)bar.classList.remove('show');
+  var picker=bibEl('bib-hl-picker'); if(picker)picker.classList.add('show');
+}
+function bibCloseHighlightPicker(){
+  var picker=bibEl('bib-hl-picker'); if(picker)picker.classList.remove('show');
+  bibUpdateSelectionBar();
+}
+function bibApplyHighlight(colorKey){
+  var items=bibSelectionList();
+  items.forEach(function(it){
+    BIB.highlights[it.v.id]=colorKey;
+    if(it.wrap){
+      HL_COLORS.forEach(function(c){it.wrap.classList.remove('bib-hl-'+c.key);});
+      it.wrap.classList.add('bib-hl-'+colorKey);
+    }
+  });
+  bibSave();
+  bibCloseHighlightPicker();
+  bibClearSelection();
+}
+function bibRemoveHighlight(){
+  var items=bibSelectionList();
+  items.forEach(function(it){
+    delete BIB.highlights[it.v.id];
+    if(it.wrap){
+      HL_COLORS.forEach(function(c){it.wrap.classList.remove('bib-hl-'+c.key);});
+    }
+  });
+  bibSave();
+  bibCloseHighlightPicker();
+  bibClearSelection();
 }
 
 function bibShareVerse(ref,text){
