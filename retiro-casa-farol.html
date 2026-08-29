@@ -1241,6 +1241,7 @@
     if(!validateStep(currentStep)){
       formError.textContent = 'Preencha os campos obrigatórios antes de continuar.';
       formError.style.display = 'block';
+      formError.scrollIntoView({behavior:'smooth', block:'center'});
       return;
     }
     currentStep++;
@@ -1255,8 +1256,9 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if(!validateStep(4)){
-      formError.textContent = 'Preencha os campos obrigatórios antes de enviar.';
+      formError.textContent = 'Preencha os campos obrigatórios antes de enviar (confira se um lote foi selecionado e as regras aceitas).';
       formError.style.display = 'block';
+      formError.scrollIntoView({behavior:'smooth', block:'center'});
       return;
     }
     formError.style.display = 'none';
