@@ -406,6 +406,21 @@
   .reg-card .nm{font-weight:800; font-size:0.98rem;}
   .reg-card .age{font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:0.76rem; color:var(--violet-d);}
   .reg-card .meta{margin-top:7px; font-size:0.82rem; color:var(--muted); font-weight:600; line-height:1.6;}
+  .meta-grid{
+    margin-top:9px; display:grid; grid-template-columns:1fr 1fr; gap:7px;
+  }
+  .meta-item{
+    background:#f7f4ea; border-radius:9px; padding:7px 10px; display:flex; flex-direction:column; gap:2px;
+    min-width:0;
+  }
+  .meta-item-wide{grid-column:1 / -1;}
+  .meta-lab{
+    font-family:'Space Grotesk', sans-serif; font-size:0.63rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.03em; color:var(--muted);
+  }
+  .meta-val{
+    font-size:0.82rem; font-weight:700; color:var(--ink); word-break:break-word;
+  }
   .reg-card .meta b{color:var(--ink);}
   .reg-card .restr{
     margin-top:8px; font-size:0.78rem; font-weight:700; background:#ffe1c9; color:#a13d00;
@@ -1858,13 +1873,16 @@
         ${r.autorizacaoRemota
           ? '<div class="restr" style="background:#dcf7e3; color:#0a6b2f;">✅ Autorizado pelo responsável (link) em ' + new Date(r.autorizacaoRemotaEm).toLocaleDateString('pt-BR') + '</div>'
           : '<div class="restr" style="background:#fff0d6; color:#8a5600;">⏳ Aguardando autorização do responsável pelo link</div>'}
-        <div class="meta">
-          <b>Responsável:</b> ${escapeHtml(r.responsavel)} (${escapeHtml(r.parentesco||'')}) · ${escapeHtml(r.telResponsavel)}<br>
-          ${r.telAdolescente ? '<b>WhatsApp adolescente:</b> ' + escapeHtml(r.telAdolescente) + '<br>' : ''}
-          <b>Emergência:</b> ${escapeHtml(r.emergenciaNome||'')} · ${escapeHtml(r.emergenciaTel||'')}<br>
-          <b>Igreja:</b> ${escapeHtml(r.igrejaAtual||'')}${r.igrejaEhCasaFarol === 'nao' ? ' (outra igreja — carta: ' + escapeHtml(r.cartaRecomendacao||'-') + ')' : ' (Casa Farol)'}<br>
-          <b>Lote:</b> ${loteLabel} · <b>Pagamento:</b> ${r.formaPagamento === 'pix' ? 'Pix' : (r.formaPagamento === 'lider' ? 'Líder Franciele' : '-')} · <b>Imagem:</b> ${r.autorizacaoImagem === 'autorizo' ? 'autorizada' : 'NÃO autorizada'}<br>
-          <b>Ticket:</b> ${escapeHtml(r.ticket)} · ${new Date(r.criadoEm).toLocaleDateString('pt-BR')}
+        <div class="meta-grid">
+          <div class="meta-item"><span class="meta-lab">Responsável</span><span class="meta-val">${escapeHtml(r.responsavel)}${r.parentesco ? ' (' + escapeHtml(r.parentesco) + ')' : ''}</span></div>
+          <div class="meta-item"><span class="meta-lab">Tel. responsável</span><span class="meta-val">${escapeHtml(r.telResponsavel)}</span></div>
+          ${r.telAdolescente ? '<div class="meta-item"><span class="meta-lab">WhatsApp adolescente</span><span class="meta-val">' + escapeHtml(r.telAdolescente) + '</span></div>' : ''}
+          <div class="meta-item"><span class="meta-lab">Emergência</span><span class="meta-val">${escapeHtml(r.emergenciaNome||'-')} · ${escapeHtml(r.emergenciaTel||'-')}</span></div>
+          <div class="meta-item meta-item-wide"><span class="meta-lab">Igreja</span><span class="meta-val">${escapeHtml(r.igrejaAtual||'')}${r.igrejaEhCasaFarol === 'nao' ? ' (outra — carta: ' + escapeHtml(r.cartaRecomendacao||'-') + ')' : ' (Casa Farol)'}</span></div>
+          <div class="meta-item"><span class="meta-lab">Lote</span><span class="meta-val">${loteLabel}</span></div>
+          <div class="meta-item"><span class="meta-lab">Pagamento</span><span class="meta-val">${r.formaPagamento === 'pix' ? 'Pix' : (r.formaPagamento === 'lider' ? 'Líder Franciele' : '-')}</span></div>
+          <div class="meta-item"><span class="meta-lab">Imagem</span><span class="meta-val">${r.autorizacaoImagem === 'autorizo' ? 'Autorizada' : 'Não autorizada'}</span></div>
+          <div class="meta-item"><span class="meta-lab">Ticket</span><span class="meta-val">${escapeHtml(r.ticket)} · ${new Date(r.criadoEm).toLocaleDateString('pt-BR')}</span></div>
         </div>
         ${alertas.length ? `<div class="restr">⚠ ${escapeHtml(alertas.join(' · '))}</div>` : ''}
         ${r.infoImportante ? `<div class="restr" style="background:#e8e0ff; color:#4a2f8f;">ℹ ${escapeHtml(r.infoImportante)}</div>` : ''}
