@@ -186,6 +186,26 @@
 
   /* choice chips (sim/não etc) */
   .choice-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .vol-avail{display:flex; flex-direction:column; gap:12px;}
+  .vol-avail-day{
+    border:2px solid var(--ink); border-radius:12px; padding:10px 12px 12px;
+    background:#fff;
+  }
+  .vol-avail-day-label{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:0.78rem;
+    text-transform:uppercase; letter-spacing:0.03em; margin-bottom:8px;
+  }
+  .vol-avail-opts{display:flex; flex-wrap:wrap; gap:6px;}
+  .vol-avail-opt{
+    flex:1 1 auto; text-align:center; padding:8px 10px; font-size:0.75rem;
+    font-family:'Space Grotesk', sans-serif; font-weight:700;
+    border:1.5px solid rgba(20,20,26,0.25); border-radius:100px;
+    color:var(--ink); cursor:pointer; -webkit-user-select:none; user-select:none;
+    transition:background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .vol-avail-opt.selected{background:var(--violet); color:#fff; border-color:var(--violet);}
+  .vol-avail-opt-full{flex:1 1 100%; border-style:dashed;}
+  .vol-avail-opt-full.selected{border-style:solid;}
   .choice-opt{
     padding:12px 10px; text-align:center; cursor:pointer; background:#fff;
     font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:0.86rem;
@@ -518,66 +538,97 @@
   </section>
 
   <!-- VOLUNTÁRIOS -->
-  <section class="form-section" id="voluntarios" style="border-top:3px solid var(--ink); background:#f3efe4;">
-    <div class="head">
+  <div class="next-overlay" id="volOverlay">
+    <div class="next-hero" style="background:#f3efe4;">
+      <button type="button" class="nav-back-btn press" id="closeVolBtn" style="margin-bottom:16px;">← Voltar</button>
       <h2>Quer servir com a gente?</h2>
-      <div class="sub">Se você quer ajudar no retiro (cozinha, louvor, dinâmicas, apoio, o que for), preenche aqui.</div>
+      <p>Se você quer ajudar no retiro (cozinha, louvor, dinâmicas, apoio, o que for), preenche aqui.</p>
     </div>
 
-    <div class="form-card hard">
-      <form id="volForm">
-        <div class="field">
-          <label>Nome completo</label>
-          <input type="text" id="volNome" required placeholder="Seu nome completo">
-        </div>
-
-        <div class="field">
-          <label>WhatsApp</label>
-          <input type="tel" id="volTel" required placeholder="(11) 90000-0000">
-        </div>
-
-        <div class="field">
-          <label>Congrega na Casa Farol?</label>
-          <div class="choice-row" data-field="volCongrega">
-            <div class="choice-opt hard-sm" data-value="sim">Sim</div>
-            <div class="choice-opt hard-sm" data-value="nao">Não</div>
+    <div class="next-body">
+      <div class="form-card hard">
+        <form id="volForm">
+          <div class="field">
+            <label>Nome completo</label>
+            <input type="text" id="volNome" required placeholder="Seu nome completo">
           </div>
-        </div>
 
-        <div class="field">
-          <label>Como você quer ajudar?</label>
-          <div class="choice-row" data-field="volArea" style="flex-wrap:wrap;">
-            <div class="choice-opt hard-sm" data-value="cozinha">Cozinha</div>
-            <div class="choice-opt hard-sm" data-value="louvor">Louvor</div>
-            <div class="choice-opt hard-sm" data-value="dinamicas">Dinâmicas</div>
-            <div class="choice-opt hard-sm" data-value="recepcao">Recepção/Apoio</div>
-            <div class="choice-opt hard-sm" data-value="seguranca">Segurança/Logística</div>
-            <div class="choice-opt hard-sm" data-value="midia">Mídia/Fotos</div>
-            <div class="choice-opt hard-sm" data-value="saude">Enfermagem/1º Socorros</div>
-            <div class="choice-opt hard-sm" data-value="outro">Outro</div>
+          <div class="field">
+            <label>WhatsApp</label>
+            <input type="tel" id="volTel" required placeholder="(11) 90000-0000">
           </div>
-        </div>
 
-        <div class="field" id="volAreaOutraBox" style="display:none;">
-          <label>Qual outra área?</label>
-          <input type="text" id="volAreaOutra" placeholder="Conta pra gente">
-        </div>
+          <div class="field">
+            <label>Congrega na Casa Farol?</label>
+            <div class="choice-row" data-field="volCongrega">
+              <div class="choice-opt hard-sm" data-value="sim">Sim</div>
+              <div class="choice-opt hard-sm" data-value="nao">Não</div>
+            </div>
+          </div>
 
-        <div class="field">
-          <label>Alergia, restrição alimentar ou medicamento (se tiver)</label>
-          <input type="text" id="volSaude" placeholder="Opcional">
-        </div>
+          <div class="field">
+            <label>Como você quer ajudar?</label>
+            <div class="choice-row" data-field="volArea" style="flex-wrap:wrap;">
+              <div class="choice-opt hard-sm" data-value="cozinha">Cozinha</div>
+              <div class="choice-opt hard-sm" data-value="louvor">Louvor</div>
+              <div class="choice-opt hard-sm" data-value="dinamicas">Dinâmicas</div>
+              <div class="choice-opt hard-sm" data-value="recepcao">Recepção/Apoio</div>
+              <div class="choice-opt hard-sm" data-value="seguranca">Segurança/Logística</div>
+              <div class="choice-opt hard-sm" data-value="midia">Mídia/Fotos</div>
+              <div class="choice-opt hard-sm" data-value="saude">Enfermagem/1º Socorros</div>
+              <div class="choice-opt hard-sm" data-value="outro">Outro</div>
+            </div>
+          </div>
 
-        <label class="checkline">
-          <input type="checkbox" id="volAceite" required>
-          <span>Estou disponível durante o período do retiro (23 a 25/10) e topo servir onde for preciso.</span>
-        </label>
+          <div class="field" id="volAreaOutraBox" style="display:none;">
+            <label>Qual outra área?</label>
+            <input type="text" id="volAreaOutra" placeholder="Conta pra gente">
+          </div>
 
-        <div class="form-error" id="volFormError" style="display:none;">Preencha os campos obrigatórios antes de enviar.</div>
-        <button type="submit" class="submit-btn press" id="volSubmitBtn" style="margin-top:10px;">Quero ser voluntário 🙌</button>
-      </form>
+          <div class="field">
+            <label>Alergia, restrição alimentar ou medicamento (se tiver)</label>
+            <input type="text" id="volSaude" placeholder="Opcional">
+          </div>
+
+          <div class="field">
+            <label>Sua disponibilidade (dias e horários)</label>
+            <div class="vol-avail">
+              <div class="vol-avail-day">
+                <div class="vol-avail-day-label">23/10 · Sexta</div>
+                <div class="vol-avail-opts" data-day="23">
+                  <div class="vol-avail-opt" data-value="manha">Manhã</div>
+                  <div class="vol-avail-opt" data-value="tarde">Tarde</div>
+                  <div class="vol-avail-opt" data-value="noite">Noite</div>
+                  <div class="vol-avail-opt vol-avail-opt-full" data-value="dia_todo">Dia todo</div>
+                </div>
+              </div>
+              <div class="vol-avail-day">
+                <div class="vol-avail-day-label">24/10 · Sábado</div>
+                <div class="vol-avail-opts" data-day="24">
+                  <div class="vol-avail-opt" data-value="manha">Manhã</div>
+                  <div class="vol-avail-opt" data-value="tarde">Tarde</div>
+                  <div class="vol-avail-opt" data-value="noite">Noite</div>
+                  <div class="vol-avail-opt vol-avail-opt-full" data-value="dia_todo">Dia todo</div>
+                </div>
+              </div>
+              <div class="vol-avail-day">
+                <div class="vol-avail-day-label">25/10 · Domingo</div>
+                <div class="vol-avail-opts" data-day="25">
+                  <div class="vol-avail-opt" data-value="manha">Manhã</div>
+                  <div class="vol-avail-opt" data-value="tarde">Tarde</div>
+                  <div class="vol-avail-opt" data-value="noite">Noite</div>
+                  <div class="vol-avail-opt vol-avail-opt-full" data-value="dia_todo">Dia todo</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-error" id="volFormError" style="display:none;">Preencha os campos obrigatórios antes de enviar.</div>
+          <button type="submit" class="submit-btn press" id="volSubmitBtn" style="margin-top:10px;">Quero ser voluntário 🙌</button>
+        </form>
+      </div>
     </div>
-  </section>
+  </div>
 
   <!-- FORM -->
   <section class="form-section" id="inscricao">
@@ -1590,9 +1641,51 @@
   document.querySelectorAll('.go-voluntario').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      document.getElementById('voluntarios').scrollIntoView({behavior:'smooth', block:'start'});
+      document.getElementById('volOverlay').classList.add('active');
+      window.scrollTo(0,0);
     });
   });
+
+  document.getElementById('closeVolBtn').addEventListener('click', () => {
+    document.getElementById('volOverlay').classList.remove('active');
+    window.scrollTo(0,0);
+  });
+
+  // ---------- disponibilidade do voluntário (multi-seleção por dia) ----------
+  const volAvailValues = {};
+  document.querySelectorAll('.vol-avail-opts').forEach(row => {
+    const day = row.getAttribute('data-day');
+    volAvailValues[day] = [];
+    row.querySelectorAll('.vol-avail-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const val = opt.getAttribute('data-value');
+        if(val === 'dia_todo'){
+          const ligar = !opt.classList.contains('selected');
+          row.querySelectorAll('.vol-avail-opt').forEach(o => o.classList.toggle('selected', ligar));
+        }else{
+          opt.classList.toggle('selected');
+          const periodos = ['manha', 'tarde', 'noite'];
+          const todosSelecionados = periodos.every(p => row.querySelector('[data-value="' + p + '"]').classList.contains('selected'));
+          row.querySelector('[data-value="dia_todo"]').classList.toggle('selected', todosSelecionados);
+        }
+        volAvailValues[day] = Array.from(row.querySelectorAll('.vol-avail-opt.selected'))
+          .map(o => o.getAttribute('data-value'))
+          .filter(v => v !== 'dia_todo');
+      });
+    });
+  });
+  const periodoLabel = { manha: 'Manhã', tarde: 'Tarde', noite: 'Noite' };
+  const diaLabel = { '23': '23/10 (sexta)', '24': '24/10 (sábado)', '25': '25/10 (domingo)' };
+  function montarTextoDisponibilidade(){
+    const partes = [];
+    ['23', '24', '25'].forEach(dia => {
+      const periodos = volAvailValues[dia] || [];
+      if(periodos.length === 0) return;
+      const texto = periodos.length === 3 ? 'Dia todo' : periodos.map(p => periodoLabel[p]).join(', ');
+      partes.push(diaLabel[dia] + ': ' + texto);
+    });
+    return partes.join(' · ');
+  }
 
   // ---------- envio do formulário de voluntários ----------
   const volForm = document.getElementById('volForm');
@@ -1603,8 +1696,7 @@
     e.preventDefault();
     const nome = document.getElementById('volNome').value.trim();
     const tel = document.getElementById('volTel').value.trim();
-    const aceite = document.getElementById('volAceite').checked;
-    if(!nome || !tel || !choiceValues.volCongrega || !choiceValues.volArea || !aceite){
+    if(!nome || !tel || !choiceValues.volCongrega || !choiceValues.volArea){
       volFormError.textContent = 'Preencha os campos obrigatórios antes de enviar.';
       volFormError.style.display = 'block';
       volFormError.scrollIntoView({behavior:'smooth', block:'center'});
@@ -1622,7 +1714,8 @@
       areaVoluntario: choiceValues.volArea,
       areaVoluntarioOutra: document.getElementById('volAreaOutra').value.trim(),
       infoImportante: document.getElementById('volSaude').value.trim(),
-      aceiteRegras: aceite,
+      disponibilidade: montarTextoDisponibilidade(),
+      aceiteRegras: true,
       ticket: 'VOL-' + Math.floor(1000 + Math.random()*9000),
       criadoEm: new Date().toISOString()
     };
@@ -1645,6 +1738,8 @@
       delete choiceValues.volCongrega;
       delete choiceValues.volArea;
       document.getElementById('volAreaOutraBox').style.display = 'none';
+      document.querySelectorAll('.vol-avail-opt').forEach(o => o.classList.remove('selected'));
+      ['23', '24', '25'].forEach(d => { volAvailValues[d] = []; });
       volSubmitBtn.textContent = 'Recebemos! Obrigado 🙌';
       setTimeout(() => { volSubmitBtn.textContent = 'Quero ser voluntário 🙌'; volSubmitBtn.disabled = false; }, 3000);
     }catch(err){
@@ -1713,6 +1808,7 @@
           <b>WhatsApp:</b> ${escapeHtml(r.telAdolescente||'')}<br>
           <b>Congrega na Casa Farol:</b> ${r.congregaCasaFarol === 'sim' ? 'Sim' : 'Não'}<br>
           <b>Área:</b> ${areaFull}<br>
+          <b>Disponibilidade:</b> ${r.disponibilidade ? escapeHtml(r.disponibilidade) : '-'}<br>
           <b>Ticket:</b> ${escapeHtml(r.ticket)} · ${new Date(r.criadoEm).toLocaleDateString('pt-BR')}
         </div>
         ${r.infoImportante ? `<div class="restr" style="background:#e8e0ff; color:#4a2f8f;">ℹ ${escapeHtml(r.infoImportante)}</div>` : ''}
