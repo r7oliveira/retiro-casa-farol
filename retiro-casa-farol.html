@@ -385,7 +385,12 @@
   .login-error{color:var(--red-d); font-weight:700; font-size:0.82rem; margin-top:10px; display:none;}
 
   .admin-body{padding:22px 18px 60px; max-width:760px; margin:0 auto;}
-  .stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:22px;}
+  .stat-group-label{
+    font-family:'Space Grotesk', sans-serif; font-size:0.78rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.03em; color:var(--muted); margin:0 0 10px;
+  }
+  .stat-row{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:22px;}
+  .stat-row-3{grid-template-columns:repeat(3,1fr);}
   .stat-card{padding:14px 12px; text-align:center; background:#fff;}
   .stat-card .num{font-family:'Archivo Black', sans-serif; font-size:1.5rem; color:var(--violet);}
   .stat-card .lab{font-family:'Space Grotesk', sans-serif; font-size:0.66rem; font-weight:700; text-transform:uppercase; color:var(--muted); margin-top:2px;}
@@ -400,75 +405,110 @@
     padding:11px 16px; font-family:'Space Grotesk', sans-serif; font-size:0.8rem; font-weight:700; cursor:pointer;
   }
 
-  .reg-list{display:flex; flex-direction:column; gap:10px;}
-  .reg-card{padding:15px 17px; background:#fff; border-left:8px solid var(--violet);}
+  .admin-tabs{display:flex; gap:10px; margin:26px 0 18px; flex-wrap:wrap;}
+  .admin-tab-btn{
+    flex:1; min-width:140px; background:#fff; border:2.5px solid var(--ink); color:var(--ink);
+    border-radius:100px; padding:11px 16px; font-family:'Space Grotesk', sans-serif;
+    font-size:0.85rem; font-weight:700; cursor:pointer; text-align:center;
+  }
+  .admin-tab-btn.is-active{background:var(--ink); color:#fff;}
+
+  .reg-list{display:flex; flex-direction:column; gap:14px;}
+  .reg-card{
+    padding:18px 18px 16px; background:#fff; border:2px solid var(--ink);
+    border-radius:16px; box-shadow:3px 3px 0 var(--shadow-c);
+  }
   .reg-card .top{display:flex; justify-content:space-between; align-items:baseline; gap:10px;}
-  .reg-card .nm{font-weight:800; font-size:0.98rem;}
-  .reg-card .age{font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:0.76rem; color:var(--violet-d);}
-  .reg-card .meta{margin-top:7px; font-size:0.82rem; color:var(--muted); font-weight:600; line-height:1.6;}
+  .reg-card .nm{font-weight:800; font-size:1rem;}
+  .reg-card .age{font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:0.76rem; color:var(--violet-d); white-space:nowrap;}
+
+  .status-pill{
+    display:inline-flex; align-items:center; gap:5px; margin-top:8px;
+    font-size:0.72rem; font-weight:700; padding:5px 11px; border-radius:100px;
+  }
+  .status-pill.st-pending{background:#fff0d6; color:#8a5600;}
+  .status-pill.st-ok{background:#dcf7e3; color:#0a6b2f;}
+
+  .status-pill-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .confirm-aut-btn{
+    margin-top:8px; background:#fff; border:1.5px solid var(--violet); color:var(--violet-d);
+    font-family:'Space Grotesk', sans-serif; font-size:0.7rem; font-weight:700;
+    padding:5px 11px; border-radius:100px; cursor:pointer;
+  }
+  .confirm-aut-btn:hover{background:var(--violet); color:#fff;}
+
   .meta-grid{
-    margin-top:9px; display:grid; grid-template-columns:1fr 1fr; gap:7px;
+    margin-top:12px; display:grid; grid-template-columns:1fr 1fr; gap:8px;
   }
   .meta-item{
-    background:#f7f4ea; border-radius:9px; padding:7px 10px; display:flex; flex-direction:column; gap:2px;
-    min-width:0;
+    background:#f7f4ea; border:1px solid rgba(20,20,26,0.06); border-radius:10px; padding:8px 10px;
+    display:flex; flex-direction:column; gap:2px; min-width:0;
   }
   .meta-item-wide{grid-column:1 / -1;}
   .meta-lab{
-    font-family:'Space Grotesk', sans-serif; font-size:0.63rem; font-weight:700;
+    font-family:'Space Grotesk', sans-serif; font-size:0.62rem; font-weight:700;
     text-transform:uppercase; letter-spacing:0.03em; color:var(--muted);
   }
   .meta-val{
     font-size:0.82rem; font-weight:700; color:var(--ink); word-break:break-word;
   }
+  .reg-card .meta{margin-top:10px; font-size:0.82rem; color:var(--muted); font-weight:600; line-height:1.7;}
   .reg-card .meta b{color:var(--ink);}
-  .reg-card .restr{
-    margin-top:8px; font-size:0.78rem; font-weight:700; background:#ffe1c9; color:#a13d00;
-    padding:8px 10px; border-radius:8px;
+
+  .attn-box{
+    margin-top:11px; font-size:0.78rem; font-weight:700; background:#fff0d6; color:#8a5600;
+    padding:9px 11px; border-radius:10px; display:flex; flex-direction:column; gap:4px;
   }
-  .reg-card .del{
-    margin-top:9px; background:none; border:none; color:var(--muted); font-size:0.74rem;
-    text-decoration:underline; cursor:pointer; padding:0; font-weight:600;
-  }
-  .reg-card .ver-mais-btn{
-    margin-top:10px; background:#f4efe0; border:none; color:var(--violet-d); font-size:0.78rem;
-    font-family:'Space Grotesk', sans-serif; font-weight:700; cursor:pointer;
-    padding:7px 12px; border-radius:100px;
-  }
-  .reg-card .extra-details{
-    margin-top:10px; padding-top:10px; border-top:1.5px dashed rgba(20,20,26,0.15);
-  }
+
   .pay-status-box{
-    margin-top:10px; padding:12px; background:#f7f4ea; border-radius:10px;
+    margin-top:12px; padding:11px 12px; background:#f7f4ea; border-radius:12px;
   }
+  .pay-status-top{display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:8px;}
   .pay-status-label{
-    font-family:'Space Grotesk', sans-serif; font-size:0.7rem; font-weight:700;
-    text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); margin-bottom:6px;
+    font-family:'Space Grotesk', sans-serif; font-size:0.68rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.04em; color:var(--muted);
   }
   .pay-status-badge{
-    display:inline-block; font-size:0.8rem; font-weight:700; padding:5px 10px;
-    border-radius:8px; margin-bottom:9px;
+    display:inline-block; font-size:0.75rem; font-weight:700; padding:4px 9px;
+    border-radius:100px;
   }
   .pay-status-badge.pay-pendente{background:#fff0d6; color:#8a5600;}
   .pay-status-badge.pay-confirmacao_paga{background:#e0edff; color:#1d4f9e;}
   .pay-status-badge.pay-total_pago{background:#dcf7e3; color:#0a6b2f;}
   .pay-status-btns{display:flex; gap:6px; flex-wrap:wrap;}
-  .pay-status-note{
-    margin-top:9px; font-size:0.7rem; font-weight:600; font-style:italic;
-    color:var(--muted); opacity:0.85;
-  }
   .pay-btn{
-    background:#fff; border:1.5px solid rgba(20,20,26,0.2); color:var(--ink);
-    font-family:'Space Grotesk', sans-serif; font-size:0.7rem; font-weight:700;
+    background:#fff; border:1.5px solid rgba(20,20,26,0.18); color:var(--muted);
+    font-family:'Space Grotesk', sans-serif; font-size:0.68rem; font-weight:700;
     padding:6px 10px; border-radius:100px; cursor:pointer;
   }
-  .pay-btn:hover{border-color:var(--violet);}
+  .pay-btn:hover{border-color:var(--violet); color:var(--ink);}
+  .pay-btn.is-active{background:var(--ink); border-color:var(--ink); color:#fff;}
+
+  .card-footer-row{
+    margin-top:12px; padding-top:10px; border-top:1.5px dashed rgba(20,20,26,0.14);
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .reg-card .ver-mais-btn{
+    background:#f4efe0; border:none; color:var(--violet-d); font-size:0.76rem;
+    font-family:'Space Grotesk', sans-serif; font-weight:700; cursor:pointer;
+    padding:7px 12px; border-radius:100px;
+  }
+  .reg-card .del{
+    background:none; border:none; color:var(--muted); font-size:0.72rem;
+    text-decoration:underline; cursor:pointer; padding:0; font-weight:600;
+  }
+  .reg-card .extra-details{
+    margin-top:10px; padding-top:10px; border-top:1.5px dashed rgba(20,20,26,0.15);
+  }
+  .pay-status-note{
+    margin-top:8px; font-size:0.68rem; font-weight:600; font-style:italic;
+    color:var(--muted); opacity:0.8;
+  }
   .empty-state, .loading-state{text-align:center; padding:50px 20px; color:var(--muted); font-weight:600;}
 
   @media(max-width:400px){
     .row2{grid-template-columns:1fr;}
     .bento{grid-template-columns:1fr 1fr;}
-    .stat-row{grid-template-columns:1fr 1fr 1fr;}
   }
   @media(prefers-reduced-motion:reduce){
     .floaty{animation:none;}
@@ -533,7 +573,7 @@
               <span class="invest-name">1º Lote</span>
               <span class="invest-price">R$ 100</span>
             </div>
-            <div class="invest-date">Inscrições: 14/08 a 30/09</div>
+            <div class="invest-date">Inscrições: 01/09 a 30/09</div>
           </div>
           <div class="invest-row">
             <div class="invest-top">
@@ -583,7 +623,8 @@
 
           <div class="field">
             <label>Como você quer ajudar?</label>
-            <div class="choice-row" data-field="volArea" style="flex-wrap:wrap;">
+            <div class="field-hint" style="font-size:0.78rem; color:var(--muted); font-weight:600; margin-bottom:6px;">Pode escolher mais de uma opção</div>
+            <div class="choice-row" data-field="volArea" data-multi="true" style="flex-wrap:wrap;">
               <div class="choice-opt hard-sm" data-value="cozinha">Cozinha</div>
               <div class="choice-opt hard-sm" data-value="louvor">Louvor</div>
               <div class="choice-opt hard-sm" data-value="dinamicas">Dinâmicas</div>
@@ -591,6 +632,7 @@
               <div class="choice-opt hard-sm" data-value="seguranca">Segurança/Logística</div>
               <div class="choice-opt hard-sm" data-value="midia">Mídia/Fotos</div>
               <div class="choice-opt hard-sm" data-value="saude">Enfermagem/1º Socorros</div>
+              <div class="choice-opt hard-sm" data-value="intercessao">Intercessão</div>
               <div class="choice-opt hard-sm" data-value="outro">Outro</div>
             </div>
           </div>
@@ -603,6 +645,23 @@
           <div class="field">
             <label>Alergia, restrição alimentar ou medicamento (se tiver)</label>
             <input type="text" id="volSaude" placeholder="Opcional">
+          </div>
+
+          <div class="field">
+            <label>Você vai dormir no retiro ou vai pra casa?</label>
+            <div class="choice-row" data-field="volDorme">
+              <div class="choice-opt hard-sm" data-value="sim">Vou dormir lá</div>
+              <div class="choice-opt hard-sm" data-value="nao">Vou pra casa</div>
+            </div>
+          </div>
+
+          <div class="pix-card hard-sm" id="volPixBox" style="display:none;">
+            <div class="pix-title">Dados do Pix pra confirmação (R$65)</div>
+            <div class="pix-row"><span>Nome</span><b>Franciele Bariviera</b></div>
+            <div class="pix-row"><span>Chave (telefone)</span><b id="volPixChaveTxt">(48) 98836-2228</b></div>
+            <div class="pix-row"><span>Instituição</span><b>CC Litorânea</b></div>
+            <button type="button" class="pix-copy-btn press" id="volPixCopyBtn">Copiar chave Pix</button>
+            <div class="pix-note">Como voluntário(a) que vai dormir no retiro, a taxa é de <b>R$65</b>. Depois de pagar, envie o comprovante pra <b>líder Franciele</b> pelo WhatsApp.</div>
           </div>
 
           <div class="field">
@@ -642,6 +701,20 @@
           <button type="submit" class="submit-btn press" id="volSubmitBtn" style="margin-top:10px;">Quero ser voluntário 🙌</button>
         </form>
       </div>
+    </div>
+  </div>
+
+  <!-- CONFIRMAÇÃO DO VOLUNTÁRIO -->
+  <div class="next-overlay" id="volNextOverlay">
+    <div class="next-hero" style="background:#f3efe4;">
+      <h2>Você faz parte da equipe! 🙌</h2>
+      <p>Toque no botão abaixo pra receber a mensagem de boas-vindas no seu WhatsApp.</p>
+      <div class="ticket-badge" id="volNextTicketId">Nº ---</div>
+      <button class="wa-share-btn press" id="volSendWhatsappBtn">
+        <svg viewBox="0 0 32 32" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.34.653 4.527 1.786 6.393L4 29l7.81-1.746A11.94 11.94 0 0 0 16.001 27C22.629 27 28 21.627 28 15S22.629 3 16.001 3zm6.997 16.845c-.297.835-1.469 1.53-2.404 1.73-.639.135-1.474.243-4.284-.92-3.598-1.49-5.914-5.144-6.096-5.383-.176-.238-1.457-1.94-1.457-3.7 0-1.76.897-2.624 1.216-2.983.318-.36.694-.45.926-.45.232 0 .463.002.665.012.213.01.5-.081.782.598.297.716.998 2.474 1.086 2.654.089.18.148.392.03.63-.117.238-.176.386-.35.594-.176.207-.37.462-.528.62-.176.176-.36.367-.155.72.207.353.918 1.516 1.972 2.457 1.354 1.209 2.496 1.583 2.849 1.76.353.176.559.148.766-.09.207-.238.884-1.033 1.12-1.387.238-.353.475-.29.797-.176.322.117 2.05.968 2.402 1.144.353.176.588.264.677.412.089.148.089.855-.208 1.69z"/></svg>
+        <span>Enviar mensagem pelo WhatsApp</span>
+      </button>
+      <button type="button" class="nav-back-btn press" id="closeVolNextBtn" style="margin-top:16px;">Fechar</button>
     </div>
   </div>
 
@@ -827,10 +900,10 @@
           <div class="field">
             <label>Lote de inscrição</label>
             <div class="lote-pick">
-              <div class="lote-opt hard-sm" data-value="1" data-opens="2026-08-14" data-closes="2026-09-30">
+              <div class="lote-opt hard-sm" data-value="1" data-opens="2026-09-01" data-closes="2026-09-30">
                 <div class="lote-nm">1º Lote</div>
                 <div class="lote-price">R$ 100</div>
-                <div class="lote-sub">14/08 a 30/09 · R$20 na confirmação + R$80 até 18/10</div>
+                <div class="lote-sub">01/09 a 30/09 · R$20 na confirmação + R$80 até 18/10</div>
               </div>
               <div class="lote-opt hard-sm" data-value="2" data-opens="2026-10-01" data-closes="2026-10-10">
                 <div class="lote-nm">2º Lote</div>
@@ -1032,28 +1105,42 @@
     </div>
 
     <div class="admin-body" id="adminBody" style="display:none;">
-      <div class="stat-row">
+      <div class="stat-group-label">🧑‍🎓 Adolescentes</div>
+      <div class="stat-row stat-row-3">
         <div class="stat-card hard-sm"><div class="num" id="statTotal">–</div><div class="lab">Inscritos</div></div>
         <div class="stat-card hard-sm"><div class="num" id="statAutorizados">–</div><div class="lab">Autorizados</div></div>
         <div class="stat-card hard-sm"><div class="num" id="statRestricoes">–</div><div class="lab">C/ restrição</div></div>
+      </div>
+
+      <div class="stat-group-label">🙋 Voluntários</div>
+      <div class="stat-row">
         <div class="stat-card hard-sm"><div class="num" id="statVoluntarios">–</div><div class="lab">Voluntários</div></div>
+        <div class="stat-card hard-sm"><div class="num" id="statVolDorme">–</div><div class="lab">Voluntários que dormem</div></div>
       </div>
 
-      <div class="toolbar">
-        <input type="text" id="searchBox" placeholder="Buscar por nome...">
-        <button id="exportPdfBtn">Exportar PDF</button>
-        <button id="refreshBtn">Atualizar</button>
-      </div>
-      <div class="reg-list" id="regList">
-        <div class="loading-state">Carregando inscrições...</div>
+      <div class="admin-tabs">
+        <button type="button" class="admin-tab-btn is-active" id="tabBtnAdolescentes">🧑‍🎓 Adolescentes</button>
+        <button type="button" class="admin-tab-btn" id="tabBtnVoluntarios">🙋 Voluntários</button>
       </div>
 
-      <div class="next-card-head" style="margin:26px 0 10px;">
-        <span class="ic">🙋</span>
-        <h3>Voluntários</h3>
+      <div class="admin-tab-panel" id="tabAdolescentes">
+        <div class="toolbar">
+          <input type="text" id="searchBox" placeholder="Buscar por nome...">
+          <button id="exportPdfBtn">Exportar PDF</button>
+          <button id="refreshBtn">Atualizar</button>
+        </div>
+        <div class="reg-list" id="regList">
+          <div class="loading-state">Carregando inscrições...</div>
+        </div>
       </div>
-      <div class="reg-list" id="volList">
-        <div class="loading-state">Carregando voluntários...</div>
+
+      <div class="admin-tab-panel" id="tabVoluntarios" style="display:none;">
+        <div class="toolbar" style="justify-content:flex-end;">
+          <button id="exportVolPdfBtn" style="background:#fff; border:2.5px solid var(--ink); color:var(--ink); border-radius:11px; padding:9px 14px; font-family:'Space Grotesk', sans-serif; font-size:0.78rem; font-weight:700; cursor:pointer;">Exportar PDF</button>
+        </div>
+        <div class="reg-list" id="volList">
+          <div class="loading-state">Carregando voluntários...</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1209,11 +1296,19 @@
   const choiceValues = {};
   document.querySelectorAll('.choice-row').forEach(row => {
     const fieldName = row.getAttribute('data-field');
+    const isMulti = row.getAttribute('data-multi') === 'true';
+    if(isMulti) choiceValues[fieldName] = [];
     row.querySelectorAll('.choice-opt').forEach(opt => {
       opt.addEventListener('click', () => {
-        row.querySelectorAll('.choice-opt').forEach(o => o.classList.remove('selected'));
-        opt.classList.add('selected');
-        choiceValues[fieldName] = opt.getAttribute('data-value');
+        if(isMulti){
+          opt.classList.toggle('selected');
+          choiceValues[fieldName] = Array.from(row.querySelectorAll('.choice-opt.selected'))
+            .map(o => o.getAttribute('data-value'));
+        }else{
+          row.querySelectorAll('.choice-opt').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          choiceValues[fieldName] = opt.getAttribute('data-value');
+        }
         handleConditionalFields();
       });
     });
@@ -1268,8 +1363,21 @@
     document.getElementById('qualRestricaoBox').style.display = (choiceValues.restricaoAlimentar === 'sim') ? 'block' : 'none';
     document.getElementById('medicamentoBox').style.display = (choiceValues.medicamentoContinuo === 'sim') ? 'block' : 'none';
 
-    document.getElementById('volAreaOutraBox').style.display = (choiceValues.volArea === 'outro') ? 'block' : 'none';
+    document.getElementById('volAreaOutraBox').style.display = (Array.isArray(choiceValues.volArea) && choiceValues.volArea.includes('outro')) ? 'block' : 'none';
+    document.getElementById('volPixBox').style.display = (choiceValues.volDorme === 'sim') ? 'block' : 'none';
   }
+
+  // ---------- copiar chave pix (voluntário) ----------
+  document.getElementById('volPixCopyBtn').addEventListener('click', () => {
+    const chave = document.getElementById('volPixChaveTxt').textContent.trim();
+    const btn = document.getElementById('volPixCopyBtn');
+    navigator.clipboard.writeText(chave).then(() => {
+      btn.textContent = 'Copiado! ✓';
+      setTimeout(() => { btn.textContent = 'Copiar chave Pix'; }, 2000);
+    }).catch(() => {
+      btn.textContent = 'Copie manualmente: ' + chave;
+    });
+  });
 
   // ---------- copiar chave pix ----------
   document.getElementById('pixCopyBtn').addEventListener('click', () => {
@@ -1666,6 +1774,11 @@
     window.scrollTo(0,0);
   });
 
+  document.getElementById('closeVolNextBtn').addEventListener('click', () => {
+    document.getElementById('volNextOverlay').classList.remove('active');
+    window.scrollTo(0,0);
+  });
+
   // ---------- disponibilidade do voluntário (multi-seleção por dia) ----------
   const volAvailValues = {};
   document.querySelectorAll('.vol-avail-opts').forEach(row => {
@@ -1711,7 +1824,8 @@
     e.preventDefault();
     const nome = document.getElementById('volNome').value.trim();
     const tel = document.getElementById('volTel').value.trim();
-    if(!nome || !tel || !choiceValues.volCongrega || !choiceValues.volArea){
+    const volAreaSelecionada = Array.isArray(choiceValues.volArea) ? choiceValues.volArea.slice() : [];
+    if(!nome || !tel || !choiceValues.volCongrega || volAreaSelecionada.length === 0 || !choiceValues.volDorme){
       volFormError.textContent = 'Preencha os campos obrigatórios antes de enviar.';
       volFormError.style.display = 'block';
       volFormError.scrollIntoView({behavior:'smooth', block:'center'});
@@ -1721,17 +1835,20 @@
     volSubmitBtn.disabled = true;
     volSubmitBtn.textContent = 'Enviando...';
 
+    const volDormeSelecionado = choiceValues.volDorme;
+    const volTicket = 'VOL-' + Math.floor(1000 + Math.random()*9000);
     const record = {
       tipoInscricao: 'voluntario',
       nome: nome,
       telAdolescente: tel,
       congregaCasaFarol: choiceValues.volCongrega,
-      areaVoluntario: choiceValues.volArea,
+      areaVoluntario: volAreaSelecionada.join(', '),
       areaVoluntarioOutra: document.getElementById('volAreaOutra').value.trim(),
+      dormeNoRetiro: volDormeSelecionado,
       infoImportante: document.getElementById('volSaude').value.trim(),
       disponibilidade: montarTextoDisponibilidade(),
       aceiteRegras: true,
-      ticket: 'VOL-' + Math.floor(1000 + Math.random()*9000),
+      ticket: volTicket,
       criadoEm: new Date().toISOString()
     };
 
@@ -1749,14 +1866,62 @@
         throw new Error('Nenhum destino de envio funcionou');
       }
       volForm.reset();
-      document.querySelectorAll('[data-field="volCongrega"] .choice-opt, [data-field="volArea"] .choice-opt').forEach(o => o.classList.remove('selected'));
+      document.querySelectorAll('[data-field="volCongrega"] .choice-opt, [data-field="volArea"] .choice-opt, [data-field="volDorme"] .choice-opt').forEach(o => o.classList.remove('selected'));
       delete choiceValues.volCongrega;
-      delete choiceValues.volArea;
+      choiceValues.volArea = [];
+      delete choiceValues.volDorme;
       document.getElementById('volAreaOutraBox').style.display = 'none';
+      document.getElementById('volPixBox').style.display = 'none';
       document.querySelectorAll('.vol-avail-opt').forEach(o => o.classList.remove('selected'));
       ['23', '24', '25'].forEach(d => { volAvailValues[d] = []; });
-      volSubmitBtn.textContent = 'Recebemos! Obrigado 🙌';
-      setTimeout(() => { volSubmitBtn.textContent = 'Quero ser voluntário 🙌'; volSubmitBtn.disabled = false; }, 3000);
+      volSubmitBtn.disabled = false;
+      volSubmitBtn.textContent = 'Quero ser voluntário 🙌';
+
+      const volWaMessageLines = [
+        '*PARABÉNS!*🎉❤️',
+        '',
+        '_Você faz parte da equipe de voluntários Casa Farol Teens!_ 🙏🏻♥️',
+        '',
+        'Já esteja em oração por esse retiro!',
+        'Pois será um tempo de *renovo, comunhão, transformação e, acima de tudo, de experiências profundas com Deus.* 🔥',
+        '',
+        'Cada detalhe, cada conversa, cada momento e cada vida importam. Deus escolheu você para fazer parte disso! ❤️',
+        '',
+        'Que possamos servir com alegria, amor e disposição, entendendo que *não estamos apenas organizando um retiro, estamos ajudando a preparar um ambiente para que vidas sejam transformadas pela presença de Deus.*',
+        '',
+        'Vamos juntos! 🙏🏻🔥',
+        'Que seja um retiro inesquecível e que Deus faça muito além do que podemos imaginar!',
+        '',
+        '🎧 *Playlist do retiro:*',
+        'https://open.spotify.com/playlist/7gmJlOvxphKIe3s0tzdX9y?si=wAV1uEUfSFy9fS0dZRk3_Q&utm_source=copy-link&pi=E8cNBWUZQMq_o'
+      ];
+      if(volDormeSelecionado === 'sim'){
+        volWaMessageLines.push(
+          '',
+          '🎒 *O que levar:*',
+          '• Bíblia e um caderno pra anotar',
+          '• Roupa de cama ou saco de dormir + travesseiro',
+          '• Toalha de banho e de rosto',
+          '• Roupa confortável pra 3 dias + um look pra noite temática',
+          '• Protetor solar e repelente',
+          '• Chinelo e tênis',
+          '• Escova, pasta de dente e itens de higiene',
+          '• Remédio de uso pessoal, se usar',
+          '• Garrafinha de água',
+          '• Documento com foto',
+          '• Um dinheirinho extra pra cantina'
+        );
+      }
+      const volWaMessage = volWaMessageLines.join('\n');
+      const volWaPhoneRaw = tel.replace(/\D/g, '');
+      const volWaPhone = volWaPhoneRaw ? ('55' + volWaPhoneRaw.replace(/^55/, '')) : '';
+      const volWaUrl = volWaPhone
+        ? ('https://wa.me/' + volWaPhone + '?text=' + encodeURIComponent(volWaMessage))
+        : ('https://wa.me/?text=' + encodeURIComponent(volWaMessage));
+      document.getElementById('volSendWhatsappBtn').onclick = () => window.open(volWaUrl, '_blank');
+      document.getElementById('volNextTicketId').textContent = 'Nº ' + volTicket;
+      document.getElementById('volNextOverlay').classList.add('active');
+      window.scrollTo(0,0);
     }catch(err){
       console.error('Erro ao enviar inscrição de voluntário:', err);
       volFormError.textContent = 'Não foi possível enviar agora. Verifique sua internet e tente de novo em alguns segundos.';
@@ -1806,6 +1971,7 @@
     const box = document.getElementById('volList');
     if(!box) return;
     document.getElementById('statVoluntarios').textContent = list.length;
+    document.getElementById('statVolDorme').textContent = list.filter(r => r.dormeNoRetiro === 'sim').length;
     if(list.length === 0){
       box.innerHTML = '<div class="empty-state">Nenhum voluntário inscrito ainda.</div>';
       return;
@@ -1814,22 +1980,63 @@
     box.innerHTML = sorted.map(r => {
       const area = areaLabels[r.areaVoluntario] || r.areaVoluntario || '-';
       const areaFull = (r.areaVoluntario === 'outro' && r.areaVoluntarioOutra) ? area + ' — ' + escapeHtml(r.areaVoluntarioOutra) : area;
+      const dorme = r.dormeNoRetiro === 'sim';
+      const statusPagVol = r.statusPagamentoVol || 'pendente';
+      const payVolLabel = statusPagVol === 'pago' ? '✅ Pago' : '⏳ Pendente';
       return `
       <div class="reg-card" data-id="${r.id}">
         <div class="top">
           <div class="nm">${escapeHtml(r.nome)}</div>
         </div>
-        <div class="meta">
-          <b>WhatsApp:</b> ${escapeHtml(r.telAdolescente||'')}<br>
-          <b>Congrega na Casa Farol:</b> ${r.congregaCasaFarol === 'sim' ? 'Sim' : 'Não'}<br>
-          <b>Área:</b> ${areaFull}<br>
-          <b>Disponibilidade:</b> ${r.disponibilidade ? escapeHtml(r.disponibilidade) : '-'}<br>
-          <b>Ticket:</b> ${escapeHtml(r.ticket)} · ${new Date(r.criadoEm).toLocaleDateString('pt-BR')}
+        ${dorme
+          ? '<div class="status-pill st-pending">🛏️ Vai dormir no retiro (R$65)</div>'
+          : (r.dormeNoRetiro === 'nao' ? '<div class="status-pill st-ok">🏠 Vai pra casa</div>' : '')}
+        <div class="meta-grid">
+          <div class="meta-item"><span class="meta-lab">WhatsApp</span><span class="meta-val">${escapeHtml(r.telAdolescente||'-')}</span></div>
+          <div class="meta-item"><span class="meta-lab">Congrega na Casa Farol</span><span class="meta-val">${r.congregaCasaFarol === 'sim' ? 'Sim' : 'Não'}</span></div>
+          <div class="meta-item meta-item-wide"><span class="meta-lab">Área(s) para ajudar</span><span class="meta-val">${areaFull}</span></div>
+          <div class="meta-item meta-item-wide"><span class="meta-lab">Disponibilidade</span><span class="meta-val">${r.disponibilidade ? escapeHtml(r.disponibilidade) : '-'}</span></div>
+          <div class="meta-item meta-item-wide"><span class="meta-lab">Ticket</span><span class="meta-val">${escapeHtml(r.ticket)} · ${new Date(r.criadoEm).toLocaleDateString('pt-BR')}</span></div>
         </div>
-        ${r.infoImportante ? `<div class="restr" style="background:#e8e0ff; color:#4a2f8f;">ℹ ${escapeHtml(r.infoImportante)}</div>` : ''}
-        <button class="del" data-delvol="${r.id}">Remover</button>
+        ${r.infoImportante ? `<div class="attn-box">ℹ ${escapeHtml(r.infoImportante)}</div>` : ''}
+        ${dorme ? `
+        <div class="pay-status-box">
+          <div class="pay-status-top">
+            <span class="pay-status-label">Pagamento (R$65)</span>
+            <span class="pay-status-badge pay-${statusPagVol === 'pago' ? 'total_pago' : 'pendente'}">${payVolLabel}</span>
+          </div>
+          <div class="pay-status-btns">
+            <button class="pay-btn${statusPagVol === 'pendente' ? ' is-active' : ''}" data-payvolid="${r.id}" data-paystatus="pendente">Pendente</button>
+            <button class="pay-btn${statusPagVol === 'pago' ? ' is-active' : ''}" data-payvolid="${r.id}" data-paystatus="pago">Pago</button>
+          </div>
+          <div class="pay-status-note">Uso interno da liderança</div>
+        </div>` : ''}
+        <div class="card-footer-row" style="justify-content:flex-end;">
+          <button class="del" data-delvol="${r.id}">Remover</button>
+        </div>
       </div>
     `; }).join('');
+
+    box.querySelectorAll('[data-payvolid]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-payvolid');
+        const novoStatus = btn.getAttribute('data-paystatus');
+        const vol = allVols.find(r => r.id === id);
+        if(!vol) return;
+        btn.disabled = true;
+        const dadosAtualizados = Object.assign({}, vol, {statusPagamentoVol: novoStatus});
+        delete dadosAtualizados.id;
+        delete dadosAtualizados.criadoEm;
+        const ok = await updateSupabaseData(id, dadosAtualizados);
+        btn.disabled = false;
+        if(ok){
+          vol.statusPagamentoVol = novoStatus;
+          renderVolList(allVols);
+        }else{
+          alert('Não foi possível salvar agora. Tenta de novo em instantes.');
+        }
+      });
+    });
 
     box.querySelectorAll('[data-delvol]').forEach(btn => {
       btn.addEventListener('click', async () => {
@@ -1857,13 +2064,16 @@
     }
     const sorted = [...list].sort((a,b) => new Date(b.criadoEm) - new Date(a.criadoEm));
     container.innerHTML = sorted.map(r => {
-      const alertas = [];
-      if(r.alergiaAlimentar === 'sim' && r.qualAlergia) alertas.push('Alergia: ' + r.qualAlergia);
-      if(r.restricaoAlimentar === 'sim' && r.qualRestricao) alertas.push('Restrição: ' + r.qualRestricao);
-      if(r.medicamentoContinuo === 'sim' && r.medicamentoDetalhe) alertas.push('Medicamento: ' + r.medicamentoDetalhe);
+      const attnLines = [];
+      if(r.alergiaAlimentar === 'sim' && r.qualAlergia) attnLines.push('⚠ Alergia: ' + escapeHtml(r.qualAlergia));
+      if(r.restricaoAlimentar === 'sim' && r.qualRestricao) attnLines.push('⚠ Restrição: ' + escapeHtml(r.qualRestricao));
+      if(r.medicamentoContinuo === 'sim' && r.medicamentoDetalhe) attnLines.push('⚠ Medicamento: ' + escapeHtml(r.medicamentoDetalhe));
+      if(r.infoImportante) attnLines.push('ℹ ' + escapeHtml(r.infoImportante));
       const loteLabel = r.lote === '2' ? '2º Lote (R$130)' : '1º Lote (R$100)';
       const simNao = v => v === 'sim' ? 'Sim' : (v === 'nao' ? 'Não' : '-');
       const statusPag = r.statusPagamento || 'pendente';
+      const payLabel = statusPag === 'confirmacao_paga' ? '💰 Confirmação (R$20) paga' :
+            statusPag === 'total_pago' ? '✅ Retiro pago por completo' : '⏳ Pendente';
       return `
       <div class="reg-card" data-id="${r.id}">
         <div class="top">
@@ -1871,8 +2081,8 @@
           <div class="age">${escapeHtml(r.idade)} anos</div>
         </div>
         ${r.autorizacaoRemota
-          ? '<div class="restr" style="background:#dcf7e3; color:#0a6b2f;">✅ Autorizado pelo responsável (link) em ' + new Date(r.autorizacaoRemotaEm).toLocaleDateString('pt-BR') + '</div>'
-          : '<div class="restr" style="background:#fff0d6; color:#8a5600;">⏳ Aguardando autorização do responsável pelo link</div>'}
+          ? '<div class="status-pill st-ok">✅ Autorizado' + (r.autorizadoManualmente ? ' manualmente pela liderança' : ' pelo responsável') + ' em ' + new Date(r.autorizacaoRemotaEm).toLocaleDateString('pt-BR') + '</div>'
+          : '<div class="status-pill-row"><div class="status-pill st-pending">⏳ Aguardando autorização do responsável</div><button class="confirm-aut-btn" data-confirmautid="' + r.id + '">Confirmar autorização</button></div>'}
         <div class="meta-grid">
           <div class="meta-item"><span class="meta-lab">Responsável</span><span class="meta-val">${escapeHtml(r.responsavel)}${r.parentesco ? ' (' + escapeHtml(r.parentesco) + ')' : ''}</span></div>
           <div class="meta-item"><span class="meta-lab">Tel. responsável</span><span class="meta-val">${escapeHtml(r.telResponsavel)}</span></div>
@@ -1884,25 +2094,25 @@
           <div class="meta-item"><span class="meta-lab">Imagem</span><span class="meta-val">${r.autorizacaoImagem === 'autorizo' ? 'Autorizada' : 'Não autorizada'}</span></div>
           <div class="meta-item"><span class="meta-lab">Ticket</span><span class="meta-val">${escapeHtml(r.ticket)} · ${new Date(r.criadoEm).toLocaleDateString('pt-BR')}</span></div>
         </div>
-        ${alertas.length ? `<div class="restr">⚠ ${escapeHtml(alertas.join(' · '))}</div>` : ''}
-        ${r.infoImportante ? `<div class="restr" style="background:#e8e0ff; color:#4a2f8f;">ℹ ${escapeHtml(r.infoImportante)}</div>` : ''}
+        ${attnLines.length ? `<div class="attn-box">${attnLines.join('<br>')}</div>` : ''}
 
         <div class="pay-status-box">
-          <div class="pay-status-label">Situação do pagamento:</div>
-          <div class="pay-status-badge pay-${statusPag}">${
-            statusPag === 'confirmacao_paga' ? '💰 Confirmação (R$20) paga' :
-            statusPag === 'total_pago' ? '✅ Retiro pago por completo' :
-            '⏳ Pendente'
-          }</div>
-          <div class="pay-status-btns">
-            <button class="pay-btn" data-payid="${r.id}" data-paystatus="pendente">Pendente</button>
-            <button class="pay-btn" data-payid="${r.id}" data-paystatus="confirmacao_paga">Confirmação paga</button>
-            <button class="pay-btn" data-payid="${r.id}" data-paystatus="total_pago">Retiro pago</button>
+          <div class="pay-status-top">
+            <span class="pay-status-label">Pagamento</span>
+            <span class="pay-status-badge pay-${statusPag}">${payLabel}</span>
           </div>
-          <div class="pay-status-note">Função para organização da líder Franciele</div>
+          <div class="pay-status-btns">
+            <button class="pay-btn${statusPag === 'pendente' ? ' is-active' : ''}" data-payid="${r.id}" data-paystatus="pendente">Pendente</button>
+            <button class="pay-btn${statusPag === 'confirmacao_paga' ? ' is-active' : ''}" data-payid="${r.id}" data-paystatus="confirmacao_paga">Confirmação paga</button>
+            <button class="pay-btn${statusPag === 'total_pago' ? ' is-active' : ''}" data-payid="${r.id}" data-paystatus="total_pago">Retiro pago</button>
+          </div>
+          <div class="pay-status-note">Uso interno da liderança</div>
         </div>
 
-        <button class="ver-mais-btn" data-toggle="${r.id}">Ver mais ▾</button>
+        <div class="card-footer-row">
+          <button class="ver-mais-btn" data-toggle="${r.id}">Ver mais ▾</button>
+          <button class="del" data-del="${r.id}">Remover inscrição</button>
+        </div>
         <div class="meta extra-details" id="extra-${r.id}" style="display:none;">
           <b>Nascimento:</b> ${r.dataNascimento ? new Date(r.dataNascimento + 'T00:00:00').toLocaleDateString('pt-BR') : '-'}<br>
           <b>Congrega na Casa Farol:</b> ${simNao(r.congregaCasaFarol)} · <b>2+ encontros:</b> ${simNao(r.participou2Encontros)}<br>
@@ -1913,10 +2123,8 @@
           <b>Medicamento contínuo:</b> ${simNao(r.medicamentoContinuo)}${r.medicamentoDetalhe ? ' — ' + escapeHtml(r.medicamentoDetalhe) : ''}<br>
           <b>Regras aceitas:</b> ${r.aceiteRegras ? 'Sim' : 'Não'} · <b>Participação autorizada:</b> ${r.autorizacaoParticipacao ? 'Sim' : 'Não'}<br>
           <b>Autorizado por:</b> ${escapeHtml(r.nomeResponsavelAutoriza||'-')}<br>
-          <b>Autorização via link:</b> ${r.autorizacaoRemota ? 'Sim, em ' + new Date(r.autorizacaoRemotaEm).toLocaleString('pt-BR') : 'Ainda não'}
+          <b>Autorização:</b> ${r.autorizacaoRemota ? ('Sim' + (r.autorizadoManualmente ? ' (confirmada manualmente pela liderança)' : ' (via link)') + ', em ' + new Date(r.autorizacaoRemotaEm).toLocaleString('pt-BR')) : 'Ainda não'}
         </div>
-
-        <button class="del" data-del="${r.id}">Remover inscrição</button>
       </div>
     `; }).join('');
 
@@ -1927,6 +2135,35 @@
         const open = box.style.display === 'block';
         box.style.display = open ? 'none' : 'block';
         btn.textContent = open ? 'Ver mais ▾' : 'Ver menos ▴';
+      });
+    });
+
+    container.querySelectorAll('[data-confirmautid]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-confirmautid');
+        const reg = allRegs.find(r => r.id === id);
+        if(!reg) return;
+        if(!confirm('Confirmar que o responsável autorizou a participação de ' + reg.nome + '? Use só se o responsável já confirmou com você diretamente (WhatsApp, pessoalmente, etc.).')) return;
+        btn.disabled = true;
+        const agora = new Date().toISOString();
+        const dadosAtualizados = Object.assign({}, reg, {
+          autorizacaoRemota: true,
+          autorizacaoRemotaEm: agora,
+          autorizadoManualmente: true
+        });
+        delete dadosAtualizados.id;
+        delete dadosAtualizados.criadoEm;
+        const ok = await updateSupabaseData(id, dadosAtualizados);
+        btn.disabled = false;
+        if(ok){
+          reg.autorizacaoRemota = true;
+          reg.autorizacaoRemotaEm = agora;
+          reg.autorizadoManualmente = true;
+          updateStats(allRegs);
+          renderList(allRegs);
+        }else{
+          alert('Não foi possível salvar agora. Tenta de novo em instantes.');
+        }
       });
     });
 
@@ -1973,6 +2210,19 @@
     renderList(allRegs.filter(r => r.nome.toLowerCase().includes(q)));
   });
   document.getElementById('refreshBtn').addEventListener('click', renderDashboard);
+
+  document.getElementById('tabBtnAdolescentes').addEventListener('click', () => {
+    document.getElementById('tabBtnAdolescentes').classList.add('is-active');
+    document.getElementById('tabBtnVoluntarios').classList.remove('is-active');
+    document.getElementById('tabAdolescentes').style.display = 'block';
+    document.getElementById('tabVoluntarios').style.display = 'none';
+  });
+  document.getElementById('tabBtnVoluntarios').addEventListener('click', () => {
+    document.getElementById('tabBtnVoluntarios').classList.add('is-active');
+    document.getElementById('tabBtnAdolescentes').classList.remove('is-active');
+    document.getElementById('tabVoluntarios').style.display = 'block';
+    document.getElementById('tabAdolescentes').style.display = 'none';
+  });
 
   function gerarPdfBlob(){
     const { jsPDF } = window.jspdf;
@@ -2055,7 +2305,7 @@
       l2 = linha('IMAGEM', r.autorizacaoImagem === 'autorizo' ? 'Autorizada' : 'Não autorizada', marginX + 8 + colW, colW);
       y += 4 + Math.max(l1, l2) * 4 + 3;
 
-      l1 = linha('AUTORIZAÇÃO RESPONSÁVEL', r.autorizacaoRemota ? ('Confirmada em ' + new Date(r.autorizacaoRemotaEm).toLocaleString('pt-BR')) : 'Ainda não confirmada', marginX + 4, colW*2 + 4);
+      l1 = linha('AUTORIZAÇÃO RESPONSÁVEL', r.autorizacaoRemota ? ('Confirmada' + (r.autorizadoManualmente ? ' manualmente' : '') + ' em ' + new Date(r.autorizacaoRemotaEm).toLocaleString('pt-BR')) : 'Ainda não confirmada', marginX + 4, colW*2 + 4);
       y += 4 + l1 * 4 + 3;
 
       if(alertas.length){
@@ -2115,6 +2365,141 @@
       }
     }catch(err){
       console.error('Erro ao gerar PDF:', err);
+      alert('Não foi possível gerar o PDF agora. Tenta de novo em instantes.');
+    }finally{
+      btn.disabled = false;
+      btn.textContent = textoOriginal;
+    }
+  });
+
+  function gerarVolPdfBlob(){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({unit:'mm', format:'a4'});
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const marginX = 14;
+    let y = 18;
+
+    const simNaoPdf = v => v === 'sim' ? 'Sim' : (v === 'nao' ? 'Não' : '-');
+    const sorted = [...allVols].sort((a,b) => new Date(b.criadoEm) - new Date(a.criadoEm));
+
+    function checkPageBreak(altura){
+      if(y + altura > pageH - 14){
+        doc.addPage();
+        y = 18;
+      }
+    }
+    function linha(label, valor, x, largura){
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8.5);
+      doc.setTextColor(90,90,97);
+      doc.text(label, x, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(20,20,26);
+      const texto = doc.splitTextToSize(String(valor || '-'), largura - 2);
+      doc.text(texto, x, y + 4);
+      return texto.length;
+    }
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(20,20,26);
+    doc.text('Voluntários — Retiro Casa Farol', marginX, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(90,90,97);
+    doc.text('Gerado em ' + new Date().toLocaleString('pt-BR') + ' · ' + sorted.length + ' voluntário(s)', marginX, y);
+    y += 10;
+
+    const colW = (pageW - marginX*2 - 6) / 2;
+
+    sorted.forEach(r => {
+      const area = r.areaVoluntario + (r.areaVoluntarioOutra ? (' — ' + r.areaVoluntarioOutra) : '');
+      const dorme = r.dormeNoRetiro === 'sim' ? 'Dorme no retiro (R$65)' : (r.dormeNoRetiro === 'nao' ? 'Vai pra casa' : '-');
+
+      checkPageBreak(50);
+      const cardTop = y;
+      doc.setDrawColor(20,20,26);
+      doc.setLineWidth(0.4);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.setTextColor(20,20,26);
+      doc.text(r.nome || '-', marginX + 4, y + 7);
+      y += 13;
+
+      let l1 = linha('TICKET', r.ticket, marginX + 4, colW);
+      let l2 = linha('DATA INSCRIÇÃO', new Date(r.criadoEm).toLocaleDateString('pt-BR'), marginX + 8 + colW, colW);
+      y += 4 + Math.max(l1, l2) * 4 + 3;
+
+      l1 = linha('WHATSAPP', r.telAdolescente, marginX + 4, colW);
+      l2 = linha('CONGREGA NA CASA FAROL', simNaoPdf(r.congregaCasaFarol), marginX + 8 + colW, colW);
+      y += 4 + Math.max(l1, l2) * 4 + 3;
+
+      l1 = linha('ÁREA(S) PARA AJUDAR', area, marginX + 4, colW*2 + 4);
+      y += 4 + l1 * 4 + 3;
+
+      l1 = linha('DORMIDA', dorme, marginX + 4, colW);
+      l2 = linha('DISPONIBILIDADE', r.disponibilidade, marginX + 8 + colW, colW);
+      y += 4 + Math.max(l1, l2) * 4 + 3;
+
+      if(r.infoImportante){
+        doc.setFillColor(255, 225, 201);
+        const alertaTexto = doc.splitTextToSize('⚠ Alergia/restrição/medicamento: ' + r.infoImportante, colW*2 + 4 - 6);
+        const alertaAltura = alertaTexto.length * 4 + 4;
+        doc.roundedRect(marginX + 4, y, colW*2 + 4, alertaAltura, 1.5, 1.5, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.setTextColor(161, 61, 0);
+        doc.text(alertaTexto, marginX + 7, y + 5);
+        y += alertaAltura + 3;
+      }
+
+      doc.roundedRect(marginX, cardTop, pageW - marginX*2, y - cardTop + 2, 2, 2, 'S');
+      y += 8;
+    });
+
+    return doc.output('blob');
+  }
+
+  document.getElementById('exportVolPdfBtn').addEventListener('click', async () => {
+    if(allVols.length === 0) return;
+    const btn = document.getElementById('exportVolPdfBtn');
+    btn.disabled = true;
+    const textoOriginal = btn.textContent;
+    btn.textContent = 'Gerando...';
+
+    try{
+      const blob = gerarVolPdfBlob();
+      const nomeArquivo = 'voluntarios-retiro-casa-farol.pdf';
+      const file = new File([blob], nomeArquivo, {type: 'application/pdf'});
+
+      if(navigator.canShare && navigator.canShare({files: [file]})){
+        try{
+          await navigator.share({
+            files: [file],
+            title: 'Voluntários Retiro Casa Farol',
+            text: 'Segue o relatório de voluntários do Retiro Casa Farol.'
+          });
+        }catch(shareErr){
+          if(shareErr.name !== 'AbortError'){
+            console.error('Erro ao compartilhar:', shareErr);
+          }
+        }
+      }else{
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = nomeArquivo;
+        a.click();
+        URL.revokeObjectURL(url);
+        const waMsg = 'Segue o relatório de voluntários do Retiro Casa Farol em PDF — é só anexar o arquivo que acabou de baixar 📎';
+        window.open('https://wa.me/?text=' + encodeURIComponent(waMsg), '_blank');
+        alert('Seu navegador não permite anexar automaticamente. O PDF foi baixado e o WhatsApp abriu — só anexar o arquivo baixado na conversa.');
+      }
+    }catch(err){
+      console.error('Erro ao gerar PDF de voluntários:', err);
       alert('Não foi possível gerar o PDF agora. Tenta de novo em instantes.');
     }finally{
       btn.disabled = false;
